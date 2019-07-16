@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */; };
+		59DB12152AA880A2C230AC11 /* Pods_hangouts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */; };
+		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5922DE7E060003F9CE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5822DE7E060003F9CE /* ViewController.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
@@ -35,6 +38,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangoutsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangoutsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A6C8F220FB43673B001343A /* Pods-hangoutsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsTests.debug.xcconfig"; path = "Target Support Files/Pods-hangoutsTests/Pods-hangoutsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8FA899A2DBB9542F5D18378D /* Pods-hangouts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.release.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.release.xcconfig"; sourceTree = "<group>"; };
+		9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangouts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.debug.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.debug.xcconfig"; sourceTree = "<group>"; };
+		C0C85B00E63547B4468D820E /* Pods-hangoutsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsTests.release.xcconfig"; path = "Target Support Files/Pods-hangoutsTests/Pods-hangoutsTests.release.xcconfig"; sourceTree = "<group>"; };
+		C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsUITests.debug.xcconfig"; path = "Target Support Files/Pods-hangoutsUITests/Pods-hangoutsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +62,7 @@
 		D9F09B7422DE7E080003F9CE /* hangoutsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = hangoutsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B7822DE7E080003F9CE /* hangoutsUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hangoutsUITests.m; sourceTree = "<group>"; };
 		D9F09B7A22DE7E080003F9CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC0CDD6E9ABC3EF25B7C64E6 /* Pods-hangoutsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsUITests.release.xcconfig"; path = "Target Support Files/Pods-hangoutsUITests/Pods-hangoutsUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59DB12152AA880A2C230AC11 /* Pods_hangouts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +86,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0284D96AB72073174D220AF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */,
+				288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */,
+				47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D9F09B4822DE7E060003F9CE = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +110,8 @@
 				D9F09B6C22DE7E080003F9CE /* hangoutsTests */,
 				D9F09B7722DE7E080003F9CE /* hangoutsUITests */,
 				D9F09B5222DE7E060003F9CE /* Products */,
+				DB259B30A70CA6A87B9141F9 /* Pods */,
+				0284D96AB72073174D220AF5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +159,20 @@
 			path = hangoutsUITests;
 			sourceTree = "<group>";
 		};
+		DB259B30A70CA6A87B9141F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */,
+				8FA899A2DBB9542F5D18378D /* Pods-hangouts.release.xcconfig */,
+				6A6C8F220FB43673B001343A /* Pods-hangoutsTests.debug.xcconfig */,
+				C0C85B00E63547B4468D820E /* Pods-hangoutsTests.release.xcconfig */,
+				C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */,
+				DC0CDD6E9ABC3EF25B7C64E6 /* Pods-hangoutsUITests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,9 +180,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D9F09B7D22DE7E080003F9CE /* Build configuration list for PBXNativeTarget "hangouts" */;
 			buildPhases = (
+				3629A5DCE8B5B6B62376CBDE /* [CP] Check Pods Manifest.lock */,
 				D9F09B4D22DE7E060003F9CE /* Sources */,
 				D9F09B4E22DE7E060003F9CE /* Frameworks */,
 				D9F09B4F22DE7E060003F9CE /* Resources */,
+				13A52B781A0B546239732289 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -156,6 +199,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D9F09B8022DE7E080003F9CE /* Build configuration list for PBXNativeTarget "hangoutsTests" */;
 			buildPhases = (
+				BFBD280B40527D3BF0ACA86D /* [CP] Check Pods Manifest.lock */,
 				D9F09B6522DE7E080003F9CE /* Sources */,
 				D9F09B6622DE7E080003F9CE /* Frameworks */,
 				D9F09B6722DE7E080003F9CE /* Resources */,
@@ -174,6 +218,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D9F09B8322DE7E080003F9CE /* Build configuration list for PBXNativeTarget "hangoutsUITests" */;
 			buildPhases = (
+				F4922933FF42DE56715C3CFB /* [CP] Check Pods Manifest.lock */,
 				D9F09B7022DE7E080003F9CE /* Sources */,
 				D9F09B7122DE7E080003F9CE /* Frameworks */,
 				D9F09B7222DE7E080003F9CE /* Resources */,
@@ -256,6 +301,92 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13A52B781A0B546239732289 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hangouts/Pods-hangouts-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-hangouts/Pods-hangouts-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-hangouts/Pods-hangouts-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3629A5DCE8B5B6B62376CBDE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hangouts-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BFBD280B40527D3BF0ACA86D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hangoutsTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F4922933FF42DE56715C3CFB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-hangoutsUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D9F09B4D22DE7E060003F9CE /* Sources */ = {
@@ -433,6 +564,7 @@
 		};
 		D9F09B7E22DE7E080003F9CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -450,6 +582,7 @@
 		};
 		D9F09B7F22DE7E080003F9CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FA899A2DBB9542F5D18378D /* Pods-hangouts.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -467,6 +600,7 @@
 		};
 		D9F09B8122DE7E080003F9CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A6C8F220FB43673B001343A /* Pods-hangoutsTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -486,6 +620,7 @@
 		};
 		D9F09B8222DE7E080003F9CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0C85B00E63547B4468D820E /* Pods-hangoutsTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -505,6 +640,7 @@
 		};
 		D9F09B8422DE7E080003F9CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24T36Y5XMD;
@@ -523,6 +659,7 @@
 		};
 		D9F09B8522DE7E080003F9CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC0CDD6E9ABC3EF25B7C64E6 /* Pods-hangoutsUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 24T36Y5XMD;
