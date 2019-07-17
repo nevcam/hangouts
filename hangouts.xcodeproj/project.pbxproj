@@ -10,6 +10,8 @@
 		085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */; };
 		59DB12152AA880A2C230AC11 /* Pods_hangouts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */; };
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
+		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
+		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5922DE7E060003F9CE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5822DE7E060003F9CE /* ViewController.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
@@ -46,6 +48,10 @@
 		B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.debug.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.debug.xcconfig"; sourceTree = "<group>"; };
 		C0C85B00E63547B4468D820E /* Pods-hangoutsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsTests.release.xcconfig"; path = "Target Support Files/Pods-hangoutsTests/Pods-hangoutsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsUITests.debug.xcconfig"; path = "Target Support Files/Pods-hangoutsUITests/Pods-hangoutsUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D9DF803022DF8C74003D240F /* FriendSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendSearchViewController.h; sourceTree = "<group>"; };
+		D9DF803122DF8C74003D240F /* FriendSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendSearchViewController.m; sourceTree = "<group>"; };
+		D9DF803322DF8D3A003D240F /* FriendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
+		D9DF803422DF8D3A003D240F /* FriendCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -106,6 +112,8 @@
 		D9DF802F22DE9362003D240F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D9DF803022DF8C74003D240F /* FriendSearchViewController.h */,
+				D9DF803122DF8C74003D240F /* FriendSearchViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -136,6 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				D9DF802F22DE9362003D240F /* View Controllers */,
+				D9DF803322DF8D3A003D240F /* FriendCell.h */,
+				D9DF803422DF8D3A003D240F /* FriendCell.m */,
 				D9F09B5422DE7E060003F9CE /* AppDelegate.h */,
 				D9F09B5522DE7E060003F9CE /* AppDelegate.m */,
 				D9F09B5722DE7E060003F9CE /* ViewController.h */,
@@ -400,7 +410,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9F09B5922DE7E060003F9CE /* ViewController.m in Sources */,
+				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 			);
