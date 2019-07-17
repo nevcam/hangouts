@@ -73,6 +73,7 @@
     NSString *emailNoSpaces = [self.emailField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     if([usernameNoSpaces isEqualToString:@""] || [newUser.password isEqualToString:@""] || [nameNoSpaces isEqualToString:@""] || [emailNoSpaces isEqualToString:@""]) {
+        self.errorLabel.text = @"Please fill in all fields";
         [self.errorLabel setHidden:NO];
         NSLog(@"Didn't fill out all fields.");
     } else {
@@ -85,10 +86,12 @@
     // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
+            self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
+            [self.errorLabel setHidden:NO];
             NSLog(@"Error: %@", error.localizedDescription);
         } else {
+            [self.errorLabel setHidden:YES];
             NSLog(@"User registered successfully");
-            
             // manually segue to logged in view
             [self performSegueWithIdentifier:@"registeredSegue" sender:self];
         }
