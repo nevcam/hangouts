@@ -34,6 +34,9 @@
 }
 */
 
+// MARK: class methods
+
+// This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
     [self.usernameField resignFirstResponder];
     [self.passwordField resignFirstResponder];
