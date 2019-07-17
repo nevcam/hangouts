@@ -7,6 +7,7 @@
 //
 
 #import "SignUpViewController.h"
+#import "Friendship.h"
 @import Parse;
 
 @interface SignUpViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -87,11 +88,20 @@
             [self.errorLabel setHidden:NO];
             NSLog(@"Error: %@", error.localizedDescription);
         } else {
-            [self.errorLabel setHidden:YES];
-            NSLog(@"User registered successfully");
-            [self.delegate registerUserWithStatus:YES];
-            // manually dismiss view controller for user to log in
-            [self dismissViewControllerAnimated:true completion:nil];
+            // Will try to create a row in friendship for the newUser
+            [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+                if(succeeded) {
+                    NSLog(@"Created friendship successfully");
+                } else {
+                    NSLog(@"Couldn't create friendship: %@", error);
+                }
+                // User was created successfully, independent from friendship creation
+                [self.errorLabel setHidden:YES];
+                NSLog(@"User registered successfully");
+                [self.delegate registerUserWithStatus:YES];
+                // manually dismiss view controller for user to log in
+                [self dismissViewControllerAnimated:true completion:nil];
+            }];
         }
     }];
 }
