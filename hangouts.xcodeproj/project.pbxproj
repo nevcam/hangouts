@@ -14,6 +14,7 @@
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
 		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
 		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
+		D9DF803822DFE181003D240F /* Friendship.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803722DFE181003D240F /* Friendship.m */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
 		D9F09B5E22DE7E080003F9CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5D22DE7E080003F9CE /* Assets.xcassets */; };
@@ -56,6 +57,8 @@
 		D9DF803122DF8C74003D240F /* FriendSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendSearchViewController.m; sourceTree = "<group>"; };
 		D9DF803322DF8D3A003D240F /* FriendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		D9DF803422DF8D3A003D240F /* FriendCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
+		D9DF803622DFE181003D240F /* Friendship.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Friendship.h; sourceTree = "<group>"; };
+		D9DF803722DFE181003D240F /* Friendship.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Friendship.m; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -149,10 +152,11 @@
 		D9F09B5322DE7E060003F9CE /* hangouts */ = {
 			isa = PBXGroup;
 			children = (
-				D9DF802F22DE9362003D240F /* View Controllers */,
 				D9DF803322DF8D3A003D240F /* FriendCell.h */,
 				D9DF803422DF8D3A003D240F /* FriendCell.m */,
 				7B0BBC5522DF91C9006275F6 /* View Controllers */,
+				D9DF803622DFE181003D240F /* Friendship.h */,
+				D9DF803722DFE181003D240F /* Friendship.m */,
 				D9F09B5422DE7E060003F9CE /* AppDelegate.h */,
 				D9F09B5522DE7E060003F9CE /* AppDelegate.m */,
 				D9F09B5A22DE7E060003F9CE /* Main.storyboard */,
@@ -416,11 +420,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
-				D9F09B5922DE7E060003F9CE /* ViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */,
+				D9DF803822DFE181003D240F /* Friendship.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
