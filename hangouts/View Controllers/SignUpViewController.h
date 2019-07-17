@@ -10,7 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol SignUpViewControllerDelegate
+
+- (void)registerUserWithStatus:(BOOL)successful;
+
+@end
+
 @interface SignUpViewController : UIViewController
+
+@property (nonatomic, weak) id<SignUpViewControllerDelegate> delegate;
 
 @end
 

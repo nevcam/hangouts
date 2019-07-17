@@ -7,9 +7,10 @@
 //
 
 #import "LoginViewController.h"
+#import "SignUpViewController.h"
 @import Parse;
 
-@interface LoginViewController ()
+@interface LoginViewController () <SignUpViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
@@ -22,17 +23,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if([[segue identifier] isEqualToString:@"registerSegue"]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        SignUpViewController *signupController = (SignUpViewController*)navigationController.topViewController;
+        signupController.delegate = self;
+    }
 }
-*/
+
 
 // MARK: class methods
 
@@ -48,6 +54,8 @@
     
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
+            self.errorLabel.text = @"Incorrect user/password";
+            self.errorLabel.backgroundColor = [UIColor redColor];
             [self.errorLabel setHidden:NO];
             NSLog(@"User log in failed: %@", error.localizedDescription);
         } else {
@@ -61,6 +69,15 @@
 
 - (IBAction)didTapLogin:(id)sender {
     [self loginUser];
+}
+
+// MARK: protocol methods
+- (void)registerUserWithStatus:(BOOL)successful {
+    if(successful) {
+        self.errorLabel.text = @"Account registered successfully!";
+        self.errorLabel.backgroundColor = [UIColor greenColor];
+        [self.errorLabel setHidden:NO];
+    }
 }
 
 @end

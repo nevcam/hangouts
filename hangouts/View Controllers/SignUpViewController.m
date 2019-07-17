@@ -96,8 +96,9 @@
         } else {
             [self.errorLabel setHidden:YES];
             NSLog(@"User registered successfully");
-            // manually segue to logged in view
-            [self performSegueWithIdentifier:@"registeredSegue" sender:self];
+            [self.delegate registerUserWithStatus:YES];
+            // manually dismiss view controller for user to log in
+            [self dismissViewControllerAnimated:true completion:nil];
         }
     }];
 }
@@ -105,6 +106,10 @@
 - (IBAction)didTapCancel:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
+
+
+
+// MARK: keyboard methods
 
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
@@ -114,7 +119,7 @@
     [self.passwordField resignFirstResponder];
 }
 
-// MARK: keyboard motion methods
+// The following methods let the view move up/down when keybord is shown/dismissed
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     return YES;
