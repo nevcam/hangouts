@@ -36,6 +36,8 @@
             NSLog(@"Error: %@", error.description);
         }
     }];
+    
+    self.window.backgroundColor = [UIColor whiteColor];
     return YES;
 }
 

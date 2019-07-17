@@ -9,7 +9,7 @@
 #import "SignUpViewController.h"
 @import Parse;
 
-@interface SignUpViewController ()
+@interface SignUpViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
@@ -24,6 +24,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.nameField.delegate = self;
+    self.usernameField.delegate = self;
+    self.emailField.delegate = self;
+    self.passwordField.delegate = self;
 }
 
 /*
@@ -108,6 +112,36 @@
     [self.usernameField resignFirstResponder];
     [self.emailField resignFirstResponder];
     [self.passwordField resignFirstResponder];
+}
+
+// MARK: keyboard motion methods
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    [self.view endEditing:YES];
+    return YES;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.view.frame;
+        frame.origin.y = -keyboardSize.height + 100;
+        self.view.frame = frame;
+    }];
+}
+
+-(void)keyboardWillHide:(NSNotification *)notification {
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.view.frame;
+        frame.origin.y = 0;
+        self.view.frame = frame;
+    }];
 }
 
 @end
