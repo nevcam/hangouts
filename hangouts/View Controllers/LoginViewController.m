@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
+@property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 
 @end
 
@@ -33,6 +34,9 @@
 }
 */
 
+// MARK: class methods
+
+// This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
     [self.usernameField resignFirstResponder];
     [self.passwordField resignFirstResponder];
@@ -44,10 +48,11 @@
     
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
+            [self.errorLabel setHidden:NO];
             NSLog(@"User log in failed: %@", error.localizedDescription);
         } else {
+            [self.errorLabel setHidden:YES];
             NSLog(@"User logged in successfully");
-            
             // display view controller that needs to shown after successful login
             [self performSegueWithIdentifier:@"loginSegue" sender:self];
         }
