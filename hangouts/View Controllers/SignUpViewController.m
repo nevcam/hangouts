@@ -9,13 +9,14 @@
 #import "SignUpViewController.h"
 @import Parse;
 
-@interface SignUpViewController () <UITextFieldDelegate>
+@interface SignUpViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 
 @end
 
@@ -53,37 +54,29 @@
     
     [newUser setObject:self.nameField.text forKey:@"fullname"];
     
-    /*NSData *imageData;
-    if(self.photo != nil) {
-        imageData = UIImageJPEGRepresentation(self.photo, 1.0);
+    [self assignImageToUser:newUser];
+    
+    NSArray *fieldsStrings = [NSArray arrayWithObjects:self.usernameField.text, self.nameField.text, self.emailField.text, self.passwordField.text, nil];
+    
+    if([self validateStrings:fieldsStrings]) {
+        [self.errorLabel setHidden:YES];
+        [self registerUser:newUser];
     } else {
-        UIImage *pic = [UIImage imageNamed:@"profile_tab"];
-        imageData = UIImageJPEGRepresentation(pic, 1.0);
-    }
-    PFFileObject *img = [PFFileObject fileObjectWithName:@"profilePic.png" data:imageData];
-    [img saveInBackground];
-    
-    [newUser setObject:img forKey:@"image"];
-    [newUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            NSLog(@"Uploaded profile pic!");
-        } else {
-            NSLog(@"Error uploading profile pic: %@", error);
-        }
-    }];*/
-    
-    NSString *usernameNoSpaces = [self.usernameField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString *nameNoSpaces = [self.nameField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString *emailNoSpaces = [self.emailField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    if([usernameNoSpaces isEqualToString:@""] || [newUser.password isEqualToString:@""] || [nameNoSpaces isEqualToString:@""] || [emailNoSpaces isEqualToString:@""]) {
         self.errorLabel.text = @"Please fill in all fields";
         [self.errorLabel setHidden:NO];
         NSLog(@"Didn't fill out all fields.");
-    } else {
-        [self.errorLabel setHidden:YES];
-        [self registerUser:newUser];
     }
+}
+
+- (BOOL)validateStrings:(NSArray *)strings {
+    
+    for (NSString *string in strings) {
+        NSString *stringNoSpaces = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if([stringNoSpaces isEqualToString:@""]) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (void)registerUser:(PFUser *)newUser {
@@ -108,6 +101,68 @@
 }
 
 
+// MARK: image methods
+
+- (IBAction)didTapImage:(id)sender {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    // Get the image captured by the UIImagePickerController
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    UIImage *resizedImage = [self resizeImage:editedImage withSize:CGSizeMake(350, 350)];
+    self.profileImageView.image = resizedImage;
+    
+    // Dismiss UIImagePickerController to go back to your original view controller
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
+    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    
+    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
+    resizeImageView.image = image;
+    
+    UIGraphicsBeginImageContext(size);
+    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+- (void)assignImageToUser: (PFUser *)user {
+    NSData *imageData;
+    if(self.profileImageView.image != nil) {
+        imageData = UIImageJPEGRepresentation(self.profileImageView.image, 1.0);
+    } else {
+        UIImage *pic = [UIImage imageNamed:@"profile"];
+        imageData = UIImageJPEGRepresentation(pic, 1.0);
+    }
+    PFFileObject *img = [PFFileObject fileObjectWithName:@"profilePic.png" data:imageData];
+    [img saveInBackground];
+    
+    [user setObject:img forKey:@"profilePhoto"];
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            NSLog(@"Uploaded profile pic!");
+        } else {
+            NSLog(@"Error uploading profile pic: %@", error);
+        }
+    }];
+}
 
 // MARK: keyboard methods
 
