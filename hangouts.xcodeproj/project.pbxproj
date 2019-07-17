@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -103,6 +103,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D9DF802F22DE9362003D240F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
 		D9F09B4822DE7E060003F9CE = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +135,7 @@
 		D9F09B5322DE7E060003F9CE /* hangouts */ = {
 			isa = PBXGroup;
 			children = (
+				D9DF802F22DE9362003D240F /* View Controllers */,
 				D9F09B5422DE7E060003F9CE /* AppDelegate.h */,
 				D9F09B5522DE7E060003F9CE /* AppDelegate.m */,
 				D9F09B5722DE7E060003F9CE /* ViewController.h */,
@@ -169,7 +177,6 @@
 				C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */,
 				DC0CDD6E9ABC3EF25B7C64E6 /* Pods-hangoutsUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
