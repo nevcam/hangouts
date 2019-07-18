@@ -45,7 +45,7 @@
     // fetch data asynchronously
     [eventQuery findObjectsInBackgroundWithBlock:^(NSArray<UserEvents *> * _Nullable userEvents, NSError * _Nullable error) {
         if (userEvents) {
-            NSLog(@"Mis eventos: %@",userEvents[0]);
+            // NSLog(@"Mis eventos: %@",userEvents[0]);
             //self.posts = [[NSMutableArray alloc] initWithArray:posts];
             //[self.tableView reloadData];
         } else {
