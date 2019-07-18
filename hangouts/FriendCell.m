@@ -22,21 +22,26 @@
 }
 - (IBAction)didTapAddFriend:(id)sender {
     NSString *title=[sender currentTitle];
-    NSMutableArray *friends = [PFUser currentUser][@"friends"];
-    NSMutableArray *friendRequests = self.user[@"friendRequests"];
-//    if([friends containsObject:self.usernameLabel.text]) {
-//
-//    }
+//    NSMutableArray *friends = [PFUser currentUser][@"friends"];
+    NSLog(@"CURRENT USER: %@", [PFUser currentUser]);
+
     if ([title isEqualToString:@"Add Friend"]) {
         [sender setTitle:@"Requested" forState:UIControlStateNormal];
-        [friendRequests addObject:[PFUser currentUser][@"username"]];
-        [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        
+        [self.user addObject:[PFUser currentUser].username forKey:@"friendRequests"];
+
+        NSLog(@"req: %@", self.user[@"friendRequests"]);
+
+        [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if (!error) {
                 NSLog(@"SUCCESS REQUEST");
             } else {
                 // handle error
+                NSLog(@"ERROR REQUEST");
             }
         }];
+//        [self.user saveInBackground];
+        NSLog(@"user: %@", self.user);
     }
     /*
     else {

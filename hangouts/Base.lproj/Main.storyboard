@@ -13,7 +13,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -91,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="124.58770614692655"/>
+            <point key="canvasLocation" x="177" y="125"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="Mm9-rf-vH4">
@@ -148,9 +148,13 @@
                                     <action selector="didTapReturn:" destination="TcT-w3-dph" eventType="editingDidEndOnExit" id="mVl-JC-AFD"/>
                                 </connections>
                             </textField>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="clN-sa-5i8">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="clN-sa-5i8">
                                 <rect key="frame" x="137" y="199" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="69X-kg-gGd" appends="YES" id="2JK-Kl-IMV"/>
+                                </connections>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mE7-0Q-e9R">
                                 <rect key="frame" x="63" y="510" width="248" height="40"/>
@@ -187,11 +191,16 @@
                         <outlet property="errorLabel" destination="MXE-Cc-m75" id="ygS-GW-It7"/>
                         <outlet property="nameField" destination="eiB-9h-m8R" id="arm-GP-fhH"/>
                         <outlet property="passwordField" destination="Tes-Sy-3bf" id="VrV-X8-DD0"/>
+                        <outlet property="profileImageView" destination="clN-sa-5i8" id="fic-fs-8mU"/>
                         <outlet property="usernameField" destination="LgK-mG-xUi" id="qGp-kl-R56"/>
-                        <segue destination="6B5-V0-Dqe" kind="presentation" identifier="registeredSegue" id="xZ5-lF-7AE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HtP-Ja-TQV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="69X-kg-gGd">
+                    <connections>
+                        <action selector="didTapImage:" destination="TcT-w3-dph" id="csT-yZ-gVd"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2008.8" y="124.58770614692655"/>
         </scene>
@@ -293,7 +302,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="NjA-vg-NWg">
             <objects>
-                <tabBarController id="6B5-V0-Dqe" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="HomeTabController" id="6B5-V0-Dqe" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="tAu-S2-Jmz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -379,14 +388,14 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Full name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZjQ-tt-84J">
-                                                    <rect key="frame" x="93" y="16" width="74" height="21"/>
+                                                    <rect key="frame" x="93" y="16" width="143" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kdv-mI-INz">
-                                                    <rect key="frame" x="93" y="45" width="76" height="21"/>
+                                                    <rect key="frame" x="93" y="45" width="143" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -425,12 +434,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vIS-4X-Vqs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="2400"/>
+            <point key="canvasLocation" x="657" y="2400"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="Ees-0t-HtL">
             <objects>
-                <viewController id="cSb-Hr-SRc" sceneMemberID="viewController">
+                <viewController id="cSb-Hr-SRc" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GRy-7a-L27">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -446,7 +455,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="0Hh-As-dvc"/>
                     </view>
-                    <navigationItem key="navigationItem" id="y4E-IP-w0B"/>
+                    <navigationItem key="navigationItem" id="y4E-IP-w0B">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="ak5-A6-6HU">
+                            <connections>
+                                <action selector="didTapLogout:" destination="cSb-Hr-SRc" id="cXL-qr-R4B"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oif-gq-9zy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -532,7 +547,4 @@
         <image name="logo" width="500" height="500"/>
         <image name="profile" width="248" height="248"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="xZ5-lF-7AE"/>
-    </inferredMetricsTieBreakers>
 </document>

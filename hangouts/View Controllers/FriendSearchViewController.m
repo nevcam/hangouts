@@ -13,6 +13,7 @@
 @interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *users;
+@property (nonatomic, strong) NSMutableArray *friendships;
 @end
 
 @implementation FriendSearchViewController
@@ -23,8 +24,9 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    [self fetchFriendships];
     [self fetchUsers];
-    
+    NSLog(@"friends: %@", self.friendships);
 //    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.rowHeight = 80;
 }
@@ -38,6 +40,20 @@
             NSLog(@"SUCCESS: %@", users);
             self.users = users;
             [self.tableView reloadData];
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)fetchFriendships {
+    PFQuery *query = [PFObject<PFSubclassing> query];
+    [query orderByDescending:@"createdAt"];
+    query.limit = 100;
+    [query findObjectsInBackgroundWithBlock:^(NSArray<PFObject<PFSubclassing> *> * _Nullable friendships, NSError * _Nullable error) {
+        if (friendships) {
+            NSLog(@"SUCCESS getting friends: %@", self.friendships);
+            self.friendships = friendships;
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
