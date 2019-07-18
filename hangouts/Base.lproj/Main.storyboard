@@ -13,7 +13,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -428,10 +428,10 @@
             </objects>
             <point key="canvasLocation" x="644" y="2399.5502248875564"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="Ees-0t-HtL">
             <objects>
-                <viewController id="cSb-Hr-SRc" sceneMemberID="viewController">
+                <viewController id="cSb-Hr-SRc" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="GRy-7a-L27">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -447,7 +447,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="0Hh-As-dvc"/>
                     </view>
-                    <navigationItem key="navigationItem" id="y4E-IP-w0B"/>
+                    <navigationItem key="navigationItem" id="y4E-IP-w0B">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="ak5-A6-6HU">
+                            <connections>
+                                <action selector="didTapLogout:" destination="cSb-Hr-SRc" id="cXL-qr-R4B"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oif-gq-9zy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
