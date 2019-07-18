@@ -11,6 +11,8 @@
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
+		3CE7D01F22E0D930005E5C29 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01E22E0D930005E5C29 /* LocationsViewController.m */; };
+		3CE7D02222E0D9E7005E5C29 /* LocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D02122E0D9E7005E5C29 /* LocationCell.m */; };
 		59DB12152AA880A2C230AC11 /* Pods_hangouts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */; };
 		7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0BBC5722DF91DC006275F6 /* LoginViewController.m */; };
 		7B61D4F222DF94B100007250 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B61D4F122DF94B100007250 /* Parse.framework */; };
@@ -54,6 +56,10 @@
 		3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddEventViewController.m; sourceTree = "<group>"; };
 		3CE7D01A22DFA214005E5C29 /* Event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		3CE7D01B22DFA214005E5C29 /* Event.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		3CE7D01D22E0D930005E5C29 /* LocationsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationsViewController.h; sourceTree = "<group>"; };
+		3CE7D01E22E0D930005E5C29 /* LocationsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationsViewController.m; sourceTree = "<group>"; };
+		3CE7D02022E0D9E7005E5C29 /* LocationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationCell.h; sourceTree = "<group>"; };
+		3CE7D02122E0D9E7005E5C29 /* LocationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationCell.m; sourceTree = "<group>"; };
 		47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangoutsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A6C8F220FB43673B001343A /* Pods-hangoutsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsTests.debug.xcconfig"; path = "Target Support Files/Pods-hangoutsTests/Pods-hangoutsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7B0BBC5622DF91DC006275F6 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -146,6 +152,8 @@
 				7B61D4F422DF9EDE00007250 /* SignUpViewController.m */,
 				7B61D4F622DFECEE00007250 /* ProfileViewController.h */,
 				7B61D4F722DFECEE00007250 /* ProfileViewController.m */,
+				3CE7D01D22E0D930005E5C29 /* LocationsViewController.h */,
+				3CE7D01E22E0D930005E5C29 /* LocationsViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -185,6 +193,8 @@
 				D9F09B5422DE7E060003F9CE /* AppDelegate.h */,
 				D9F09B5522DE7E060003F9CE /* AppDelegate.m */,
 				D9F09B5A22DE7E060003F9CE /* Main.storyboard */,
+				3CE7D02022E0D9E7005E5C29 /* LocationCell.h */,
+				3CE7D02122E0D9E7005E5C29 /* LocationCell.m */,
 				D9F09B5D22DE7E080003F9CE /* Assets.xcassets */,
 				D9F09B5F22DE7E080003F9CE /* LaunchScreen.storyboard */,
 				D9F09B6222DE7E080003F9CE /* Info.plist */,
@@ -456,7 +466,9 @@
 				7B61D4F822DFECEE00007250 /* ProfileViewController.m in Sources */,
 				7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */,
 				D9DF803822DFE181003D240F /* Friendship.m in Sources */,
+				3CE7D02222E0D9E7005E5C29 /* LocationCell.m in Sources */,
 				3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */,
+				3CE7D01F22E0D930005E5C29 /* LocationsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
