@@ -22,6 +22,8 @@
 		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
 		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
 		D9DF803822DFE181003D240F /* Friendship.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803722DFE181003D240F /* Friendship.m */; };
+		D9DF803B22DFF116003D240F /* FriendRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803A22DFF116003D240F /* FriendRequestsViewController.m */; };
+		D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803D22E0E12E003D240F /* FriendRequestCell.m */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
 		D9F09B5E22DE7E080003F9CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5D22DE7E080003F9CE /* Assets.xcassets */; };
@@ -80,6 +82,10 @@
 		D9DF803422DF8D3A003D240F /* FriendCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
 		D9DF803622DFE181003D240F /* Friendship.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Friendship.h; sourceTree = "<group>"; };
 		D9DF803722DFE181003D240F /* Friendship.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Friendship.m; sourceTree = "<group>"; };
+		D9DF803922DFF116003D240F /* FriendRequestsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestsViewController.h; sourceTree = "<group>"; };
+		D9DF803A22DFF116003D240F /* FriendRequestsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsViewController.m; sourceTree = "<group>"; };
+		D9DF803C22E0E12E003D240F /* FriendRequestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestCell.h; sourceTree = "<group>"; };
+		D9DF803D22E0E12E003D240F /* FriendRequestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestCell.m; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -150,6 +156,8 @@
 				7B0BBC5722DF91DC006275F6 /* LoginViewController.m */,
 				7B61D4F322DF9EDE00007250 /* SignUpViewController.h */,
 				7B61D4F422DF9EDE00007250 /* SignUpViewController.m */,
+				D9DF803922DFF116003D240F /* FriendRequestsViewController.h */,
+				D9DF803A22DFF116003D240F /* FriendRequestsViewController.m */,
 				7B61D4F622DFECEE00007250 /* ProfileViewController.h */,
 				7B61D4F722DFECEE00007250 /* ProfileViewController.m */,
 				3CE7D01D22E0D930005E5C29 /* LocationsViewController.h */,
@@ -195,6 +203,8 @@
 				D9F09B5A22DE7E060003F9CE /* Main.storyboard */,
 				3CE7D02022E0D9E7005E5C29 /* LocationCell.h */,
 				3CE7D02122E0D9E7005E5C29 /* LocationCell.m */,
+				D9DF803C22E0E12E003D240F /* FriendRequestCell.h */,
+				D9DF803D22E0E12E003D240F /* FriendRequestCell.m */,
 				D9F09B5D22DE7E080003F9CE /* Assets.xcassets */,
 				D9F09B5F22DE7E080003F9CE /* LaunchScreen.storyboard */,
 				D9F09B6222DE7E080003F9CE /* Info.plist */,
@@ -457,7 +467,9 @@
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
+				D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */,
 				3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */,
+				D9DF803B22DFF116003D240F /* FriendRequestsViewController.m in Sources */,
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
