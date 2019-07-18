@@ -15,10 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *date;
-//@property (nonatomic, strong) NSString *ownerUsername;
-//@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *ownerUsername;
+@property (nonatomic, strong) NSString *description;
 
-+ (void) createEvent: (NSString * _Nullable )name withDate: ( NSDate * _Nullable )date withCompletion: (PFBooleanResultBlock  _Nullable)completion;
++ (void) createEvent: (NSString * _Nullable)name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withCompletion: (PFBooleanResultBlock  _Nullable)completion;
 
 @end
 

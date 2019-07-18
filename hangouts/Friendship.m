@@ -9,11 +9,19 @@
 #import "Friendship.h"
 
 @implementation Friendship
-@dynamic friendRequests;
-@dynamic friends;
+
 @dynamic username;
+@dynamic friends;
+@dynamic friendRequests;
 
 + (nonnull NSString *)parseClassName {
     return @"Friendship";
+}
+
++ (void) createFriendshipForUser: (NSString * _Nullable )username withCompletion: (PFBooleanResultBlock  _Nullable)completion {
+    Friendship *newFriendship = [Friendship new];
+    newFriendship.username = username;
+    
+    [newFriendship saveInBackgroundWithBlock:completion];
 }
 @end
