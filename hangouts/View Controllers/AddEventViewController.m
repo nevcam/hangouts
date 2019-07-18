@@ -8,8 +8,10 @@
 
 #import "AddEventViewController.h"
 #import "Event.h"
+#import <MapKit/MapKit.h>
+#import "LocationsViewController.h"
 
-@interface AddEventViewController () <UITextViewDelegate>
+@interface AddEventViewController () <UITextViewDelegate, LocationsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
@@ -73,15 +75,22 @@
     }
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+// Triggered when user wants to choose a location
+- (IBAction)clickedChooseLocation:(id)sender {
+    [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
 }
-*/
+
+- (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude {
+    
+    [self.navigationController popToViewController:self animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    UINavigationController *locationController = [segue destinationViewController];
+    
+    locationController.delegate = self;
+    
+}
 
 @end

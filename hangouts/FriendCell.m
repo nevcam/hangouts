@@ -8,6 +8,7 @@
 
 #import "FriendCell.h"
 
+
 @implementation FriendCell
 
 - (void)awakeFromNib {
@@ -21,26 +22,33 @@
     // Configure the view for the selected state
 }
 - (IBAction)didTapAddFriend:(id)sender {
+
+    PFQuery *query = [Friendship query];
+    [query orderByDescending:@"createdAt"];
+    [query includeKey:@"username"];
+    [query whereKey:@"username" equalTo:self.userFriendship.username];
+    query.limit = 20;
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
+        if (friendships) {
+            self.userFriendship = friendships[0];
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
     NSString *title=[sender currentTitle];
-//    NSMutableArray *friends = [PFUser currentUser][@"friends"];
-    NSLog(@"CURRENT USER: %@", [PFUser currentUser]);
+    NSString *currentUsername = [PFUser currentUser][@"username"];
 
     if ([title isEqualToString:@"Add Friend"]) {
         [sender setTitle:@"Requested" forState:UIControlStateNormal];
         
-        [self.user addObject:[PFUser currentUser].username forKey:@"friendRequests"];
+        [self.userFriendship addObject:currentUsername forKey:@"friendRequests"];
 
-        NSLog(@"req: %@", self.user[@"friendRequests"]);
-
-        [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [self.userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if (!error) {
-                NSLog(@"SUCCESS REQUEST");
             } else {
-                // handle error
                 NSLog(@"ERROR REQUEST");
             }
         }];
-//        [self.user saveInBackground];
         NSLog(@"user: %@", self.user);
     }
     /*

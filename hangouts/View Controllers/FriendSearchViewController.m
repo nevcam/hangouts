@@ -9,11 +9,17 @@
 #import "FriendSearchViewController.h"
 #import "FriendCell.h"
 #import "Parse/Parse.h"
+#import "Friendship.h"
+#import "FriendRequestsViewController.h"
 
 @interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *requestView;
+@property (weak, nonatomic) IBOutlet UILabel *requestCount;
 @property (nonatomic, strong) NSMutableArray *users;
 @property (nonatomic, strong) NSMutableArray *friendships;
+@property (nonatomic, strong) NSMutableArray *currentUserFriendRequests;
+
 @end
 
 @implementation FriendSearchViewController
@@ -24,9 +30,13 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRequestTap:)];
+    [self.requestView addGestureRecognizer:singleFingerTap];
+    
     [self fetchFriendships];
     [self fetchUsers];
-    NSLog(@"friends: %@", self.friendships);
+    self.requestCount.text = [@(self.currentUserFriendRequests.count) stringValue];
 //    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.rowHeight = 80;
 }
@@ -37,8 +47,7 @@
     query.limit = 100;
     [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
         if (users) {
-            NSLog(@"SUCCESS: %@", users);
-            self.users = users;
+            self.users = (NSMutableArray *)users;
             [self.tableView reloadData];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
@@ -47,17 +56,23 @@
 }
 
 - (void)fetchFriendships {
-    PFQuery *query = [PFObject<PFSubclassing> query];
+    PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     query.limit = 100;
-    [query findObjectsInBackgroundWithBlock:^(NSArray<PFObject<PFSubclassing> *> * _Nullable friendships, NSError * _Nullable error) {
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            NSLog(@"SUCCESS getting friends: %@", self.friendships);
-            self.friendships = friendships;
+//            NSLog(@"SUCCESS getting friends: %@", friendships);
+            self.friendships = (NSMutableArray *)friendships;
+            [self.tableView reloadData];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
+}
+
+- (void)handleRequestTap:(UITapGestureRecognizer *)recognizer
+{
+    [self performSegueWithIdentifier:@"requestSegue" sender:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -72,35 +87,47 @@
     cell.profilePhotoView.image = user[@"ProfilePhoto"];
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
-    NSMutableArray *friends = [PFUser currentUser][@"friends"];
-//    NSMutableArray *friendRequests = [PFUser currentUser][@"friendRequests"];
-    // all the friends requests
-//    NSMutableArray *friendRequests = user[@"friendRequests"];
+    Friendship *friendship = self.friendships[indexPath.row];
+    cell.userFriendship = friendship;
+    NSMutableArray *friends = (NSMutableArray *)friendship.friends;
+    NSMutableArray *friendRequests = (NSMutableArray *) friendship.friendRequests;
+    NSString *currentUsername = [PFUser currentUser][@"username"];
     
     // checks whether current user is friends with the user that belongs to current cell
-    if ([friends containsObject:cell.usernameLabel.text]) {
+    if ([friends containsObject:currentUsername]) {
         cell.addFriendButton.hidden = YES;
     }
-    // else if ([friendRequests containsObject:cell.usernameLabel.text])
-    
     // checks whether current user sent a request to this user before
-    else if ([user[@"friendRequests"] containsObject:[PFUser currentUser][@"username"]]) {
+    else if ([friendRequests containsObject:currentUsername]) {
         [cell.addFriendButton setTitle:@"Requested" forState:UIControlStateNormal];
         cell.addFriendButton.enabled = NO;
     } else {
         [cell.addFriendButton setTitle:@"Add Friend" forState:UIControlStateNormal];
     }
+    
+    // IF IT IS THE CURRENT USER FETCH FRIEND REQUESTS
+    if ([[PFUser currentUser][@"username"] isEqualToString:user[@"username"]]) {
+        self.currentUserFriendRequests = friendRequests;
+        cell.addFriendButton.hidden = YES;
+    }
+    
     return cell;
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([segue.identifier  isEqual: @"requestSegue"]) {
+        
+        FriendRequestsViewController *friendRequestsViewController = segue.destinationViewController;
+        friendRequestsViewController.friendRequests = self.currentUserFriendRequests;
+        friendRequestsViewController.users = self.users;
+    }
 }
-*/
+
 
 @end
