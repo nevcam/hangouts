@@ -10,6 +10,7 @@
 #import "FriendRequestCell.h"
 #import "Parse/Parse.h"
 #import "Friendship.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -31,7 +32,6 @@
 }
 
 - (void)fetchRequests {
-    NSMutableArray *test = [NSMutableArray new];
     for (NSString *username in self.friendRequests) {
         PFQuery *query = [PFUser query];
         [query orderByDescending:@"createdAt"];
@@ -64,7 +64,14 @@
     FriendRequestCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendRequestCell"];
     PFUser *user = self->_objects[indexPath.row];
     cell.user = user;
-    cell.profilePhotoView.image = user[@"ProfilePhoto"];
+    PFFileObject *imageFile = user[@"profilePhoto"];
+    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    cell.profilePhotoView.image = nil;
+    [cell.profilePhotoView setImageWithURL:profilePhotoURL];
+    // make profile photo a circle
+    cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
+    cell.profilePhotoView.layer.masksToBounds = YES;
+    cell.profilePhotoView.layer.borderWidth = 0;
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     NSLog(@"user: %@", user);

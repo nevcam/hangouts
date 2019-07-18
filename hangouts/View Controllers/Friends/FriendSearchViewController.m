@@ -11,12 +11,15 @@
 #import "Parse/Parse.h"
 #import "Friendship.h"
 #import "FriendRequestsViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *requestView;
 @property (weak, nonatomic) IBOutlet UILabel *requestCount;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray *users;
+@property (nonatomic, strong) NSMutableArray *filteredUsers;
 @property (nonatomic, strong) NSMutableArray *friendships;
 @property (nonatomic, strong) NSMutableArray *currentUserFriendRequests;
 
@@ -29,6 +32,7 @@
     // Do any additional setup after loading the view.
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.searchBar.delegate = self;
     
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRequestTap:)];
@@ -36,9 +40,9 @@
     
     [self fetchFriendships];
     [self fetchUsers];
-    self.requestCount.text = [@(self.currentUserFriendRequests.count) stringValue];
 //    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.rowHeight = 80;
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
 }
 
 - (void)fetchUsers {
@@ -48,6 +52,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
         if (users) {
             self.users = (NSMutableArray *)users;
+            self.filteredUsers = self.users;
             [self.tableView reloadData];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
@@ -61,7 +66,6 @@
     query.limit = 100;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-//            NSLog(@"SUCCESS getting friends: %@", friendships);
             self.friendships = (NSMutableArray *)friendships;
             [self.tableView reloadData];
         } else {
@@ -76,17 +80,27 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.users.count;
+    return self.filteredUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 //    NSLog(@"USERS: %@", self.users);
     FriendCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
-    PFUser *user = self.users[indexPath.row];
+    PFUser *user = self.filteredUsers[indexPath.row];
     cell.user = user;
-    cell.profilePhotoView.image = user[@"ProfilePhoto"];
+
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
+    
+    PFFileObject *imageFile = user[@"profilePhoto"];
+    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    cell.profilePhotoView.image = nil;
+    [cell.profilePhotoView setImageWithURL:profilePhotoURL];
+    // make profile photo a circle
+    cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
+    cell.profilePhotoView.layer.masksToBounds = YES;
+    cell.profilePhotoView.layer.borderWidth = 0;
+    
     Friendship *friendship = self.friendships[indexPath.row];
     cell.userFriendship = friendship;
     NSMutableArray *friends = (NSMutableArray *)friendship.friends;
@@ -108,12 +122,31 @@
     // IF IT IS THE CURRENT USER FETCH FRIEND REQUESTS
     if ([[PFUser currentUser][@"username"] isEqualToString:user[@"username"]]) {
         self.currentUserFriendRequests = friendRequests;
+        self.requestCount.text = [@(self.currentUserFriendRequests.count) stringValue];
         cell.addFriendButton.hidden = YES;
     }
-    
     return cell;
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+    if (searchText.length != 0) {
+        
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(PFUser *evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject[@"fullname"] containsString:searchText];
+        }];
+        self.filteredUsers = (NSMutableArray *)[self.users filteredArrayUsingPredicate:predicate];
+        
+        NSLog(@"%@", self.filteredUsers);
+        
+    }
+    else {
+        self.filteredUsers = self.users;
+    }
+    
+    [self.tableView reloadData];
+    
+}
 
 #pragma mark - Navigation
 

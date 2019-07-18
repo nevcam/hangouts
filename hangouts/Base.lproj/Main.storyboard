@@ -551,6 +551,7 @@
                     <connections>
                         <outlet property="requestCount" destination="q0P-xN-p6M" id="o2b-kL-CzN"/>
                         <outlet property="requestView" destination="6nl-Mn-z05" id="Odm-8D-pqo"/>
+                        <outlet property="searchBar" destination="yEm-lp-Ndx" id="P9l-92-FjX"/>
                         <outlet property="tableView" destination="Lhh-hp-h62" id="tuP-hC-Jur"/>
                         <segue destination="L1A-ke-sgV" kind="show" identifier="requestSegue" id="DQi-BX-yUk"/>
                     </connections>
