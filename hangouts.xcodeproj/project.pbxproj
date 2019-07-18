@@ -16,6 +16,9 @@
 		7B61D4F222DF94B100007250 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B61D4F122DF94B100007250 /* Parse.framework */; };
 		7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4F422DF9EDE00007250 /* SignUpViewController.m */; };
 		7B61D4F822DFECEE00007250 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4F722DFECEE00007250 /* ProfileViewController.m */; };
+		7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FA22E0F77400007250 /* MyEventsViewController.m */; };
+		7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FE22E0F84A00007250 /* EventCell.m */; };
+		7B61D50322E1147300007250 /* UserEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D50222E1147300007250 /* UserEvents.m */; };
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
 		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
 		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
@@ -63,6 +66,12 @@
 		7B61D4F422DF9EDE00007250 /* SignUpViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		7B61D4F622DFECEE00007250 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7B61D4F722DFECEE00007250 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		7B61D4F922E0F77400007250 /* MyEventsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyEventsViewController.h; sourceTree = "<group>"; };
+		7B61D4FA22E0F77400007250 /* MyEventsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyEventsViewController.m; sourceTree = "<group>"; };
+		7B61D4FD22E0F84A00007250 /* EventCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventCell.h; sourceTree = "<group>"; };
+		7B61D4FE22E0F84A00007250 /* EventCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventCell.m; sourceTree = "<group>"; };
+		7B61D50122E1147300007250 /* UserEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserEvents.h; sourceTree = "<group>"; };
+		7B61D50222E1147300007250 /* UserEvents.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserEvents.m; sourceTree = "<group>"; };
 		8FA899A2DBB9542F5D18378D /* Pods-hangouts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.release.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.release.xcconfig"; sourceTree = "<group>"; };
 		9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangouts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.debug.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.debug.xcconfig"; sourceTree = "<group>"; };
@@ -146,8 +155,28 @@
 				7B61D4F422DF9EDE00007250 /* SignUpViewController.m */,
 				7B61D4F622DFECEE00007250 /* ProfileViewController.h */,
 				7B61D4F722DFECEE00007250 /* ProfileViewController.m */,
+				7B61D4F922E0F77400007250 /* MyEventsViewController.h */,
+				7B61D4FA22E0F77400007250 /* MyEventsViewController.m */,
 			);
 			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		7B61D4FC22E0F81E00007250 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7B61D4FD22E0F84A00007250 /* EventCell.h */,
+				7B61D4FE22E0F84A00007250 /* EventCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7B61D50022E1143500007250 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7B61D50122E1147300007250 /* UserEvents.h */,
+				7B61D50222E1147300007250 /* UserEvents.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D9F09B4822DE7E060003F9CE = {
@@ -175,6 +204,8 @@
 		D9F09B5322DE7E060003F9CE /* hangouts */ = {
 			isa = PBXGroup;
 			children = (
+				7B61D50022E1143500007250 /* Models */,
+				7B61D4FC22E0F81E00007250 /* Views */,
 				D9DF803322DF8D3A003D240F /* FriendCell.h */,
 				D9DF803422DF8D3A003D240F /* FriendCell.m */,
 				7B0BBC5522DF91C9006275F6 /* View Controllers */,
@@ -445,6 +476,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
+				7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */,
@@ -453,6 +485,8 @@
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
+				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
+				7B61D50322E1147300007250 /* UserEvents.m in Sources */,
 				7B61D4F822DFECEE00007250 /* ProfileViewController.m in Sources */,
 				7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */,
 				D9DF803822DFE181003D240F /* Friendship.m in Sources */,
