@@ -9,19 +9,23 @@
 #import "AddEventViewController.h"
 #import "Event.h"
 
-@interface AddEventViewController ()
+@interface AddEventViewController () <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
+@property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 
 
 @end
 
 @implementation AddEventViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.eventDescriptionField.text = @"Write caption here";
+    self.eventDescriptionField.textColor = [UIColor lightGrayColor];
+    [self.eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
+    self.eventDescriptionField.delegate = self;
 }
 
 // Closes "Add Event" view controller when user clicks respective button
@@ -29,29 +33,46 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+// Adds an event to database
 - (IBAction)clickedCreateEvent:(id)sender {
     
-//    NSLog(@"%@", self.eventNameField.text);
-//
-//    NSDate *chosenDate = self.eventDatePicker.date;
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY-MM-dd"];
-//    NSLog(@"%@",[formatter stringFromDate:chosenDate]);
-    
+    // Sets necessary objects
     NSString *newEventName = self.eventNameField.text;
     NSDate *newEventDate = self.eventDatePicker.date;
+    NSString *description = self.eventDescriptionField.text;
     
-    [Event createEvent:newEventName withDate:newEventDate withCompletion:^(BOOL succeeded, NSError *error) {
+    // Calls function that adds objects to class
+    [Event createEvent:newEventName withDate:newEventDate withDescription:description withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Not working");
         } else {
-            
             [self dismissViewControllerAnimated:YES completion:nil];
-            
-            NSLog(@"Success");
         }
     }];
 }
+
+// Sets placeholder in textView
+- (BOOL) textViewShouldBeginEditing:(UITextView *)textView {
+    self.eventDescriptionField.text = @"";
+    self.eventDescriptionField.textColor = [UIColor blackColor];
+    return YES;
+}
+-(void) textViewDidChange:(UITextView *)textView {
+    if(self.eventDescriptionField.text.length == 0) {
+        self.eventDescriptionField.textColor = [UIColor lightGrayColor];
+        self.eventDescriptionField.text = @"Write caption here";
+        [self.eventDescriptionField resignFirstResponder];
+    }
+}
+-(void) textViewShouldEndEditing:(UITextView *)textView {
+    if(self.eventDescriptionField.text.length == 0) {
+        self.eventDescriptionField.textColor = [UIColor lightGrayColor];
+        self.eventDescriptionField.text = @"Write caption here";
+        [self.eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
+        [self.eventDescriptionField resignFirstResponder];
+    }
+}
+
 
 /*
 #pragma mark - Navigation
