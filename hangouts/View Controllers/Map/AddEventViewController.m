@@ -101,10 +101,19 @@
     [self.navigationController popToViewController:self animated:YES];
 }
 
+// Triggered when user wants to see the list of friends that are invited to the event
+- (IBAction)clickedInviteFriends:(id)sender {
+    [self performSegueWithIdentifier:@"eventFriendsSegue" sender:nil];
+}
+
 // Performs segue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *locationController = [segue destinationViewController];
-    locationController.delegate = self;
+    
+    // Distinguishes between different possible segues
+    if ([segue.identifier isEqualToString:@"locationsViewSegue"]) {
+        UINavigationController *locationController = [segue destinationViewController];
+        locationController.delegate = self;
+    }
 }
 
 // RUNS alerts to prevent user from inputing an event with empty fields. Boolean to exit function as soon as an error is encountered
