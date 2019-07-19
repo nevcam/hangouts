@@ -8,12 +8,14 @@
 
 #import "LoginViewController.h"
 #import "SignUpViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 @import Parse;
 
 @interface LoginViewController () <SignUpViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation LoginViewController
@@ -35,14 +37,23 @@
     [self.passwordField resignFirstResponder];
 }
 - (void)loginUser {
+    [SVProgressHUD show];
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
+        [SVProgressHUD dismiss];
         if (error != nil) {
-            self.errorLabel.text = @"Incorrect user/password";
-            self.errorLabel.backgroundColor = [UIColor redColor];
-            [self.errorLabel setHidden:NO];
-            NSLog(@"User log in failed: %@", error.localizedDescription);
+            if(error.code == 100) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+                self.errorLabel.text = @"Incorrect user/password";
+                self.errorLabel.backgroundColor = [UIColor redColor];
+                [self.errorLabel setHidden:NO];
+                NSLog(@"User log in failed: %@", error.localizedDescription);
+            }
         } else {
             [self.errorLabel setHidden:YES];
             [self performSegueWithIdentifier:@"loginSegue" sender:self];
