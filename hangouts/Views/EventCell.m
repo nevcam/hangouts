@@ -33,7 +33,7 @@
     
     self.locationLabel.text = @"900 Hamlin Ct, Sunnyvale";
     self.ownerUsernameLabel.text = event.ownerUsername;
-    self.descriptionLabel.text = event.description;
+    self.descriptionLabel.text = event.eventDescription;
 }
 
 @end
