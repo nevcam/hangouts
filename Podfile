@@ -9,6 +9,7 @@ target 'hangouts' do
   pod 'Parse'
   pod 'AFNetworking'
   pod 'DateTools'
+  pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
 
   target 'hangoutsTests' do
     inherit! :search_paths
