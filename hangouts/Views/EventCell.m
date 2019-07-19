@@ -31,8 +31,8 @@
     formatter.dateFormat = @"EEE MMM dd";
     self.dateLabel.text = [formatter stringFromDate:event.date];
     
-    self.locationLabel.text = @"900 Hamlin Ct, Sunnyvale";
-    self.ownerUsernameLabel.text = event.ownerUsername;
+    self.locationLabel.text = event.location_name;
+    self.ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
     self.descriptionLabel.text = event.description;
 }
 

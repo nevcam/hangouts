@@ -384,42 +384,54 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="167.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UE0-T3-gDZ">
-                                                    <rect key="frame" x="15" y="11" width="106" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UE0-T3-gDZ">
+                                                    <rect key="frame" x="5" y="5" width="54" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTB-Lt-94b">
-                                                    <rect key="frame" x="305" y="13" width="55" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTB-Lt-94b">
+                                                    <rect key="frame" x="329.5" y="5" width="40.5" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="@OrganizerUsername" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unQ-mr-VgI">
-                                                    <rect key="frame" x="15" y="71" width="189" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@OrganizerUsername" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unQ-mr-VgI">
+                                                    <rect key="frame" x="5" y="83" width="188.5" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P55-A2-MbC">
-                                                    <rect key="frame" x="15" y="103" width="345" height="54"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P55-A2-MbC">
+                                                    <rect key="frame" x="5" y="122" width="365" height="35.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3De-yH-C6X">
-                                                    <rect key="frame" x="15" y="43" width="76" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3De-yH-C6X">
+                                                    <rect key="frame" x="5" y="44" width="75.5" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="P55-A2-MbC" firstAttribute="top" secondItem="unQ-mr-VgI" secondAttribute="bottom" constant="15" id="8pO-Wa-Trs"/>
+                                                <constraint firstItem="NTB-Lt-94b" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="unQ-mr-VgI" secondAttribute="trailing" id="Ogr-XF-dgH"/>
+                                                <constraint firstItem="UE0-T3-gDZ" firstAttribute="top" secondItem="W2f-2h-ejQ" secondAttribute="top" constant="5" id="SIL-G9-MFJ"/>
+                                                <constraint firstItem="NTB-Lt-94b" firstAttribute="centerY" secondItem="UE0-T3-gDZ" secondAttribute="centerY" id="Ssz-v1-keV"/>
+                                                <constraint firstItem="UE0-T3-gDZ" firstAttribute="leading" secondItem="W2f-2h-ejQ" secondAttribute="leading" constant="5" id="aAy-LQ-0ep"/>
+                                                <constraint firstItem="NTB-Lt-94b" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3De-yH-C6X" secondAttribute="trailing" id="dcE-oR-BW6"/>
+                                                <constraint firstItem="P55-A2-MbC" firstAttribute="leading" secondItem="UE0-T3-gDZ" secondAttribute="leading" id="htc-hJ-W6X"/>
+                                                <constraint firstItem="unQ-mr-VgI" firstAttribute="top" secondItem="3De-yH-C6X" secondAttribute="bottom" constant="15" id="nIF-Vg-fN1"/>
+                                                <constraint firstItem="NTB-Lt-94b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="UE0-T3-gDZ" secondAttribute="trailing" constant="5" id="p6C-oG-Q6R"/>
+                                                <constraint firstAttribute="bottom" secondItem="P55-A2-MbC" secondAttribute="bottom" constant="10" id="qRg-wa-Po5"/>
+                                                <constraint firstItem="3De-yH-C6X" firstAttribute="leading" secondItem="UE0-T3-gDZ" secondAttribute="leading" id="sLb-Rv-brh"/>
+                                                <constraint firstItem="NTB-Lt-94b" firstAttribute="trailing" secondItem="P55-A2-MbC" secondAttribute="trailing" id="tAO-ob-sFN"/>
+                                                <constraint firstItem="unQ-mr-VgI" firstAttribute="leading" secondItem="UE0-T3-gDZ" secondAttribute="leading" id="xBL-M7-S8q"/>
+                                                <constraint firstItem="3De-yH-C6X" firstAttribute="top" secondItem="UE0-T3-gDZ" secondAttribute="bottom" constant="15" id="zlj-mz-JIh"/>
+                                                <constraint firstAttribute="trailing" secondItem="NTB-Lt-94b" secondAttribute="trailing" constant="5" id="zmn-1I-exd"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dateLabel" destination="NTB-Lt-94b" id="lTZ-Jz-QuG"/>
