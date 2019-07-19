@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
+#import "Friendship.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FriendRequestCell : UITableViewCell
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (nonatomic, weak) PFUser *user;
+@property (nonatomic, weak) Friendship *currentUserFriendship;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -30,7 +30,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
     
-    // Configure the view for the selected state
+    // Configure the view for the selected stat}
 }
 
 - (void)updateWithLocation:(NSDictionary *)location {

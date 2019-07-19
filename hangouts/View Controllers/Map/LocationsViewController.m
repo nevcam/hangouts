@@ -52,8 +52,11 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     NSDictionary *venue = self.results[indexPath.row];
     NSNumber *lat = [venue valueForKeyPath:@"location.lat"];
     NSNumber *lng = [venue valueForKeyPath:@"location.lng"];
+    NSString *loc_name = venue[@"name"];
+    NSString *loc_address = [venue valueForKeyPath:@"location.address"];
+    
     NSLog(@"%@, %@", lat, lng);
-    [self.delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng];
+    [self.delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng name:loc_name address:loc_address];
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

@@ -9,6 +9,7 @@
 #import "ProfileViewController.h"
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "UIImageView+AFNetworking.h"
 @import Parse;
 
 @interface ProfileViewController ()
@@ -20,6 +21,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.user = [PFUser currentUser];
+    self.usernameLabel.text = self.user[@"username"];
+    self.fullnameLabel.text = self.user[@"fullname"];
+    self.emailLabel.text = self.user[@"email"];
+    
+    PFFileObject *imageFile = self.user[@"profilePhoto"];
+    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    self.profilePhotoView.image = nil;
+    [self.profilePhotoView setImageWithURL:profilePhotoURL];
+    // make profile photo a circle
+    self.profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.height /2;
+    self.profilePhotoView.layer.masksToBounds = YES;
+    self.profilePhotoView.layer.borderWidth = 0;
+    
 }
 
 /*
