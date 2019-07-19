@@ -13,7 +13,7 @@
 @dynamic name;
 @dynamic date;
 @dynamic ownerUsername;
-@dynamic description;
+@dynamic eventDescription;
 @dynamic location_lat;
 @dynamic location_lng;
 @dynamic location_name;
@@ -31,7 +31,7 @@
     newEvent.name = name;
     newEvent.date = date;
     newEvent.ownerUsername = [PFUser currentUser].username;
-    newEvent.description = description;
+    newEvent.eventDescription = description;
     newEvent.location_address = locAddress;
     newEvent.location_name = locName;
     newEvent.location_lat = lat;
