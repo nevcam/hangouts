@@ -11,6 +11,12 @@
 #import "Friendship.h"
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol FriendRequestCellDelegate <NSObject>
+
+- (void)deleteCellForIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
 @interface FriendRequestCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -19,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (nonatomic, weak) PFUser *user;
 @property (nonatomic, weak) Friendship *currentUserFriendship;
+@property (nonatomic, weak) id <FriendRequestCellDelegate > delegate;
+@property (nonatomic, weak) NSIndexPath *indexPath;
 @end
 
 NS_ASSUME_NONNULL_END

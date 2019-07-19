@@ -11,8 +11,9 @@
 #import "Parse/Parse.h"
 #import "Friendship.h"
 #import "UIImageView+AFNetworking.h"
+#import "FriendRequestCell.h"
 
-@interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
@@ -44,7 +45,6 @@
                     self->_objects = [[NSMutableArray alloc] init];
                 }
                 [self->_objects addObjectsFromArray:users];
-                NSLog(@"objects: %@", self->_objects);
                 if (self->_objects.count==self.friendRequests.count) {
                     [self.tableView reloadData];
                 }
@@ -60,14 +60,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"objects 2: %@", self->_objects);
     FriendRequestCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendRequestCell"];
     PFUser *user = self->_objects[indexPath.row];
     cell.user = user;
+    cell.delegate = self;
+    cell.indexPath = indexPath;
+    
     PFFileObject *imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     cell.profilePhotoView.image = nil;
     [cell.profilePhotoView setImageWithURL:profilePhotoURL];
+    
     // make profile photo a circle
     cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
     cell.profilePhotoView.layer.masksToBounds = YES;
@@ -78,6 +81,14 @@
     NSLog(@"user: %@", user);
     return cell;
 }
+
+//CellDelegate Method
+-(void) deleteCellForIndexPath:(NSIndexPath*)indexPath; {
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+}
+
+
 /*
 #pragma mark - Navigation
 

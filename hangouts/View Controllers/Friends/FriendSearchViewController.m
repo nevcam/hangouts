@@ -85,7 +85,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"USERS: %@", self.users);
     FriendCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
     PFUser *user = self.filteredUsers[indexPath.row];
     cell.user = user;

@@ -22,7 +22,7 @@
     // Configure the view for the selected state
 }
 - (IBAction)didTapAddFriend:(id)sender {
-
+    // requesting frienship object that contains user's friendship and friend request information
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     [query includeKey:@"username"];
@@ -35,21 +35,21 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
+    // changing button titlw to "requested" after user taps add friend
     NSString *title=[sender currentTitle];
     NSString *currentUsername = [PFUser currentUser][@"username"];
 
     if ([title isEqualToString:@"Add Friend"]) {
         [sender setTitle:@"Requested" forState:UIControlStateNormal];
         
+        // adds the new friend request to user's friend requests array and saves it
         [self.userFriendship addObject:currentUsername forKey:@"friendRequests"];
-
         [self.userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if (!error) {
             } else {
                 NSLog(@"ERROR REQUEST");
             }
         }];
-        NSLog(@"user: %@", self.user);
     }
     /*
     else {

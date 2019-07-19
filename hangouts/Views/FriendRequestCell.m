@@ -27,10 +27,12 @@
     [self addToCurrentUsersFriends];
     [self addToAddedUsersFriends];
     [self removeFromFriendRequests];
+    [self.delegate deleteCellForIndexPath: self.indexPath];
 }
 
 - (IBAction)didTapDeny:(id)sender {
     [self removeFromFriendRequests];
+    [self.delegate deleteCellForIndexPath: self.indexPath];
 }
 
 
