@@ -33,7 +33,7 @@
     
     self.locationLabel.text = event.location_name;
     self.ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
-    self.descriptionLabel.text = event.description;
+    self.descriptionLabel.text = event.eventDescription;
 }
 
 @end
