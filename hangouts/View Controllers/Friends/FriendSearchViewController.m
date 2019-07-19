@@ -12,6 +12,7 @@
 #import "Friendship.h"
 #import "FriendRequestsViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "FriendRequestCell.h"
 
 @interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -156,6 +157,7 @@
     self.filteredUsers = self.users;
     [self.tableView reloadData];
 }
+
 
 #pragma mark - Navigation
 
