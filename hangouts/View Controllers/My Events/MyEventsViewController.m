@@ -8,16 +8,16 @@
 
 #import "MyEventsViewController.h"
 #import "UserEvents.h"
+#import "EventCell.h"
 @import Parse;
 
-@interface MyEventsViewController ()
-//<UITableViewDataSource, UITableViewDelegate>
+@interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
-@property (weak, nonatomic) IBOutlet UITableView *willGoTableView;
+@property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
 @property (nonatomic, strong) NSMutableArray *invitedEvents;
-@property (nonatomic, strong) NSMutableArray *willGoEvents;
+@property (nonatomic, strong) NSMutableArray *acceptedEvents;
 
 @end
 
@@ -26,36 +26,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //self.invitedTableView.dataSource = self;
-    //self.invitedTableView.delegate = self;
+    self.invitedTableView.dataSource = self;
+    self.invitedTableView.delegate = self;
     
-    [self fetchEvents];
+    [self fetchEventsInvited];
 }
 
-- (void)fetchEvents {
-    [self fetchInvited];
-    [self fetchWillGo];
-}
-
-- (void)fetchInvited {
+// MARK: Getting data
+- (void)fetchEventsInvited {
     // construct query
-    PFQuery *eventQuery = [UserEvents query];
-    [eventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    PFQuery *userEventQuery = [UserEvents query];
+    [userEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userEventQuery whereKey:@"type" equalTo:@"invited"];
+    
+    PFQuery *eventQuery = [Event query];
+    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userEventQuery];
     
     // fetch data asynchronously
-    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray<UserEvents *> * _Nullable userEvents, NSError * _Nullable error) {
-        if (userEvents) {
-            // NSLog(@"Mis eventos: %@",userEvents[0]);
-            //self.posts = [[NSMutableArray alloc] initWithArray:posts];
-            //[self.tableView reloadData];
+    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
+        if (!error) {
+            NSLog(@"Successfully loaded invited events.");
+            self.invitedEvents = [[NSMutableArray alloc] initWithArray:events];
+            [self.invitedTableView reloadData];
         } else {
-            NSLog(@"Error getting posts: %@", error.localizedDescription);
+            NSLog(@"Error getting events: %@", error.localizedDescription);
         }
-        //[self.refreshControl endRefreshing];
     }];
 }
 
-- (void)fetchWillGo {
+// MARK: Table view protocols methods
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    EventCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EventCell"];
+    Event *event = self.invitedEvents[indexPath.row];
+    [cell configureCell:event];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.invitedEvents.count;
 }
 
 /*
