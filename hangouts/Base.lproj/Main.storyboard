@@ -377,7 +377,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="168" id="9v2-vQ-m2a" customClass="EventCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventCell" rowHeight="168" id="9v2-vQ-m2a" customClass="EventCell">
                                         <rect key="frame" x="0.0" y="28" width="375" height="168"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9v2-vQ-m2a" id="W2f-2h-ejQ">
@@ -449,8 +449,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="Dry-Um-mEG"/>
                     <connections>
+                        <outlet property="acceptedTableView" destination="R5o-Fc-vZv" id="Mbv-qf-izM"/>
                         <outlet property="invitedTableView" destination="ZwB-l4-jWc" id="gu9-NC-SW2"/>
-                        <outlet property="willGoTableView" destination="R5o-Fc-vZv" id="hTk-Cs-5DC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPv-fA-tku" userLabel="First Responder" sceneMemberID="firstResponder"/>
