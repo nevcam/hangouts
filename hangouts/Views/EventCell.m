@@ -40,7 +40,7 @@
             userXEvent[@"type"] = type;
             [UserXEvent saveAllInBackground:userXEvents block:^(BOOL succeeded, NSError * _Nullable error) {
                 if(!error) {
-                    //[self.invitedTableView reloadData];
+                    [self.delegate changedUserXEventType];
                 } else {
                     NSLog(@"Unable to update event type");
                 }

@@ -11,7 +11,7 @@
 #import "EventCell.h"
 @import Parse;
 
-@interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
@@ -55,6 +55,10 @@
         }
     }];
 }
+- (void)changedUserXEventType {
+    [self fetchEventsOfType:@"invited"];
+    [self fetchEventsOfType:@"accepted"];
+}
 // MARK: Table view protocols methods
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;
@@ -69,6 +73,7 @@
     EventCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     [cell configureCell:event];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    cell.delegate = self;
     return cell;
 }
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
