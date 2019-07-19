@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *filteredUsers;
 @property (nonatomic, strong) NSMutableArray *friendships;
 @property (nonatomic, strong) NSMutableArray *currentUserFriendRequests;
+@property (nonatomic, strong) Friendship *currentUserFriendship;
 
 @end
 
@@ -122,6 +123,7 @@
     // IF IT IS THE CURRENT USER FETCH FRIEND REQUESTS
     if ([[PFUser currentUser][@"username"] isEqualToString:user[@"username"]]) {
         self.currentUserFriendRequests = friendRequests;
+        self.currentUserFriendship = friendship;
         self.requestCount.text = [@(self.currentUserFriendRequests.count) stringValue];
         cell.addFriendButton.hidden = YES;
     }
@@ -131,14 +133,10 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
     if (searchText.length != 0) {
-        
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(PFUser *evaluatedObject, NSDictionary *bindings) {
             return [evaluatedObject[@"fullname"] containsString:searchText];
         }];
         self.filteredUsers = (NSMutableArray *)[self.users filteredArrayUsingPredicate:predicate];
-        
-        NSLog(@"%@", self.filteredUsers);
-        
     }
     else {
         self.filteredUsers = self.users;
@@ -146,6 +144,18 @@
     
     [self.tableView reloadData];
     
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = NO;
+    self.searchBar.text = @"";
+    [self.searchBar resignFirstResponder];
+    self.filteredUsers = self.users;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Navigation
@@ -159,6 +169,7 @@
         FriendRequestsViewController *friendRequestsViewController = segue.destinationViewController;
         friendRequestsViewController.friendRequests = self.currentUserFriendRequests;
         friendRequestsViewController.users = self.users;
+        friendRequestsViewController.currentUserFriendship = self.currentUserFriendship;
     }
 }
 
