@@ -12,9 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol FriendRequestCellDelegate <NSObject>
-
 - (void)deleteCellForIndexPath:(NSIndexPath *)indexPath;
-
 @end
 
 @interface FriendRequestCell : UITableViewCell

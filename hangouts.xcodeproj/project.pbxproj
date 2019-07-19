@@ -27,6 +27,7 @@
 		D9DF803822DFE181003D240F /* Friendship.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803722DFE181003D240F /* Friendship.m */; };
 		D9DF803B22DFF116003D240F /* FriendRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803A22DFF116003D240F /* FriendRequestsViewController.m */; };
 		D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803D22E0E12E003D240F /* FriendRequestCell.m */; };
+		D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF804322E23CFC003D240F /* ProfileEditViewController.m */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
 		D9F09B5E22DE7E080003F9CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5D22DE7E080003F9CE /* Assets.xcassets */; };
@@ -95,6 +96,8 @@
 		D9DF803A22DFF116003D240F /* FriendRequestsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsViewController.m; sourceTree = "<group>"; };
 		D9DF803C22E0E12E003D240F /* FriendRequestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendRequestCell.h; sourceTree = "<group>"; };
 		D9DF803D22E0E12E003D240F /* FriendRequestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendRequestCell.m; sourceTree = "<group>"; };
+		D9DF804222E23CFC003D240F /* ProfileEditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileEditViewController.h; sourceTree = "<group>"; };
+		D9DF804322E23CFC003D240F /* ProfileEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileEditViewController.m; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -201,6 +204,8 @@
 			children = (
 				7B61D4F622DFECEE00007250 /* ProfileViewController.h */,
 				7B61D4F722DFECEE00007250 /* ProfileViewController.m */,
+				D9DF804222E23CFC003D240F /* ProfileEditViewController.h */,
+				D9DF804322E23CFC003D240F /* ProfileEditViewController.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
+				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
 				7B61D50322E1147300007250 /* UserXEvent.m in Sources */,
 				7B61D4F822DFECEE00007250 /* ProfileViewController.m in Sources */,
 				7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */,
@@ -727,13 +733,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
+				DEVELOPMENT_TEAM = 24T36Y5XMD;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -745,13 +751,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
+				DEVELOPMENT_TEAM = 24T36Y5XMD;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
