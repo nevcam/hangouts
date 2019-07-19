@@ -7,7 +7,7 @@
 //
 
 #import "MyEventsViewController.h"
-#import "UserEvents.h"
+#import "UserXEvent.h"
 #import "EventCell.h"
 @import Parse;
 
@@ -35,12 +35,12 @@
 // MARK: Getting data
 - (void)fetchEventsInvited {
     // construct query
-    PFQuery *userEventQuery = [UserEvents query];
-    [userEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
-    [userEventQuery whereKey:@"type" equalTo:@"invited"];
+    PFQuery *userXEventQuery = [UserXEvent query];
+    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"type" equalTo:@"invited"];
     
     PFQuery *eventQuery = [Event query];
-    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userEventQuery];
+    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
     
     // fetch data asynchronously
     [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {

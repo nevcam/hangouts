@@ -1,5 +1,5 @@
 //
-//  UserEvents.h
+//  UserXEvent.h
 //  hangouts
 //
 //  Created by sroman98 on 7/18/19.
@@ -10,14 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UserEvents : PFObject <PFSubclassing>
+@interface UserXEvent : PFObject <PFSubclassing>
 
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSArray *eventsOwned;
 @property (nonatomic, strong) NSArray *eventsAccepted;
 @property (nonatomic, strong) NSArray *eventsInvited;
 
-+ (void) createUserEventsForUser: (NSString * _Nullable)username withCompletion: (PFBooleanResultBlock  _Nullable)completion;
++ (void) createUserXEventForUser: (NSString * _Nullable)username withCompletion: (PFBooleanResultBlock  _Nullable)completion;
 
 @end
 
