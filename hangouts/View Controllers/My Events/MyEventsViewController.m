@@ -55,9 +55,11 @@
         }
     }];
 }
-- (void)changedUserXEventType {
+- (void)changedUserXEventTypeTo:(NSString *)type {
+    if([type isEqualToString:@"accepted"]) {
+        [self fetchEventsOfType:@"accepted"];
+    }
     [self fetchEventsOfType:@"invited"];
-    [self fetchEventsOfType:@"accepted"];
 }
 // MARK: Table view protocols methods
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {

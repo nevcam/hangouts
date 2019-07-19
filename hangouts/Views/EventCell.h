@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EventCellDelegate
-- (void)changedUserXEventType;
+- (void)changedUserXEventTypeTo:(NSString *)type;
 @end
 
 @interface EventCell : UITableViewCell

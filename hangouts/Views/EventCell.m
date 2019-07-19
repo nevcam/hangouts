@@ -40,7 +40,7 @@
             userXEvent[@"type"] = type;
             [UserXEvent saveAllInBackground:userXEvents block:^(BOOL succeeded, NSError * _Nullable error) {
                 if(!error) {
-                    [self.delegate changedUserXEventType];
+                    [self.delegate changedUserXEventTypeTo:type];
                 } else {
                     NSLog(@"Unable to update event type");
                 }
