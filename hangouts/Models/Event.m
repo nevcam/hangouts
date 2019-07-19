@@ -23,8 +23,10 @@
     return @"Event";
 }
 
+// Method to create events from Add Events view controller
 + (void) createEvent: (NSString * _Nullable )name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withLat:(NSNumber *)lat withLng:(NSNumber *)lng withName:(NSString *)locName withAddress:(NSString *)locAddress withCompletion: (PFBooleanResultBlock  _Nullable)completion {
     
+    // Assigns features to event
     Event *newEvent = [Event new];
     newEvent.name = name;
     newEvent.date = date;
