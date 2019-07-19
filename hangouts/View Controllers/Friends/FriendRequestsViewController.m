@@ -23,11 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
-  
     [self fetchRequests];
     self.tableView.rowHeight = 80;
 }

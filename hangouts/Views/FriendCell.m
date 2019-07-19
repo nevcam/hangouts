@@ -41,7 +41,6 @@
 
     if ([title isEqualToString:@"Add Friend"]) {
         [sender setTitle:@"Requested" forState:UIControlStateNormal];
-        
         // adds the new friend request to user's friend requests array and saves it
         [self.userFriendship addObject:currentUsername forKey:@"friendRequests"];
         [self.userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {

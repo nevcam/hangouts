@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 @property (nonatomic, weak) PFUser *user;
 @property (nonatomic, weak) Friendship *userFriendship;
-
+@property (nonatomic, weak) NSMutableArray *friends;
+@property (nonatomic, weak) NSMutableArray *friendRequests;
 @end
 
 NS_ASSUME_NONNULL_END
