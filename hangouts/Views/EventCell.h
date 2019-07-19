@@ -12,7 +12,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EventCell : UITableViewCell
-
 @property (strong, nonatomic) Event *event;
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -22,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 - (void)configureCell:(Event *)event;
-
 @end
 
 NS_ASSUME_NONNULL_END

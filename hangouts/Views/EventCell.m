@@ -11,15 +11,12 @@
 #import "UserXEvent.h"
 
 @implementation EventCell
-
 - (void)awakeFromNib {
     [super awakeFromNib];
 }
-
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
-
 - (void) configureCell:(Event *)event {
     self.event = event;
     self.nameLabel.text = event.name;
@@ -31,7 +28,6 @@
     self.ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
     self.descriptionLabel.text = event.eventDescription;
 }
-
 // MARK: buttons methods
 - (void)updateType: (NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
@@ -54,15 +50,10 @@
         }
     }];
 }
-
 - (IBAction)didTapDecline:(id)sender {
     [self updateType:@"declined"];
 }
-
 - (IBAction)didTapAccept:(id)sender {
     [self updateType:@"accepted"];
 }
-
-
-
 @end

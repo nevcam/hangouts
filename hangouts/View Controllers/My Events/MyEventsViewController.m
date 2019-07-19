@@ -12,17 +12,14 @@
 @import Parse;
 
 @interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate>
-
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
 @property (nonatomic, strong) NSMutableArray *invitedEvents;
 @property (nonatomic, strong) NSMutableArray *acceptedEvents;
-
 @end
 
 @implementation MyEventsViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -35,7 +32,6 @@
     [self fetchEventsOfType:@"invited"];
     [self fetchEventsOfType:@"accepted"];
 }
-
 // MARK: Getting data
 - (void)fetchEventsOfType:(NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
@@ -59,7 +55,6 @@
         }
     }];
 }
-
 // MARK: Table view protocols methods
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;
@@ -76,22 +71,10 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
-
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.acceptedTableView) {
         return self.acceptedEvents.count;
     }
     return self.invitedEvents.count;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end
