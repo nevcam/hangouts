@@ -8,6 +8,7 @@
 
 #import "SignUpViewController.h"
 #import "Friendship.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 @import Parse;
 
 @interface SignUpViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation SignUpViewController
@@ -30,6 +32,7 @@
 }
 // MARK: class methods
 - (IBAction)didTapRegister:(id)sender {
+    [SVProgressHUD show];
     PFUser *newUser = [PFUser user];
     newUser.username = self.usernameField.text;
     newUser.email = self.emailField.text;
@@ -58,11 +61,13 @@
 - (void)registerUser:(PFUser *)newUser {
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
+            [SVProgressHUD dismiss];
             self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
             [self.errorLabel setHidden:NO];
             NSLog(@"Error: %@", error.localizedDescription);
         } else {
             [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+                [SVProgressHUD dismiss];
                 if(!succeeded) {
                     NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
                 }
