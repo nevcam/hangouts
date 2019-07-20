@@ -21,4 +21,12 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)clickedInvite:(id)sender {
+    if ([[sender currentTitle] isEqualToString:@"Invite"]) {
+        [sender setTitle:@"Uninvite" forState:UIControlStateNormal];
+    }
+    else {
+        [sender setTitle:@"Invite" forState:UIControlStateNormal];
+    }
+}
 @end

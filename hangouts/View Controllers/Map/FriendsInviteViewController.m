@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray *friendships;
+@property (nonatomic, strong) NSMutableArray *invitedFriends;
 
 @end
 

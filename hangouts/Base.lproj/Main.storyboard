@@ -379,6 +379,9 @@
                                                     <state key="normal" title="Invite">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="clickedInvite:" destination="04u-K1-CE9" eventType="touchUpInside" id="Rgn-cD-0zy"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
