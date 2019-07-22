@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSMutableArray *acceptedEvents;
 
 @property (nonatomic, strong) UIRefreshControl *invitedRefreshControl;
+@property (nonatomic, strong) UIRefreshControl *acceptedRefreshControl;
 @end
 
 @implementation MyEventsViewController
@@ -37,6 +38,10 @@
     self.invitedRefreshControl = [[UIRefreshControl alloc] init];
     [self.invitedRefreshControl addTarget:self action:@selector(fetchInvitedEvents) forControlEvents:UIControlEventValueChanged];
     [self.invitedTableView insertSubview:self.invitedRefreshControl atIndex:0];
+    
+    self.acceptedRefreshControl = [[UIRefreshControl alloc] init];
+    [self.acceptedRefreshControl addTarget:self action:@selector(fetchAcceptedEvents) forControlEvents:UIControlEventValueChanged];
+    [self.acceptedTableView insertSubview:self.acceptedRefreshControl atIndex:0];
 }
 // MARK: Getting data
 - (void)fetchEventsOfType:(NSString *)type {
@@ -48,12 +53,13 @@
     [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
     
     [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
-        [self.invitedRefreshControl endRefreshing];
         if (events) {
             if([type isEqualToString:@"accepted"]) {
+                [self.acceptedRefreshControl endRefreshing];
                 self.acceptedEvents = [[NSMutableArray alloc] initWithArray:events];
                 [self.acceptedTableView reloadData];
             } else {
+                [self.invitedRefreshControl endRefreshing];
                 self.invitedEvents = [[NSMutableArray alloc] initWithArray:events];
                 [self.invitedTableView reloadData];
             }
@@ -65,6 +71,9 @@
 // Had to add the following two methods to use refresh control (cannot pass arguments in @selector)
 - (void)fetchInvitedEvents {
     [self fetchEventsOfType:@"invited"];
+}
+- (void)fetchAcceptedEvents {
+    [self fetchEventsOfType:@"accepted"];
 }
 - (void)changedUserXEventTypeTo:(NSString *)type {
     if([type isEqualToString:@"accepted"]) {
