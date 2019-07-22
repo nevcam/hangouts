@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) PFUser *user;
 @property (nonatomic, weak) Friendship *userFriendship;
+@property (nonatomic, assign) BOOL invited;
 
 @property (nonatomic, weak) id <FriendEventCellDelegate> delegate;
 
