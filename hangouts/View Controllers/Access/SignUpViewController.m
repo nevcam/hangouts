@@ -66,9 +66,16 @@
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
             [SVProgressHUD dismiss];
-            self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
-            [self.errorLabel setHidden:NO];
-            NSLog(@"Error: %@", error.localizedDescription);
+            if(error.code == 100) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+                self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
+                [self.errorLabel setHidden:NO];
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
         } else {
             [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
                 [SVProgressHUD dismiss];
