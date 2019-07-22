@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray *friendships;
-@property (nonatomic, strong) NSMutableArray *invitedFriends;
 
 @end
 
@@ -32,7 +31,9 @@
     self.tableView.delegate = self;
     
     self.friendships = [NSMutableArray new];
-    self.invitedFriends = [NSMutableArray new];
+    if (!self.invitedFriends) {
+        self.invitedFriends = [NSMutableArray new];
+    }
     
     [self fetchFriendships];
     
@@ -84,6 +85,12 @@
     
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
+    
+    if ([self.invitedFriends containsObject:user[@"username"]]) {
+        cell.invited = YES;
+    } else {
+        cell.invited = NO;
+    }
     
     PFFileObject *imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];

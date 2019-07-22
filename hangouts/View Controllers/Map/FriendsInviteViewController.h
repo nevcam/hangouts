@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FriendsInviteViewController : UIViewController
 
 @property (nonatomic, weak) id <SaveFriendsListDelegate> delegate;
+@property (nonatomic, strong) NSMutableArray *invitedFriends;
 
 @end
 

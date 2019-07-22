@@ -27,7 +27,7 @@
 @property (strong, nonatomic) NSString *location_name;
 @property (strong, nonatomic) NSString *location_address;
 
-@property (nonatomic, strong) NSMutableArray *invitedFriends;
+@property (strong, nonatomic) NSMutableArray *invitedFriends;
 
 @end
 
@@ -121,6 +121,7 @@
     else if ([segue.identifier isEqualToString:@"eventFriendsSegue"]) {
         FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
         friendsInvitedController.delegate = self;
+        friendsInvitedController.invitedFriends = self.invitedFriends;
     }
 }
 
