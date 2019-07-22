@@ -41,7 +41,6 @@
             [self.delegate didSave];
             [self dismissViewControllerAnimated:true completion:nil];
         } else {
-            // handle error
         }
     }];
 }
@@ -62,14 +61,9 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    // Get the image captured by the UIImagePickerController
-//    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     UIImage *resizedEdited = [self resizeImage:editedImage withSize:CGSizeMake(500, 500)];
-//    UIImage *resizedOriginal = [self resizeImage:originalImage withSize:CGSizeMake(450, 450)];
-    // Do something with the images (based on your use case)
     self.profilePhotoView.image = resizedEdited;
-    // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

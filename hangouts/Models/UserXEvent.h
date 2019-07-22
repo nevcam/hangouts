@@ -11,14 +11,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UserXEvent : PFObject <PFSubclassing>
-
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSArray *eventsOwned;
 @property (nonatomic, strong) NSArray *eventsAccepted;
 @property (nonatomic, strong) NSArray *eventsInvited;
 
 + (void) createUserXEventForUser: (NSString * _Nullable)username withCompletion: (PFBooleanResultBlock  _Nullable)completion;
-
 @end
 
 NS_ASSUME_NONNULL_END
