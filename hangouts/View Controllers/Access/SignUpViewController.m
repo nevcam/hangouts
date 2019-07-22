@@ -29,6 +29,10 @@
     self.usernameField.delegate = self;
     self.emailField.delegate = self;
     self.passwordField.delegate = self;
+    // make profile photo a circle
+    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height /2;
+    self.profileImageView.layer.masksToBounds = YES;
+    self.profileImageView.layer.borderWidth = 0;
 }
 // MARK: class methods
 - (IBAction)didTapRegister:(id)sender {
