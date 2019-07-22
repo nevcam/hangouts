@@ -21,8 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber *location_lng;
 @property (nonatomic, strong) NSString *location_name;
 @property (nonatomic, strong) NSString *location_address;
+@property (nonatomic, strong) NSMutableArray *friends;
 
-+ (void) createEvent: (NSString * _Nullable)name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withLat:(NSNumber *)lat withLng:(NSNumber *)lng withName:(NSString *)locName withAddress:(NSString *)locAddress withCompletion: (PFBooleanResultBlock  _Nullable)completion;
+
++ (void) createEvent: (NSString * _Nullable)name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withLat:(NSNumber *)lat withLng:(NSNumber *)lng withName:(NSString *)locName withAddress:(NSString *)locAddress withFriends:(NSMutableArray *)friends withCompletion:(PFBooleanResultBlock  _Nullable)completion;
 
 @end
 

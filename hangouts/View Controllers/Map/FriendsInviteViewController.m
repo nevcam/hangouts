@@ -14,7 +14,7 @@
 #import "Event.h"
 
 
-@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate, FriendEventCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -32,6 +32,7 @@
     self.tableView.delegate = self;
     
     self.friendships = [NSMutableArray new];
+    self.invitedFriends = [NSMutableArray new];
     
     [self fetchFriendships];
     
@@ -93,8 +94,24 @@
     cell.profilePhotoView.layer.masksToBounds = YES;
     cell.profilePhotoView.layer.borderWidth = 0;
     
+    cell.delegate = self;
+    
     return cell;
 }
 
+// Follows cell'ss protocol to add/remove friends from local array
+- (void)addFriendToEvent:(nonnull PFUser *)friend remove:(BOOL)remove {
+    if (!remove) {
+        [self.invitedFriends addObject:friend];
+    } else {
+        [self.invitedFriends removeObject:friend];
+    }
+}
+
+// Sends list of invtied friends to AddEvent view controller
+- (IBAction)saveList:(id)sender {
+    [self.delegate saveFriendsList:self.invitedFriends];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
