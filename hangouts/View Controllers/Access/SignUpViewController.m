@@ -8,6 +8,7 @@
 
 #import "SignUpViewController.h"
 #import "Friendship.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 @import Parse;
 
 @interface SignUpViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -17,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation SignUpViewController
@@ -27,9 +29,14 @@
     self.usernameField.delegate = self;
     self.emailField.delegate = self;
     self.passwordField.delegate = self;
+    // make profile photo a circle
+    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height /2;
+    self.profileImageView.layer.masksToBounds = YES;
+    self.profileImageView.layer.borderWidth = 0;
 }
 // MARK: class methods
 - (IBAction)didTapRegister:(id)sender {
+    [SVProgressHUD show];
     PFUser *newUser = [PFUser user];
     newUser.username = self.usernameField.text;
     newUser.email = self.emailField.text;
@@ -58,11 +65,20 @@
 - (void)registerUser:(PFUser *)newUser {
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
-            self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
-            [self.errorLabel setHidden:NO];
-            NSLog(@"Error: %@", error.localizedDescription);
+            [SVProgressHUD dismiss];
+            if(error.code == 100) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+                self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
+                [self.errorLabel setHidden:NO];
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
         } else {
             [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+                [SVProgressHUD dismiss];
                 if(!succeeded) {
                     NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
                 }

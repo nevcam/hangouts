@@ -10,7 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol SaveFriendsListDelegate <NSObject>
+- (void)saveFriendsList:(NSMutableArray *)friendsList;
+@end
+
 @interface FriendsInviteViewController : UIViewController
+
+@property (nonatomic, weak) id <SaveFriendsListDelegate> delegate;
 
 @end
 

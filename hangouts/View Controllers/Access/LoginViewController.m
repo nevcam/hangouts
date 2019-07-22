@@ -37,7 +37,6 @@
     [self.passwordField resignFirstResponder];
 }
 - (void)loginUser {
-    [SVProgressHUD show];
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
@@ -61,6 +60,7 @@
     }];
 }
 - (IBAction)didTapLogin:(id)sender {
+    [SVProgressHUD show];
     [self loginUser];
 }
 // MARK: protocol methods

@@ -10,20 +10,24 @@
 #import "Event.h"
 #import <MapKit/MapKit.h>
 #import "LocationsViewController.h"
+#import "FriendsInviteViewController.h"
 
-@interface AddEventViewController () <UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
 
 // Features displayed/edited in the view controller
 @property (weak, nonatomic) IBOutlet UITextField *eventLocationField;
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
+@property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 
 // Location information - saved in the background for database
 @property (strong, nonatomic) NSNumber *location_lat;
 @property (strong, nonatomic) NSNumber *location_lng;
 @property (strong, nonatomic) NSString *location_name;
 @property (strong, nonatomic) NSString *location_address;
+
+@property (nonatomic, strong) NSMutableArray *invitedFriends;
 
 @end
 
@@ -32,7 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-     self.eventLocationField.delegate = self;
+    self.eventLocationField.delegate = self;
     
     // Layout for fields and date picker
     [self setInitialPlaceholder];
@@ -72,7 +76,7 @@
         NSLog(@"%@", location_name);
         
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address withCompletion:^(BOOL succeeded, NSError *error) {
+        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address withFriends:self.invitedFriends withCompletion:^(BOOL succeeded, NSError *error) {
             if (error) {
                 NSLog(@"Not working");
             } else {
@@ -114,6 +118,10 @@
         UINavigationController *locationController = [segue destinationViewController];
         locationController.delegate = self;
     }
+    else if ([segue.identifier isEqualToString:@"eventFriendsSegue"]) {
+        FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
+        friendsInvitedController.delegate = self;
+    }
 }
 
 // RUNS alerts to prevent user from inputing an event with empty fields. Boolean to exit function as soon as an error is encountered
@@ -130,8 +138,13 @@
     return YES;
 }
 
+// Follows protocol to save friends list from list view controller
+- (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
+    self.invitedFriends = friendsList;
+    [self.inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+}
 
-// LAYOUT CODE
+// VIEW CONTROLLER LAYOUT CODE
 // Disables field to prevent users from adding random locations
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return NO;

@@ -13,6 +13,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol FriendEventCellDelegate <NSObject>
+- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove;
+@end
+
+
 @interface FriendsToEventCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
@@ -22,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) PFUser *user;
 @property (nonatomic, weak) Friendship *userFriendship;
+
+@property (nonatomic, weak) id <FriendEventCellDelegate> delegate;
 
 @end
 

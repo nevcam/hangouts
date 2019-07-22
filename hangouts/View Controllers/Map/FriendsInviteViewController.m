@@ -14,23 +14,25 @@
 #import "Event.h"
 
 
-@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate, FriendEventCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSMutableArray *friendships;
+@property (nonatomic, strong) NSMutableArray *invitedFriends;
 
 @end
 
-@implementation FriendsInviteViewController {
-    NSMutableArray* _userFriends;
-}
+@implementation FriendsInviteViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    
+    self.friendships = [NSMutableArray new];
+    self.invitedFriends = [NSMutableArray new];
     
     [self fetchFriendships];
     
@@ -53,13 +55,12 @@
                 [query orderByDescending:@"createdAt"];
                 [query whereKey:@"username" equalTo:friendUsername];
                 query.limit = 1;
-                [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
-                    if (users) {
-                        if(!self->_userFriends){
-                            self->_userFriends = [[NSMutableArray alloc] init];
+                [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
+                    if (friends) {
+                        [self.friendships addObject:friends[0]];
+                        if (self.friendships.count == friendUsernames.count) {
+                            [self.tableView reloadData];
                         }
-                        [self->_userFriends addObjectsFromArray:users];
-
                     } else {
                         NSLog(@"Error: %@", error.localizedDescription);
                     }
@@ -68,7 +69,6 @@
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
-        [self.tableView reloadData];
     }];
 }
 
@@ -78,7 +78,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
-    FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"FriendsToEventCell"];
+    FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"friendsToEventCell"];
     PFUser *user = self.friendships[indexPath.row];
     cell.user = user;
     
@@ -94,8 +94,24 @@
     cell.profilePhotoView.layer.masksToBounds = YES;
     cell.profilePhotoView.layer.borderWidth = 0;
     
+    cell.delegate = self;
+    
     return cell;
 }
 
+// Follows cell'ss protocol to add/remove friends from local array
+- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove {
+    if (!remove) {
+        [self.invitedFriends addObject:friend];
+    } else {
+        [self.invitedFriends removeObject:friend];
+    }
+}
+
+// Sends list of invtied friends to AddEvent view controller
+- (IBAction)saveList:(id)sender {
+    [self.delegate saveFriendsList:self.invitedFriends];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
