@@ -100,7 +100,7 @@
 }
 
 // Follows cell'ss protocol to add/remove friends from local array
-- (void)addFriendToEvent:(nonnull PFUser *)friend remove:(BOOL)remove {
+- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove {
     if (!remove) {
         [self.invitedFriends addObject:friend];
     } else {

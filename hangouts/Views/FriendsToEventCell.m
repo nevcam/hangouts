@@ -25,11 +25,11 @@
 - (IBAction)clickedInvite:(id)sender {
     if ([[sender currentTitle] isEqualToString:@"Invite"]) {
         [self changeButtonLayout:YES];
-        [self.delegate addFriendToEvent:self.user remove:NO];
+        [self.delegate addFriendToEvent:self.user.username remove:NO];
     }
     else {
         [self changeButtonLayout:NO];
-        [self.delegate addFriendToEvent:self.user remove:YES];
+        [self.delegate addFriendToEvent:self.user.username remove:YES];
     }
 }
 

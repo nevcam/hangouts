@@ -14,7 +14,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol FriendEventCellDelegate <NSObject>
-- (void)addFriendToEvent:(PFUser *)friend remove:(BOOL)remove;
+- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove;
 @end
 
 
