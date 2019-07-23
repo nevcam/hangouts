@@ -43,11 +43,11 @@
     [self.eventDatePicker setMinimumDate: [NSDate date]];
 }
 
+
 // Closes "Add Event" view controller when user clicks respective button
-- (IBAction)clickedClose:(id)sender {
+- (IBAction)clickedCancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 // Adds an event to database
 - (IBAction)clickedCreateEvent:(id)sender {
     
@@ -86,11 +86,11 @@
     }
 }
 
+
 // Triggered when user wants to choose a location
 - (IBAction)clickedChooseLocation:(id)sender {
     [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
 }
-
 // Locally saves location if user has chosen one
 - (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude name:(NSString *)name address:(NSString *)address {
     
@@ -109,11 +109,15 @@
 - (IBAction)clickedInviteFriends:(id)sender {
     [self performSegueWithIdentifier:@"eventFriendsSegue" sender:nil];
 }
+// Follows protocol to save friends list from list view controller
+- (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
+    self.invitedFriends = friendsList;
+    [self.inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+}
 
-// Performs segue
+
+// Segues to location and friends view controllers
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    // Distinguishes between different possible segues
     if ([segue.identifier isEqualToString:@"locationsViewSegue"]) {
         UINavigationController *locationController = [segue destinationViewController];
         locationController.delegate = self;
@@ -139,11 +143,6 @@
     return YES;
 }
 
-// Follows protocol to save friends list from list view controller
-- (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
-    self.invitedFriends = friendsList;
-    [self.inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
-}
 
 // VIEW CONTROLLER LAYOUT CODE
 // Disables field to prevent users from adding random locations
