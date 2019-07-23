@@ -44,7 +44,7 @@
 }
 
 // Closes "Add Event" view controller when user clicks respective button
-- (IBAction)clickedClose:(id)sender {
+- (IBAction)clickedCancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
