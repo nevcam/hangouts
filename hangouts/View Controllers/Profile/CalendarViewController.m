@@ -37,7 +37,6 @@
     
     [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            NSLog(@"Eventos: %@",events);
             self.events = [[NSMutableArray alloc] initWithArray:events];
             [self.tableView reloadData];
         } else {
@@ -48,12 +47,24 @@
 // MARK: Table View protocol methods
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    [cell configureCell:self.events[indexPath.row]];
+    [cell configureCell:self.events[indexPath.section]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
-
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
     return self.events.count;
+}
+- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    // Will do this for now, but should use singleton to instantiate date formatter
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE MMMM d, Y"];
+    Event *event = [self.events objectAtIndex:section];
+    NSDate *date = event.date;
+    NSString *sectionTitle = [formatter stringFromDate:date];
+    return sectionTitle;
 }
 @end
