@@ -37,7 +37,7 @@
     self.profileImageView.layer.borderWidth = 0;
 }
 
-// MARK: class methods
+#pragma mark -  class methods
 
 - (IBAction)didTapRegister:(id)sender {
     [SVProgressHUD show];
@@ -101,7 +101,7 @@
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
-// MARK: image methods
+#pragma mark -  image methods
 
 - (IBAction)didTapImage:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
@@ -156,7 +156,7 @@
     }];
 }
 
-// MARK: keyboard methods
+#pragma mark -  keyboard methods
 
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {

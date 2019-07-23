@@ -35,7 +35,7 @@
     }
 }
 
-// MARK: class methods
+#pragma mark -  class methods
 
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
@@ -72,7 +72,7 @@
     [self loginUser];
 }
 
-// MARK: protocol methods
+#pragma mark -  protocol methods
 
 - (void)registerUserWithStatus:(BOOL)successful {
     if(successful) {

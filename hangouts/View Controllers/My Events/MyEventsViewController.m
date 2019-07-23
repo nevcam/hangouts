@@ -49,7 +49,7 @@
     [self.acceptedTableView insertSubview:self.acceptedRefreshControl atIndex:0];
 }
 
-// MARK: Getting data
+#pragma mark -  Getting data
 
 - (void)fetchEventsOfType:(NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
@@ -92,7 +92,7 @@
     [self fetchEventsOfType:@"invited"];
 }
 
-// MARK: Table view protocols methods
+#pragma mark -  Table view protocols methods
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;

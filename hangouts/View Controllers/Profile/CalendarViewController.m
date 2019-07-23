@@ -29,7 +29,7 @@
     [self fetchCalendarEvents];
 }
 
-// MARK: Fetch info methods
+#pragma mark -  Fetch info methods
 
 - (void)fetchCalendarEvents {
     PFQuery *userXEventQuery = [UserXEvent query];
@@ -50,7 +50,7 @@
     }];
 }
 
-// MARK: Table View protocol methods
+#pragma mark -  Table View protocol methods
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
@@ -78,7 +78,7 @@
      return [self getDayStringOfDate:date];
 }
 
-// MARK: Date methods
+#pragma mark -  Date methods
 
 - (NSString *) getDayStringOfDate:(NSDate *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

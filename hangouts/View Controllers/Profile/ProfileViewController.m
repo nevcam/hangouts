@@ -131,7 +131,7 @@
 }
 
 
-// MARK: logout functions
+#pragma mark -  logout functions
 - (IBAction)didTapLogout:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
         // PFUser.current() will now be nil

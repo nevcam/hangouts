@@ -32,7 +32,7 @@
     self.descriptionLabel.text = event.eventDescription;
 }
 
-// MARK: buttons methods
+#pragma mark -  buttons methods
 
 - (void)updateType: (NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
