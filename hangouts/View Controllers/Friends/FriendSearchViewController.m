@@ -113,7 +113,7 @@
     cell.user = user;
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
-    PFFileObject *imageFile = user[@"profilePhoto"];
+    PFFileObject *const imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     cell.profilePhotoView.image = nil;
     [cell.profilePhotoView setImageWithURL:profilePhotoURL];

@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSArray *friends;
 @property (nonatomic, strong) NSArray *friendRequests;
+//
+@property (nonatomic, strong) NSArray *outgoingRequests;
+@property (nonatomic, strong) NSArray *incomingRequests;
+@property (nonatomic, strong) PFUser *user;
 
 + (void) createFriendshipForUser: (NSString * _Nullable )username withCompletion: (PFBooleanResultBlock  _Nullable)completion;
 

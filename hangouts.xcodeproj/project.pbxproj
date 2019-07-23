@@ -32,6 +32,11 @@
 		D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803D22E0E12E003D240F /* FriendRequestCell.m */; };
 		D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF804322E23CFC003D240F /* ProfileEditViewController.m */; };
 		D9DF804722E28D76003D240F /* FriendViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF804622E28D76003D240F /* FriendViewCell.m */; };
+		D9DF804A22E670C9003D240F /* EventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF804922E670C9003D240F /* EventDetailsViewController.m */; };
+		D9DF804E22E6761C003D240F /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF804D22E6761C003D240F /* ChatViewController.m */; };
+		D9DF805122E6778E003D240F /* EventTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805022E6778E003D240F /* EventTabBarController.m */; };
+		D9DF805422E68355003D240F /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805322E68355003D240F /* ChatCell.m */; };
+		D9DF805722E685C4003D240F /* Chat_Message.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805622E685C4003D240F /* Chat_Message.m */; };
 		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
 		D9F09B5E22DE7E080003F9CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5D22DE7E080003F9CE /* Assets.xcassets */; };
@@ -110,6 +115,16 @@
 		D9DF804322E23CFC003D240F /* ProfileEditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileEditViewController.m; sourceTree = "<group>"; };
 		D9DF804522E28D76003D240F /* FriendViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendViewCell.h; sourceTree = "<group>"; };
 		D9DF804622E28D76003D240F /* FriendViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendViewCell.m; sourceTree = "<group>"; };
+		D9DF804822E670C9003D240F /* EventDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
+		D9DF804922E670C9003D240F /* EventDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
+		D9DF804C22E6761C003D240F /* ChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		D9DF804D22E6761C003D240F /* ChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		D9DF804F22E6778E003D240F /* EventTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventTabBarController.h; sourceTree = "<group>"; };
+		D9DF805022E6778E003D240F /* EventTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventTabBarController.m; sourceTree = "<group>"; };
+		D9DF805222E68355003D240F /* ChatCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatCell.h; sourceTree = "<group>"; };
+		D9DF805322E68355003D240F /* ChatCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatCell.m; sourceTree = "<group>"; };
+		D9DF805522E685C4003D240F /* Chat_Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chat_Message.h; sourceTree = "<group>"; };
+		D9DF805622E685C4003D240F /* Chat_Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Chat_Message.m; sourceTree = "<group>"; };
 		D9F09B5122DE7E060003F9CE /* hangouts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hangouts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9F09B5422DE7E060003F9CE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D9F09B5522DE7E060003F9CE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -229,6 +244,7 @@
 		7B0BBC5522DF91C9006275F6 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D9DF804B22E670DB003D240F /* Event Details */,
 				3CF5DCE122E123D800FF2128 /* Profile */,
 				3CF5DCE022E123D200FF2128 /* Friends */,
 				3CF5DCDF22E123CA00FF2128 /* My Events */,
@@ -253,6 +269,8 @@
 				3CF5DCEF22E23A7B00FF2128 /* FriendsToEventCell.m */,
 				D9DF804522E28D76003D240F /* FriendViewCell.h */,
 				D9DF804622E28D76003D240F /* FriendViewCell.m */,
+				D9DF805222E68355003D240F /* ChatCell.h */,
+				D9DF805322E68355003D240F /* ChatCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -266,8 +284,23 @@
 				D9DF803722DFE181003D240F /* Friendship.m */,
 				3CE7D01A22DFA214005E5C29 /* Event.h */,
 				3CE7D01B22DFA214005E5C29 /* Event.m */,
+				D9DF805522E685C4003D240F /* Chat_Message.h */,
+				D9DF805622E685C4003D240F /* Chat_Message.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D9DF804B22E670DB003D240F /* Event Details */ = {
+			isa = PBXGroup;
+			children = (
+				D9DF804F22E6778E003D240F /* EventTabBarController.h */,
+				D9DF805022E6778E003D240F /* EventTabBarController.m */,
+				D9DF804822E670C9003D240F /* EventDetailsViewController.h */,
+				D9DF804922E670C9003D240F /* EventDetailsViewController.m */,
+				D9DF804C22E6761C003D240F /* ChatViewController.h */,
+				D9DF804D22E6761C003D240F /* ChatViewController.m */,
+			);
+			path = "Event Details";
 			sourceTree = "<group>";
 		};
 		D9F09B4822DE7E060003F9CE = {
@@ -560,6 +593,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9DF804E22E6761C003D240F /* ChatViewController.m in Sources */,
+				D9DF805422E68355003D240F /* ChatCell.m in Sources */,
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
 				3CF5DCF622E260CA00FF2128 /* FriendsInviteViewController.m in Sources */,
 				7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */,
@@ -572,16 +607,19 @@
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
+				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
 				7B61D50322E1147300007250 /* UserXEvent.m in Sources */,
+				D9DF805122E6778E003D240F /* EventTabBarController.m in Sources */,
 				7B61D4F822DFECEE00007250 /* ProfileViewController.m in Sources */,
 				7BEBF5A222E67DA10008E648 /* CalendarViewController.m in Sources */,
 				7B0BBC5822DF91DC006275F6 /* LoginViewController.m in Sources */,
 				D9DF803822DFE181003D240F /* Friendship.m in Sources */,
 				3CE7D02222E0D9E7005E5C29 /* LocationCell.m in Sources */,
+				D9DF804A22E670C9003D240F /* EventDetailsViewController.m in Sources */,
 				3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */,
 				D9DF804722E28D76003D240F /* FriendViewCell.m in Sources */,
 				3CE7D01F22E0D930005E5C29 /* LocationsViewController.m in Sources */,
