@@ -29,9 +29,8 @@
 - (void)fetchEventPointers {
     PFQuery *userXEventQuery = [UserXEvent query];
     [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
-    [userXEventQuery whereKey:@"type" equalTo:@"accepted"];
-    [userXEventQuery whereKey:@"type" equalTo:@"owned"];
-    
+    [userXEventQuery whereKey:@"type" containedIn:[NSArray arrayWithObjects: @"accepted", @"owned", nil]];
+
     PFQuery *eventQuery = [Event query];
     [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
     
