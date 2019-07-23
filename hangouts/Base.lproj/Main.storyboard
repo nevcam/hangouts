@@ -245,6 +245,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="16T-m1-gvx"/>
                     <connections>
+                        <outlet property="mapView" destination="xtg-vI-YWu" id="jnE-tl-2UF"/>
                         <segue destination="gbc-Dl-cRW" kind="presentation" identifier="addEventSegue" id="bna-kp-jZo"/>
                     </connections>
                 </viewController>
