@@ -9,6 +9,8 @@
 #import "MyEventsViewController.h"
 #import "UserXEvent.h"
 #import "EventCell.h"
+#import "EventDetailsViewController.h"
+#import "EventTabBarController.h"
 @import Parse;
 
 @interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
@@ -84,4 +86,24 @@
     }
     return self.invitedEvents.count;
 }
+
+
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+     if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
+         UITableViewCell *tappedCell = sender;
+         NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
+         Event *event = self.acceptedEvents[indexPath.row];
+         EventTabBarController *tabBarViewControllers = [segue destinationViewController];
+         UINavigationController *navController = tabBarViewControllers.viewControllers[0];
+         EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+         destinationViewController.event = event;
+     }
+ }
+ 
+
 @end

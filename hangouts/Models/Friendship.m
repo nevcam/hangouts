@@ -13,6 +13,10 @@
 @dynamic username;
 @dynamic friends;
 @dynamic friendRequests;
+@dynamic outgoingRequests;
+@dynamic incomingRequests;
+//
+@dynamic user;
 
 + (nonnull NSString *)parseClassName {
     return @"Friendship";

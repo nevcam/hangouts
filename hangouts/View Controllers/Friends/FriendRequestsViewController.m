@@ -75,6 +75,7 @@
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     cell.currentUserFriendship = self.currentUserFriendship;
+    NSLog(@"user: %@", user);
     return cell;
 }
 
