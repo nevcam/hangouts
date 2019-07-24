@@ -83,7 +83,7 @@
                 NSLog(@"Error: %@", error.localizedDescription);
             }
         } else {
-            [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+            [Friendship createFriendshipForUser:newUser withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
                 [SVProgressHUD dismiss];
                 if(!succeeded) {
                     NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
