@@ -9,6 +9,7 @@
 #import "UserXEvent.h"
 
 @implementation UserXEvent
+
 @dynamic username;
 @dynamic eventId;
 @dynamic type;
@@ -16,8 +17,8 @@
 + (nonnull NSString *)parseClassName {
     return @"UserXEvent";
 }
+
 + (void) createUserXEventForUser:(NSString *)username withId:(NSString *)eventId withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion {
-    
     UserXEvent *newUserXEvent = [UserXEvent new];
     newUserXEvent.username = username;
     newUserXEvent.eventId = eventId;
@@ -25,4 +26,5 @@
     
     [newUserXEvent saveInBackgroundWithBlock: completion];
 }
+
 @end

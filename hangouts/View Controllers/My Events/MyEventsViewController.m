@@ -9,9 +9,12 @@
 #import "MyEventsViewController.h"
 #import "UserXEvent.h"
 #import "EventCell.h"
+#import "EventDetailsViewController.h"
+#import "EventTabBarController.h"
 @import Parse;
 
 @interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
@@ -20,9 +23,11 @@
 
 @property (nonatomic, strong) UIRefreshControl *invitedRefreshControl;
 @property (nonatomic, strong) UIRefreshControl *acceptedRefreshControl;
+
 @end
 
 @implementation MyEventsViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -43,7 +48,9 @@
     [self.acceptedRefreshControl addTarget:self action:@selector(fetchAcceptedEvents) forControlEvents:UIControlEventValueChanged];
     [self.acceptedTableView insertSubview:self.acceptedRefreshControl atIndex:0];
 }
-// MARK: Getting data
+
+#pragma mark -  Getting data
+
 - (void)fetchEventsOfType:(NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
     [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
@@ -68,20 +75,25 @@
         }
     }];
 }
+
 // Had to add the following two methods to use refresh control (cannot pass arguments in @selector)
 - (void)fetchInvitedEvents {
     [self fetchEventsOfType:@"invited"];
 }
+
 - (void)fetchAcceptedEvents {
     [self fetchEventsOfType:@"accepted"];
 }
+
 - (void)changedUserXEventTypeTo:(NSString *)type {
     if([type isEqualToString:@"accepted"]) {
         [self fetchEventsOfType:@"accepted"];
     }
     [self fetchEventsOfType:@"invited"];
 }
-// MARK: Table view protocols methods
+
+#pragma mark -  Table view protocols methods
+
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;
     Event *event;
@@ -98,10 +110,26 @@
     cell.delegate = self;
     return cell;
 }
+
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.acceptedTableView) {
         return self.acceptedEvents.count;
     }
     return self.invitedEvents.count;
 }
+
+ #pragma mark - Navigation
+ 
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
+         UITableViewCell *tappedCell = sender;
+         NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
+         Event *event = self.acceptedEvents[indexPath.row];
+         EventTabBarController *tabBarViewControllers = [segue destinationViewController];
+         UINavigationController *navController = tabBarViewControllers.viewControllers[0];
+         EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+         destinationViewController.event = event;
+     }
+ }
+
 @end

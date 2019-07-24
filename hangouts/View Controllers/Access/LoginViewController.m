@@ -12,16 +12,20 @@
 @import Parse;
 
 @interface LoginViewController () <SignUpViewControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation LoginViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
+
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if([[segue identifier] isEqualToString:@"registerSegue"]) {
@@ -30,12 +34,15 @@
         signupController.delegate = self;
     }
 }
-// MARK: class methods
+
+#pragma mark -  class methods
+
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
     [self.usernameField resignFirstResponder];
     [self.passwordField resignFirstResponder];
 }
+
 - (void)loginUser {
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
@@ -59,11 +66,14 @@
         }
     }];
 }
+
 - (IBAction)didTapLogin:(id)sender {
     [SVProgressHUD show];
     [self loginUser];
 }
-// MARK: protocol methods
+
+#pragma mark -  protocol methods
+
 - (void)registerUserWithStatus:(BOOL)successful {
     if(successful) {
         self.errorLabel.text = @"Account registered successfully!";
@@ -71,4 +81,5 @@
         [self.errorLabel setHidden:NO];
     }
 }
+
 @end

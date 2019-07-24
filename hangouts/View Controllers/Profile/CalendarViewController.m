@@ -7,17 +7,21 @@
 //
 
 #import "CalendarViewController.h"
+#import "DateFormatterManager.h"
 #import "UserXEvent.h"
 #import "EventCell.h"
 #import "Event.h"
 @import Parse;
 
 @interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *events;
+@property (strong, nonatomic) NSMutableArray *eventArray;
+
 @end
 
 @implementation CalendarViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.delegate = self;
@@ -25,7 +29,9 @@
     
     [self fetchCalendarEvents];
 }
-// MARK: Fetch info methods
+
+#pragma mark -  Fetch info methods
+
 - (void)fetchCalendarEvents {
     PFQuery *userXEventQuery = [UserXEvent query];
     [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
@@ -37,34 +43,66 @@
     
     [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            self.events = [[NSMutableArray alloc] initWithArray:events];
+            [self initArrayWithEvents:events];
             [self.tableView reloadData];
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
         }
     }];
 }
-// MARK: Table View protocol methods
+
+#pragma mark -  Table View protocol methods
+
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    [cell configureCell:self.events[indexPath.section]];
+    NSArray *array = self.eventArray[indexPath.section];
+    [cell configureCell:array[indexPath.row]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
+
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return [self.eventArray[section] count];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return self.events.count;
+    return [self.eventArray count];
 }
+
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Will do this for now, but should use singleton to instantiate date formatter
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEEE MMMM d, Y"];
-    Event *event = [self.events objectAtIndex:section];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
+    NSArray *array = [self.eventArray objectAtIndex:section];
+    Event *event = array[0];
     NSDate *date = event.date;
-    NSString *sectionTitle = [formatter stringFromDate:date];
-    return sectionTitle;
+     return [self getDayStringOfDate:date];
 }
+
+#pragma mark -  Date methods
+
+- (NSString *) getDayStringOfDate:(NSDate *)date {
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
+    return [manager.formatter stringFromDate:date];
+}
+
+- (void)initArrayWithEvents:(NSArray *)events {
+    self.eventArray = [[NSMutableArray alloc] init];
+    NSString *pastKey = @"";
+    int i = -1;
+    for (Event *event in events) {
+        NSDate *date = event.date;
+        NSString *key = [self getDayStringOfDate:date];
+        if([pastKey isEqualToString:key]) {
+            NSMutableArray *array = self.eventArray[i];
+            [array addObject:event];
+        } else {
+            i++;
+            pastKey = key;
+            NSMutableArray *array = [NSMutableArray arrayWithObject:event];
+            [self.eventArray addObject:array];
+        }
+    }
+}
+
 @end
