@@ -21,7 +21,7 @@ typedef void (^EventCreationCompletionBlock)(NSString *eventID, NSError *error);
 @property (nonatomic, strong) NSNumber *location_lng;
 @property (nonatomic, strong) NSString *location_name;
 @property (nonatomic, strong) NSString *location_address;
-@property (nonatomic, strong) NSMutableArray *friends;
+@property (nonatomic, strong) NSMutableArray *usersInvited;
 
 + (void)createEvent:(NSString *)name
            withDate:(NSDate *)date
@@ -30,7 +30,7 @@ typedef void (^EventCreationCompletionBlock)(NSString *eventID, NSError *error);
             withLng:(NSNumber *)lng
            withName:(NSString *)locName
         withAddress:(NSString *)locAddress
-        withFriends:(NSMutableArray *)friends
+      users_invited:(NSMutableArray *)users_invited
      withCompletion:(EventCreationCompletionBlock)completion;
 
 @end

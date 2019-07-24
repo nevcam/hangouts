@@ -46,6 +46,7 @@
     [query whereKey:@"username" equalTo:[PFUser currentUser].username];
     query.limit = 1;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
+       
         if (friendships) {
             // Saves usernames of current user friends
             NSMutableArray *friendUsernames = (NSMutableArray *)friendships[0].friends;

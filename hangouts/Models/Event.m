@@ -18,7 +18,7 @@
 @dynamic location_lng;
 @dynamic location_name;
 @dynamic location_address;
-@dynamic friends;
+@dynamic usersInvited;
 
 + (nonnull NSString *)parseClassName {
     return @"Event";
@@ -32,7 +32,7 @@
             withLng:(NSNumber *)lng
            withName:(NSString *)locName
         withAddress:(NSString *)locAddress
-        withFriends:(NSMutableArray *)friends
+      users_invited:(NSMutableArray *)users_invited
      withCompletion:(EventCreationCompletionBlock)completion
 {
     
@@ -46,7 +46,7 @@
     newEvent.location_name = locName;
     newEvent.location_lat = lat;
     newEvent.location_lng = lng;
-    newEvent.friends = friends;
+    newEvent.usersInvited = users_invited;
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
