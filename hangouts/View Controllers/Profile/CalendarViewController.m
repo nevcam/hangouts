@@ -7,6 +7,7 @@
 //
 
 #import "CalendarViewController.h"
+#import "DateFormatterManager.h"
 #import "UserXEvent.h"
 #import "EventCell.h"
 #import "Event.h"
@@ -69,9 +70,8 @@
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Will do this for now, but should use singleton to instantiate date formatter
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEEE MMMM d, Y"];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
     NSArray *array = [self.eventArray objectAtIndex:section];
     Event *event = array[0];
     NSDate *date = event.date;
@@ -81,9 +81,9 @@
 #pragma mark -  Date methods
 
 - (NSString *) getDayStringOfDate:(NSDate *)date {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEEE MMMM d, Y"];
-    return [formatter stringFromDate:date];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
+    return [manager.formatter stringFromDate:date];
 }
 
 - (void)initArrayWithEvents:(NSArray *)events {

@@ -9,6 +9,7 @@
 @import Parse;
 #import "EventCell.h"
 #import "UserXEvent.h"
+#import "DateFormatterManager.h"
 
 @implementation EventCell
 
@@ -23,10 +24,9 @@
 - (void) configureCell:(Event *)event {
     self.event = event;
     self.nameLabel.text = event.name;
-    // Will do this for now, but should use singleton to instantiate date formatter
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"EEE MMM dd";
-    self.dateLabel.text = [formatter stringFromDate:event.date];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEE MMM dd"];
+    self.dateLabel.text = [manager.formatter stringFromDate:event.date];
     self.locationLabel.text = event.location_name;
     self.ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
     self.descriptionLabel.text = event.eventDescription;
