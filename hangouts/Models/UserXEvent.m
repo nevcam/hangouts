@@ -10,18 +10,18 @@
 
 @implementation UserXEvent
 
-@dynamic username;
-@dynamic eventId;
+@dynamic user;
+@dynamic event;
 @dynamic type;
 
 + (nonnull NSString *)parseClassName {
     return @"UserXEvent";
 }
 
-+ (void) createUserXEventForUser:(NSString *)username withId:(NSString *)eventId withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion {
++ (void) createUserXEventForUser:(PFUser *)user withEvent:(Event *)event withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion {
     UserXEvent *newUserXEvent = [UserXEvent new];
-    newUserXEvent.username = username;
-    newUserXEvent.eventId = eventId;
+    newUserXEvent.user = user;
+    newUserXEvent.event = event;
     newUserXEvent.type = type;
     
     [newUserXEvent saveInBackgroundWithBlock: completion];
