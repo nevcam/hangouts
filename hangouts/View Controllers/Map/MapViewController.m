@@ -53,7 +53,6 @@
     annotation.coordinate = coordinate;
     annotation.title = @"Event!";
     [self.mapView addAnnotation:annotation];
-    NSLog(@"created");
 }
 
 // Allows user to create an event

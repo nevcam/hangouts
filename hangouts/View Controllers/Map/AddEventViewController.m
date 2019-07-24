@@ -11,6 +11,7 @@
 #import <MapKit/MapKit.h>
 #import "LocationsViewController.h"
 #import "FriendsInviteViewController.h"
+#import "UserXEvent.h"
 
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
 
@@ -73,14 +74,25 @@
         NSString *description = self.eventDescriptionField.text;
         NSString *location_name = self.location_name;
         
-        NSLog(@"%@", location_name);
-        
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address withFriends:self.invitedFriends withCompletion:^(BOOL succeeded, NSError *error) {
+        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address withFriends:self.invitedFriends withCompletion:^(NSString *eventID, NSError *error) {
             if (error) {
                 NSLog(@"Not working");
             } else {
+                [self handleSuccessCreatingEventWithEventID:eventID];
                 [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }];
+    }
+}
+
+- (void) handleSuccessCreatingEventWithEventID:(NSString *)eventID {
+    NSString *_eventId = [eventID copy];
+    
+    for (NSString *friendUsername in self.invitedFriends) {
+        [UserXEvent createUserXEventForUser:(NSString *)friendUsername withId:(NSString *)_eventId withType:(NSString *)@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                NSLog(@"Failed to add user to UserXEvent class");
             }
         }];
     }

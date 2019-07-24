@@ -25,7 +25,16 @@
 }
 
 // Method to create events from Add Events view controller
-+ (void) createEvent: (NSString * _Nullable )name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withLat:(NSNumber *)lat withLng:(NSNumber *)lng withName:(NSString *)locName withAddress:(NSString *)locAddress withFriends:(NSMutableArray *)friends  withCompletion: (PFBooleanResultBlock  _Nullable)completion {
++ (void)createEvent:(NSString *)name
+           withDate:(NSDate *)date
+    withDescription:(NSString *)description
+            withLat:(NSNumber *)lat
+            withLng:(NSNumber *)lng
+           withName:(NSString *)locName
+        withAddress:(NSString *)locAddress
+        withFriends:(NSMutableArray *)friends
+     withCompletion:(EventCreationCompletionBlock)completion
+{
     
     // Assigns features to event
     Event *newEvent = [Event new];
@@ -39,7 +48,14 @@
     newEvent.location_lng = lng;
     newEvent.friends = friends;
     
-    [newEvent saveInBackgroundWithBlock: completion];
+    [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            completion(newEvent.objectId, error);
+        } else {
+            completion(nil, error);
+            NSLog(@"Could not retrieve ObjectId. Error:%@", error);
+        }
+    }];
 }
 
 @end
