@@ -46,28 +46,25 @@
     [query whereKey:@"username" equalTo:[PFUser currentUser].username];
     query.limit = 1;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
-       
         if (friendships) {
             // Saves usernames of current user friends
-            NSMutableArray *friendUsernames = (NSMutableArray *)friendships[0].friends;
-            
-            // Uses the usernames to add user objects of current user's friends to the friendships array
-            for (NSString *friendUsername in friendUsernames) {
-                PFQuery *query = [PFUser query];
-                [query orderByDescending:@"createdAt"];
-                [query whereKey:@"username" equalTo:friendUsername];
-                query.limit = 1;
-                [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
-                    if (friends) {
-                        [self.friendships addObject:friends[0]];
-                        if (self.friendships.count == friendUsernames.count) {
-                            [self.tableView reloadData];
-                        }
-                    } else {
-                        NSLog(@"Error: %@", error.localizedDescription);
+            NSMutableArray *friendUsernames = (NSMutableArray *)friendships[0][@"friends"];
+            NSLog(@"%@", friendUsernames);
+            PFQuery *query = [PFUser query];
+            [query orderByDescending:@"createdAt"];
+            [query whereKey:@"username" containedIn:friendUsernames];
+            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
+                if (friends) {
+                    for (PFUser *friend in friends) {
+                        [self.friendships addObject:friend];
                     }
-                }];
-            }
+                    if (self.friendships.count == friendUsernames.count) {
+                        [self.tableView reloadData];
+                    }
+                } else {
+                    NSLog(@"Error: %@", error.localizedDescription);
+                }
+            }];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
