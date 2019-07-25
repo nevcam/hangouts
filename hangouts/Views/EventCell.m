@@ -37,9 +37,15 @@
     if([type isEqualToString:@"invited"]) {
         [self.acceptButton setHidden:NO];
         [self.declineButton setHidden:NO];
+        [self.ownedLabel setHidden:YES];
+    } else if ([type isEqualToString:@"owned"]) {
+        [self.acceptButton setHidden:YES];
+        [self.declineButton setHidden:YES];
+        [self.ownedLabel setHidden:NO];
     } else {
         [self.acceptButton setHidden:YES];
         [self.declineButton setHidden:YES];
+        [self.ownedLabel setHidden:YES];
     }
 }
 
