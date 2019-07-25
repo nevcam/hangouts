@@ -7,9 +7,10 @@
 //
 
 @import Parse;
+@class Event;
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
 
 @interface Event : PFObject <PFSubclassing>
 
@@ -21,11 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber *location_lng;
 @property (nonatomic, strong) NSString *location_name;
 @property (nonatomic, strong) NSString *location_address;
-@property (nonatomic, strong) NSMutableArray *friends;
+@property (nonatomic, strong) NSMutableArray *usersInvited;
 
-
-+ (void) createEvent: (NSString * _Nullable)name withDate: (NSDate * _Nullable)date withDescription:(NSString * _Nullable)description withLat:(NSNumber *)lat withLng:(NSNumber *)lng withName:(NSString *)locName withAddress:(NSString *)locAddress withFriends:(NSMutableArray *)friends withCompletion:(PFBooleanResultBlock  _Nullable)completion;
++ (void)createEvent:(NSString *)name
+           withDate:(NSDate *)date
+    withDescription:(NSString *)description
+            withLat:(NSNumber *)lat
+            withLng:(NSNumber *)lng
+           withName:(NSString *)locName
+        withAddress:(NSString *)locAddress
+      users_invited:(NSMutableArray *)users_invited
+     withCompletion:(EventCreationCompletionBlock)completion;
 
 @end
 
-NS_ASSUME_NONNULL_END

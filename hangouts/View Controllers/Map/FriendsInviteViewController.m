@@ -43,30 +43,34 @@
 - (void)fetchFriendships {
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
-    [query whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query includeKey:@"user"];
     query.limit = 1;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
             // Saves usernames of current user friends
-            NSMutableArray *friendUsernames = (NSMutableArray *)friendships[0].friends;
+            NSMutableArray *friendPointers = (NSMutableArray *)friendships[0][@"friends"];
+            NSMutableArray *friendIds = [NSMutableArray new];
             
-            // Uses the usernames to add user objects of current user's friends to the friendships array
-            for (NSString *friendUsername in friendUsernames) {
-                PFQuery *query = [PFUser query];
-                [query orderByDescending:@"createdAt"];
-                [query whereKey:@"username" equalTo:friendUsername];
-                query.limit = 1;
-                [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
-                    if (friends) {
-                        [self.friendships addObject:friends[0]];
-                        if (self.friendships.count == friendUsernames.count) {
-                            [self.tableView reloadData];
-                        }
-                    } else {
-                        NSLog(@"Error: %@", error.localizedDescription);
-                    }
-                }];
+            for (PFUser *friendPointer in friendPointers) {
+                [friendIds addObject:friendPointer.objectId];
             }
+            
+            PFQuery *query = [PFUser query];
+            [query orderByDescending:@"createdAt"];
+            [query whereKey:@"objectId" containedIn:friendIds];
+            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
+                if (friends) {
+                    for (PFUser *friend in friends) {
+                        [self.friendships addObject:friend];
+                    }
+                    if (self.friendships.count == friendPointers.count) {
+                        [self.tableView reloadData];
+                    }
+                } else {
+                    NSLog(@"Error: %@", error.localizedDescription);
+                }
+            }];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }

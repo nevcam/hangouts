@@ -7,17 +7,21 @@
 //
 
 #import "CalendarViewController.h"
+#import "DateFormatterManager.h"
 #import "UserXEvent.h"
 #import "EventCell.h"
 #import "Event.h"
 @import Parse;
 
-@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *events;
+@property (strong, nonatomic) NSMutableArray *userXEventArray;
+
 @end
 
 @implementation CalendarViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.delegate = self;
@@ -25,46 +29,90 @@
     
     [self fetchCalendarEvents];
 }
-// MARK: Fetch info methods
+
+#pragma mark -  Fetch info methods
+
 - (void)fetchCalendarEvents {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     [userXEventQuery whereKey:@"type" notEqualTo:@"declined"];
-    
-    PFQuery *eventQuery = [Event query];
-    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
-    [eventQuery orderByAscending:@"date"];
-    
-    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
-        if (events) {
-            self.events = [[NSMutableArray alloc] initWithArray:events];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event",@"type",nil]];
+
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
+        if (userXEvents) {
+            NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
+            NSArray *sortedArray = [userXEvents sortedArrayUsingDescriptors:descriptors];
+            [self initArrayWithEvents:sortedArray];
             [self.tableView reloadData];
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
         }
     }];
 }
-// MARK: Table View protocol methods
+
+#pragma mark -  Table View protocol methods
+
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    [cell configureCell:self.events[indexPath.section]];
+    NSArray *array = self.userXEventArray[indexPath.section];
+    UserXEvent *userXEvent = array[indexPath.row];
+    [cell configureCell:userXEvent.event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    cell.delegate = self;
     return cell;
 }
+
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return [self.userXEventArray[section] count];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return self.events.count;
+    return [self.userXEventArray count];
 }
+
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    // Will do this for now, but should use singleton to instantiate date formatter
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEEE MMMM d, Y"];
-    Event *event = [self.events objectAtIndex:section];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
+    NSArray *array = [self.userXEventArray objectAtIndex:section];
+    UserXEvent *userXEvent = array[0];
+    Event *event = userXEvent.event;
     NSDate *date = event.date;
-    NSString *sectionTitle = [formatter stringFromDate:date];
-    return sectionTitle;
+    return [self getDayStringOfDate:date];
 }
+
+#pragma mark - Event Cell protocol methods
+
+- (void)changedUserXEventTypeTo:(nonnull NSString *)type {
+    [self fetchCalendarEvents];
+}
+
+#pragma mark -  Date methods
+
+- (NSString *) getDayStringOfDate:(NSDate *)date {
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
+    return [manager.formatter stringFromDate:date];
+}
+
+- (void)initArrayWithEvents:(NSArray *)userXEvents {
+    self.userXEventArray = [[NSMutableArray alloc] init];
+    NSString *pastKey = @"";
+    int i = -1;
+    for (UserXEvent *userXEvent in userXEvents) {
+        Event *event = userXEvent.event;
+        NSDate *date = event.date;
+        NSString *key = [self getDayStringOfDate:date];
+        if([pastKey isEqualToString:key]) {
+            NSMutableArray *array = self.userXEventArray[i];
+            [array addObject:userXEvent];
+        } else {
+            i++;
+            pastKey = key;
+            NSMutableArray *array = [NSMutableArray arrayWithObject:userXEvent];
+            [self.userXEventArray addObject:array];
+        }
+    }
+}
+
 @end

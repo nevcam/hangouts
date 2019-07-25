@@ -11,6 +11,7 @@
 #import <MapKit/MapKit.h>
 #import "LocationsViewController.h"
 #import "FriendsInviteViewController.h"
+#import "UserXEvent.h"
 
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
 
@@ -73,14 +74,30 @@
         NSString *description = self.eventDescriptionField.text;
         NSString *location_name = self.location_name;
         
-        NSLog(@"%@", location_name);
-        
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address withFriends:self.invitedFriends withCompletion:^(BOOL succeeded, NSError *error) {
+        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address users_invited:self.invitedFriends withCompletion:^(Event *event, NSError *error) {
             if (error) {
                 NSLog(@"Not working");
             } else {
+                [self handleSuccessCreatingEventWithEvent:event];
                 [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }];
+    }
+}
+
+// If event is created successfully, we add owner and friends to UserXEvent Class
+- (void) handleSuccessCreatingEventWithEvent:(Event *)event {
+    [UserXEvent createUserXEventForUser:[PFUser currentUser] withEvent:event withType:@"owned" withCompletion:^(BOOL succeeded, NSError *error) {
+        if (error) {
+            NSLog(@"Failed to add owner to UserXEvent class");
+        }
+    }];
+    
+    for (PFUser *friend in self.invitedFriends) {
+        [UserXEvent createUserXEventForUser:friend withEvent:event withType:@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                NSLog(@"Failed to add user to UserXEvent class");
             }
         }];
     }

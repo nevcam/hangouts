@@ -7,15 +7,18 @@
 //
 
 #import <Parse/Parse.h>
+#import "Event.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UserXEvent : PFObject <PFSubclassing>
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *eventId;
+
+@property (nonatomic, strong) PFUser *user;
+@property (nonatomic, strong) Event *event;
 @property (nonatomic, strong) NSString *type;
 
-+ (void) createUserXEventForUser:(NSString *)username withId:(NSString *)eventId withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion;
++ (void) createUserXEventForUser:(PFUser *)user withEvent:(Event *)event withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

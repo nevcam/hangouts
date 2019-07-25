@@ -15,17 +15,18 @@
 @dynamic friendRequests;
 @dynamic outgoingRequests;
 @dynamic incomingRequests;
-//
+
 @dynamic user;
 
 + (nonnull NSString *)parseClassName {
     return @"Friendship";
 }
 
-+ (void) createFriendshipForUser: (NSString * _Nullable )username withCompletion: (PFBooleanResultBlock  _Nullable)completion {
++ (void) createFriendshipForUser: (PFUser * _Nullable )user withCompletion: (PFBooleanResultBlock  _Nullable)completion {
     Friendship *newFriendship = [Friendship new];
-    newFriendship.username = username;
+    newFriendship.user = user;
     
     [newFriendship saveInBackgroundWithBlock:completion];
 }
+
 @end

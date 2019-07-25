@@ -28,16 +28,15 @@
 // Makes request for locations of accepted events to add respective pointers in the map
 - (void)fetchEventPointers {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     [userXEventQuery whereKey:@"type" containedIn:[NSArray arrayWithObjects: @"accepted", @"owned", nil]];
-
-    PFQuery *eventQuery = [Event query];
-    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
     
-    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            for (Event *event in events) {
-                [self getLocationPoint:event.location_lat longitude:event.location_lng];
+            for (UserXEvent *addEvent in events) {
+                [self getLocationPoint:addEvent.event.location_lat longitude:addEvent.event.location_lng];
             }
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
@@ -53,7 +52,6 @@
     annotation.coordinate = coordinate;
     annotation.title = @"Event!";
     [self.mapView addAnnotation:annotation];
-    NSLog(@"created");
 }
 
 // Allows user to create an event

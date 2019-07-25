@@ -12,10 +12,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol EventCellDelegate
+
 - (void)changedUserXEventTypeTo:(NSString *)type;
+
 @end
 
 @interface EventCell : UITableViewCell
+
 @property (nonatomic, weak) id<EventCellDelegate> delegate;
 
 @property (strong, nonatomic) Event *event;
@@ -24,8 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ownerUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *declineButton;
+@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 
 - (void)configureCell:(Event *)event;
+
+- (void)configureCell:(Event *)event withType:(NSString *)type;
+
 @end
 
 NS_ASSUME_NONNULL_END

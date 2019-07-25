@@ -12,6 +12,7 @@
 @import Parse;
 
 @interface SignUpViewController () <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
@@ -19,12 +20,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation SignUpViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.nameField.delegate = self;
     self.usernameField.delegate = self;
     self.emailField.delegate = self;
@@ -34,7 +36,9 @@
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.borderWidth = 0;
 }
-// MARK: class methods
+
+#pragma mark -  class methods
+
 - (IBAction)didTapRegister:(id)sender {
     [SVProgressHUD show];
     PFUser *newUser = [PFUser user];
@@ -53,6 +57,7 @@
         [self.errorLabel setHidden:NO];
     }
 }
+
 - (BOOL)validateStrings:(NSArray *)strings {
     for (NSString *string in strings) {
         NSString *stringNoSpaces = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -62,6 +67,7 @@
     }
     return YES;
 }
+
 - (void)registerUser:(PFUser *)newUser {
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
@@ -77,7 +83,7 @@
                 NSLog(@"Error: %@", error.localizedDescription);
             }
         } else {
-            [Friendship createFriendshipForUser:newUser.username withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+            [Friendship createFriendshipForUser:newUser withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
                 [SVProgressHUD dismiss];
                 if(!succeeded) {
                     NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
@@ -90,10 +96,13 @@
         }
     }];
 }
+
 - (IBAction)didTapCancel:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
-// MARK: image methods
+
+#pragma mark -  image methods
+
 - (IBAction)didTapImage:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
@@ -108,12 +117,14 @@
     }
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     UIImage *resizedImage = [self resizeImage:editedImage withSize:CGSizeMake(350, 350)];
     self.profileImageView.image = resizedImage;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
     UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -125,6 +136,7 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+
 - (void)assignImageToUser: (PFUser *)user {
     NSData *imageData;
     if(self.profileImageView.image != nil) {
@@ -143,7 +155,9 @@
         }
     }];
 }
-// MARK: keyboard methods
+
+#pragma mark -  keyboard methods
+
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
     [self.nameField resignFirstResponder];
@@ -151,16 +165,19 @@
     [self.emailField resignFirstResponder];
     [self.passwordField resignFirstResponder];
 }
+
 // The following methods let the view move up/down when keybord is shown/dismissed
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     return YES;
 }
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
     [self.view endEditing:YES];
     return YES;
 }
+
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     [UIView animateWithDuration:0.2 animations:^{
@@ -169,6 +186,7 @@
         self.view.frame = frame;
     }];
 }
+
 -(void)keyboardWillHide:(NSNotification *)notification {
     [UIView animateWithDuration:0.2 animations:^{
         CGRect frame = self.view.frame;
@@ -176,4 +194,5 @@
         self.view.frame = frame;
     }];
 }
+
 @end
