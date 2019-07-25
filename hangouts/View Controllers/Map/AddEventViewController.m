@@ -76,8 +76,17 @@
         NSString *location_name = _location_name;
         
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:_location_lat withLng:_location_lng withName:location_name withAddress:_location_address users_invited:_invitedFriends withCompletion:^(Event *event, NSError *error) {
-            if (error) {
+        [Event createEvent:newEventName
+                      date:newEventDate
+               description:description
+                       lat:_location_lat
+                       lng:_location_lng
+                      name:location_name
+                   address:_location_address
+             users_invited:_invitedFriends
+            withCompletion:^(Event *event, NSError *error) {
+            
+                if (error) {
                 NSLog(@"Not working");
             } else {
                 [self handleSuccessCreatingEventWithEvent:event];
@@ -89,14 +98,20 @@
 
 // If event is created successfully, we add owner and friends to UserXEvent Class
 - (void) handleSuccessCreatingEventWithEvent:(Event *)event {
-    [UserXEvent createUserXEventForUser:[PFUser currentUser] withEvent:event withType:@"owned" withCompletion:^(BOOL succeeded, NSError *error) {
+    [UserXEvent createUserXEventForUser:[PFUser currentUser]
+                                  event:event
+                                   type:@"owned"
+                         withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to add owner to UserXEvent class");
         }
     }];
     
     for (PFUser *friend in _invitedFriends) {
-        [UserXEvent createUserXEventForUser:friend withEvent:event withType:@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+        [UserXEvent createUserXEventForUser:friend
+                                      event:event
+                                       type:@"invited"
+                             withCompletion:^(BOOL succeeded, NSError *error) {
             if (error) {
                 NSLog(@"Failed to add user to UserXEvent class");
             }
