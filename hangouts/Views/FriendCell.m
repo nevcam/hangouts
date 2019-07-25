@@ -25,31 +25,41 @@
     // requesting frienship object that contains user's friendship and friend request information
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
-    [query includeKey:@"username"];
-    [query whereKey:@"username" equalTo:self.userFriendship.username];
+    [query includeKey:@"user"];
+    [query whereKey:@"user" equalTo:self.user];
     query.limit = 20;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
             self.userFriendship = friendships[0];
+            // changing button titlw to "requested" after user taps add friend
+            NSString *title=[sender currentTitle];
+            
+            if ([title isEqualToString:@"Add Friend"]) {
+                [sender setTitle:@"Requested" forState:UIControlStateNormal];
+                // adds the new friend request to user's friend incoming requests array and saves it
+                [self.userFriendship addObject:[PFUser currentUser] forKey:@"incomingRequests"];
+                [self.userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    if (!error) {
+                    } else {
+                        NSLog(@"ERROR REQUEST %@", error.localizedDescription);
+                    }
+                }];
+                // adds the new friend request to user's outgouing requests array
+                [self.currentUserFriendship addObject:self.user forKey:@"outgoingRequests"];
+                [self.currentUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    if (!error) {
+                    } else {
+                        NSLog(@"ERROR REQUEST");
+                    }
+                }];
+                
+            }
+            
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-    // changing button titlw to "requested" after user taps add friend
-    NSString *title=[sender currentTitle];
-    NSString *currentUsername = [PFUser currentUser][@"username"];
 
-    if ([title isEqualToString:@"Add Friend"]) {
-        [sender setTitle:@"Requested" forState:UIControlStateNormal];
-        // adds the new friend request to user's friend requests array and saves it
-        [self.userFriendship addObject:currentUsername forKey:@"friendRequests"];
-        [self.userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-            if (!error) {
-            } else {
-                NSLog(@"ERROR REQUEST");
-            }
-        }];
-    }
     /*
     else {
         [sender setTitle:@"Add back" forState:UIControlStateNormal];

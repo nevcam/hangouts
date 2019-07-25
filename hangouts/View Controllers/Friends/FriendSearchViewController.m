@@ -22,7 +22,9 @@
 @property (nonatomic, strong) NSMutableArray *users;
 @property (nonatomic, strong) NSMutableArray *filteredUsers;
 @property (nonatomic, strong) NSMutableArray *friendships;
-@property (nonatomic, strong) NSMutableArray *currentUserFriendRequests;
+@property (nonatomic, strong) NSPointerArray *currentUserIncomingRequests;
+@property (nonatomic, strong) NSPointerArray *currentUserOutgoingRequests;
+@property (nonatomic, strong) NSMutableArray *currentUserFriends;
 @property (nonatomic, strong) Friendship *currentUserFriendship;
 @property (nonatomic, strong) NSMutableDictionary *friendshipMap;
 
@@ -41,9 +43,7 @@
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRequestTap:)];
     [self.requestView addGestureRecognizer:singleFingerTap];
-    
-    [self fetchFriendships];
-    [self fetchUsers];
+    [self getCurrentUserFriendship];
     self.tableView.rowHeight = 80;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
 }
@@ -56,46 +56,32 @@
         if (users) {
             self.users = (NSMutableArray *)users;
             self.filteredUsers = self.users;
-            [self getCurrentUserInfo];
-            [self.tableView reloadData];
+            [self getCurrentUserFriendship];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
 }
 
-- (void)fetchFriendships {
+
+- (void)getCurrentUserFriendship {
+    // Get current user's friend information to pass it later and show friend request count
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
-    query.limit = 100;
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    query.limit = 1;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            self.friendships = (NSMutableArray *)friendships;
-            NSMutableDictionary *map = [[NSMutableDictionary alloc] init];
-            NSMutableArray *array;
-            for (Friendship *friendship in friendships) {
-                array = [map objectForKey:friendship[@"username"]];
-                if (!array) {
-                    array = [[NSMutableArray alloc] init];
-                    [map setObject:array forKey:friendship[@"username"]];
-                }
-                [array addObject:friendship];
-            }
-            self.friendshipMap = map;
-            [self.tableView reloadData];
+            Friendship *friendship = friendships[0];
+            self.currentUserFriendship = friendship;
+            self.currentUserFriends = (NSMutableArray *)friendship.friends;
+            self.currentUserIncomingRequests = (NSPointerArray *)friendship.incomingRequests;
+            self.currentUserOutgoingRequests = (NSPointerArray *)friendship.outgoingRequests;
+            self.requestCount.text = [@(self.currentUserIncomingRequests.count) stringValue];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-}
-
-- (void)getCurrentUserInfo {
-    // Get current user's friend information to pass it later and show friend request count
-    NSString *username = [PFUser currentUser][@"username"];
-    Friendship *userFriendship = self.friendshipMap[username][0];
-    self.currentUserFriendRequests = (NSMutableArray *)userFriendship.friendRequests;
-    self.currentUserFriendship = userFriendship;
-    self.requestCount.text = [@(self.currentUserFriendRequests.count) stringValue];
 }
 
 - (void)handleRequestTap:(UITapGestureRecognizer *)recognizer
@@ -114,48 +100,63 @@
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     PFFileObject *const imageFile = user[@"profilePhoto"];
-    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
     cell.profilePhotoView.image = nil;
     [cell.profilePhotoView setImageWithURL:profilePhotoURL];
     cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
     cell.profilePhotoView.layer.masksToBounds = YES;
     cell.profilePhotoView.layer.borderWidth = 0;
+    cell.currentUserFriendship = self.currentUserFriendship;
 
-    NSString *username = user[@"username"];
-    Friendship *userFriendship = self.friendshipMap[username][0];
-    cell.userFriendship = userFriendship;
-    cell.friends = (NSMutableArray *)userFriendship.friends;
-    cell.friendRequests = (NSMutableArray *)userFriendship.friendRequests;
+    // checks whether current user is friends with this user
+    for (PFUser *friend in self.currentUserFriends){
+        if ([friend.objectId isEqualToString:user.objectId]) {
+            [cell.addFriendButton setTitle:@"" forState:UIControlStateNormal];
+            cell.addFriendButton.enabled = NO;
+            return cell;
+        }
+    }
 
-    NSString *currentUsername = [PFUser currentUser][@"username"];
-    if ([cell.friends containsObject:currentUsername]) {
-        [cell.addFriendButton setTitle:@"" forState:UIControlStateNormal];
-        cell.addFriendButton.enabled = NO;
+    for (PFUser *requestedFriend in self.currentUserOutgoingRequests) {
+        if ([requestedFriend.objectId isEqual:user.objectId]) {
+            [cell.addFriendButton setTitle:@"Requested" forState:UIControlStateNormal];
+            cell.addFriendButton.enabled = NO;
+            return cell;
+        }
     }
-    // checks whether current user sent a request to this user before
-    else if ([cell.friendRequests containsObject:currentUsername]) {
-        [cell.addFriendButton setTitle:@"Requested" forState:UIControlStateNormal];
-        cell.addFriendButton.enabled = NO;
-    } else {
-        [cell.addFriendButton setTitle:@"Add Friend" forState:UIControlStateNormal];
-    }
- 
+    // not friends or not requested
+    [cell.addFriendButton setTitle:@"Add Friend" forState:UIControlStateNormal];
     return cell;
+
+}
+
+- (void)fetchFilteredUsers:(NSString *)prefix {
+    PFQuery *query = [PFUser query];
+    [query orderByDescending:@"createdAt"];
+    query.limit = 100;
+    [query whereKey:@"fullname" hasPrefix:prefix];
+    [query whereKey:@"username" notEqualTo:[PFUser currentUser][@"username"]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
+        if (users) {
+            self.users = (NSMutableArray *)users;
+            self.filteredUsers = self.users;
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (searchText.length != 0) {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(PFUser *evaluatedObject, NSDictionary *bindings) {
-            return [evaluatedObject[@"fullname"] containsString:searchText];
-        }];
-        self.filteredUsers = (NSMutableArray *)[self.users filteredArrayUsingPredicate:predicate];
+        [self fetchFilteredUsers:searchText];
     }
     else {
-        self.filteredUsers = self.users;
+        self.filteredUsers = [NSMutableArray new];
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
-    
 }
+
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = YES;
@@ -165,7 +166,7 @@
     self.searchBar.showsCancelButton = NO;
     self.searchBar.text = @"";
     [self.searchBar resignFirstResponder];
-    self.filteredUsers = self.users;
+    self.filteredUsers = [NSMutableArray new];
     [self.tableView reloadData];
 }
 
@@ -178,8 +179,6 @@
     // Pass the selected object to the new view controller.
     if ([segue.identifier  isEqual: @"requestSegue"]) {
         FriendRequestsViewController *friendRequestsViewController = segue.destinationViewController;
-        friendRequestsViewController.friendRequests = self.currentUserFriendRequests;
-        friendRequestsViewController.users = self.users;
         friendRequestsViewController.currentUserFriendship = self.currentUserFriendship;
     }
 }

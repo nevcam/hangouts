@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *denyButton;
 @property (nonatomic, weak) PFUser *user;
 @property (nonatomic, weak) Friendship *currentUserFriendship;
+@property (nonatomic, weak) Friendship *cellUserFriendship;
 @property (nonatomic, weak) id <FriendRequestCellDelegate > delegate;
 @property (nonatomic, weak) NSIndexPath *indexPath;
 @end
