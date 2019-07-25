@@ -13,10 +13,10 @@
 #import "Event.h"
 @import Parse;
 
-@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *eventArray;
+@property (strong, nonatomic) NSMutableArray *userXEventArray;
 
 @end
 
@@ -37,7 +37,7 @@
     [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     [userXEventQuery whereKey:@"type" notEqualTo:@"declined"];
     [userXEventQuery includeKey:@"event"];
-    [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event",@"type",nil]];
 
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
         if (userXEvents) {
@@ -55,27 +55,36 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    NSArray *array = self.eventArray[indexPath.section];
-    [cell configureCell:array[indexPath.row]];
+    NSArray *array = self.userXEventArray[indexPath.section];
+    UserXEvent *userXEvent = array[indexPath.row];
+    [cell configureCell:userXEvent.event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    cell.delegate = self;
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.eventArray[section] count];
+    return [self.userXEventArray[section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.eventArray count];
+    return [self.userXEventArray count];
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
     [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
-    NSArray *array = [self.eventArray objectAtIndex:section];
-    Event *event = array[0];
+    NSArray *array = [self.userXEventArray objectAtIndex:section];
+    UserXEvent *userXEvent = array[0];
+    Event *event = userXEvent.event;
     NSDate *date = event.date;
-     return [self getDayStringOfDate:date];
+    return [self getDayStringOfDate:date];
+}
+
+#pragma mark - Event Cell protocol methods
+
+- (void)changedUserXEventTypeTo:(nonnull NSString *)type {
+    [self fetchCalendarEvents];
 }
 
 #pragma mark -  Date methods
@@ -87,7 +96,7 @@
 }
 
 - (void)initArrayWithEvents:(NSArray *)userXEvents {
-    self.eventArray = [[NSMutableArray alloc] init];
+    self.userXEventArray = [[NSMutableArray alloc] init];
     NSString *pastKey = @"";
     int i = -1;
     for (UserXEvent *userXEvent in userXEvents) {
@@ -95,13 +104,13 @@
         NSDate *date = event.date;
         NSString *key = [self getDayStringOfDate:date];
         if([pastKey isEqualToString:key]) {
-            NSMutableArray *array = self.eventArray[i];
-            [array addObject:event];
+            NSMutableArray *array = self.userXEventArray[i];
+            [array addObject:userXEvent];
         } else {
             i++;
             pastKey = key;
-            NSMutableArray *array = [NSMutableArray arrayWithObject:event];
-            [self.eventArray addObject:array];
+            NSMutableArray *array = [NSMutableArray arrayWithObject:userXEvent];
+            [self.userXEventArray addObject:array];
         }
     }
 }

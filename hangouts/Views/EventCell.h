@@ -27,8 +27,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ownerUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *declineButton;
+@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 
 - (void)configureCell:(Event *)event;
+
+- (void)configureCell:(Event *)event withType:(NSString *)type;
 
 @end
 

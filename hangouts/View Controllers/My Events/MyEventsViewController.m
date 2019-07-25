@@ -84,6 +84,8 @@
     [self fetchEventsOfType:@"accepted"];
 }
 
+#pragma mark - Even Cell protocol methods
+
 - (void)changedUserXEventTypeTo:(NSString *)type {
     if([type isEqualToString:@"accepted"]) {
         [self fetchEventsOfType:@"accepted"];

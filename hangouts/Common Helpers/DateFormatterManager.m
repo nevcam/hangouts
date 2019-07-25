@@ -12,7 +12,7 @@
 
 @synthesize formatter;
 
-#pragma mark Singleton Methods
+#pragma mark - Singleton Methods
 
 + (id)sharedDateFormatter {
     static DateFormatterManager *sharedDateFormatter = nil;

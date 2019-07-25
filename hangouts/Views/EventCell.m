@@ -32,12 +32,23 @@
     self.descriptionLabel.text = event.eventDescription;
 }
 
+- (void)configureCell:(Event *)event withType:(NSString *)type {
+    [self configureCell:event];
+    if([type isEqualToString:@"invited"]) {
+        [self.acceptButton setHidden:NO];
+        [self.declineButton setHidden:NO];
+    } else {
+        [self.acceptButton setHidden:YES];
+        [self.declineButton setHidden:YES];
+    }
+}
+
 #pragma mark -  buttons methods
 
 - (void)updateType: (NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"eventId" equalTo:self.event.objectId];
-    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"event" equalTo:self.event];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
         if (userXEvents) {
