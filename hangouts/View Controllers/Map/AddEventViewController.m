@@ -75,11 +75,11 @@
         NSString *location_name = self.location_name;
         
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address users_invited:self.invitedFriends withCompletion:^(NSString *eventID, NSError *error) {
+        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address users_invited:self.invitedFriends withCompletion:^(Event *event, NSError *error) {
             if (error) {
                 NSLog(@"Not working");
             } else {
-                [self handleSuccessCreatingEventWithEventID:eventID];
+                [self handleSuccessCreatingEventWithEvent:event];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }];
@@ -87,17 +87,15 @@
 }
 
 // If event is created successfully, we add owner and friends to UserXEvent Class
-- (void) handleSuccessCreatingEventWithEventID:(NSString *)eventID {
-    NSString *_eventId = [eventID copy];
-    
-    [UserXEvent createUserXEventForUser:(NSString *)[PFUser currentUser].username withId:(NSString *)_eventId withType:(NSString *)@"owned" withCompletion:^(BOOL succeeded, NSError *error) {
+- (void) handleSuccessCreatingEventWithEvent:(Event *)event {
+    [UserXEvent createUserXEventForUser:[PFUser currentUser] withEvent:event withType:@"owned" withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to add owner to UserXEvent class");
         }
     }];
     
-    for (NSString *friendUsername in self.invitedFriends) {
-        [UserXEvent createUserXEventForUser:(NSString *)friendUsername withId:(NSString *)_eventId withType:(NSString *)@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+    for (PFUser *friend in self.invitedFriends) {
+        [UserXEvent createUserXEventForUser:friend withEvent:event withType:@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
             if (error) {
                 NSLog(@"Failed to add user to UserXEvent class");
             }

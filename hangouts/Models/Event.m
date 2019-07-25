@@ -50,7 +50,7 @@
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            completion(newEvent.objectId, error);
+            completion(newEvent, error);
         } else {
             completion(nil, error);
             NSLog(@"Could not retrieve ObjectId. Error:%@", error);

@@ -7,9 +7,10 @@
 //
 
 @import Parse;
+@class Event;
 #import <Foundation/Foundation.h>
 
-typedef void (^EventCreationCompletionBlock)(NSString *eventID, NSError *error);
+typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
 
 @interface Event : PFObject <PFSubclassing>
 

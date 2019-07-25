@@ -18,8 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
-@property (nonatomic, strong) NSMutableArray *invitedEvents;
-@property (nonatomic, strong) NSMutableArray *acceptedEvents;
+@property (nonatomic, strong) NSMutableArray *invitedUserXEvents;
+@property (nonatomic, strong) NSMutableArray *acceptedUserXEvents;
 
 @property (nonatomic, strong) UIRefreshControl *invitedRefreshControl;
 @property (nonatomic, strong) UIRefreshControl *acceptedRefreshControl;
@@ -53,21 +53,20 @@
 
 - (void)fetchEventsOfType:(NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     [userXEventQuery whereKey:@"type" equalTo:type];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
     
-    PFQuery *eventQuery = [Event query];
-    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
-    
-    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
             if([type isEqualToString:@"accepted"]) {
                 [self.acceptedRefreshControl endRefreshing];
-                self.acceptedEvents = [[NSMutableArray alloc] initWithArray:events];
+                self.acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
                 [self.acceptedTableView reloadData];
             } else {
                 [self.invitedRefreshControl endRefreshing];
-                self.invitedEvents = [[NSMutableArray alloc] initWithArray:events];
+                self.invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
                 [self.invitedTableView reloadData];
             }
         } else {
@@ -96,14 +95,15 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;
-    Event *event;
+    UserXEvent *userXEvent;
     if(tableView == self.acceptedTableView) {
         cellIdentifier = @"AcceptedEventCell";
-        event = self.acceptedEvents[indexPath.row];
+        userXEvent = self.acceptedUserXEvents[indexPath.row];
     } else {
         cellIdentifier = @"InvitedEventCell";
-        event = self.invitedEvents[indexPath.row];
+        userXEvent = self.invitedUserXEvents[indexPath.row];
     }
+    Event *event = userXEvent.event;
     EventCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     [cell configureCell:event];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -113,9 +113,10 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(tableView == self.acceptedTableView) {
-        return self.acceptedEvents.count;
+        return self.acceptedUserXEvents.count;
+    } else {
+        return self.invitedUserXEvents.count;
     }
-    return self.invitedEvents.count;
 }
 
  #pragma mark - Navigation
@@ -124,7 +125,7 @@
      if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
          UITableViewCell *tappedCell = sender;
          NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
-         Event *event = self.acceptedEvents[indexPath.row];
+         Event *event = self.acceptedUserXEvents[indexPath.row];
          EventTabBarController *tabBarViewControllers = [segue destinationViewController];
          UINavigationController *navController = tabBarViewControllers.viewControllers[0];
          EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
