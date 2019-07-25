@@ -14,14 +14,15 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 
 @interface LocationsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSArray *results;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
 @implementation LocationsViewController
+{
+    NSArray *_results;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,18 +39,18 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.results.count;
+    return self->_results.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LocationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LocationCell" forIndexPath:indexPath];
-    [cell updateWithLocation:self.results[indexPath.row]];
+    [cell updateWithLocation:self->_results[indexPath.row]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // This is the selected venue
-    NSDictionary *venue = self.results[indexPath.row];
+    NSDictionary *venue = self->_results[indexPath.row];
     NSNumber *lat = [venue valueForKeyPath:@"location.lat"];
     NSNumber *lng = [venue valueForKeyPath:@"location.lng"];
     NSString *loc_name = venue[@"name"];
@@ -78,11 +79,19 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    // __weak typeof(self) weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            // NSLog(@"response: %@", responseDictionary);
-            self.results = [responseDictionary valueForKeyPath:@"response.venues"];
+            self->_results = [responseDictionary valueForKeyPath:@"response.venues"];
+//            __strong typeof(self) strongSelf = weakSelf;
+//
+//            if (!strongSelf->_results) {
+//                strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
+//            } else {
+//                NSLog(@"Error: in loading self");
+//            }
             [self.tableView reloadData];
         }
     }];
