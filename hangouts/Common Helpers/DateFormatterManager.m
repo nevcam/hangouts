@@ -19,7 +19,6 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedDateFormatter = [[self alloc] init];
-        NSLog(@"Created new date formatter");
     });
     return sharedDateFormatter;
 }

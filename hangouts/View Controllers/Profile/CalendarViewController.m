@@ -34,16 +34,16 @@
 
 - (void)fetchCalendarEvents {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"username" equalTo:[PFUser currentUser].username];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     [userXEventQuery whereKey:@"type" notEqualTo:@"declined"];
-    
-    PFQuery *eventQuery = [Event query];
-    [eventQuery whereKey:@"objectId" matchesKey:@"eventId" inQuery:userXEventQuery];
-    [eventQuery orderByAscending:@"date"];
-    
-    [eventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
-        if (events) {
-            [self initArrayWithEvents:events];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
+
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
+        if (userXEvents) {
+            NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
+            NSArray *sortedArray = [userXEvents sortedArrayUsingDescriptors:descriptors];
+            [self initArrayWithEvents:sortedArray];
             [self.tableView reloadData];
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
@@ -86,11 +86,12 @@
     return [manager.formatter stringFromDate:date];
 }
 
-- (void)initArrayWithEvents:(NSArray *)events {
+- (void)initArrayWithEvents:(NSArray *)userXEvents {
     self.eventArray = [[NSMutableArray alloc] init];
     NSString *pastKey = @"";
     int i = -1;
-    for (Event *event in events) {
+    for (UserXEvent *userXEvent in userXEvents) {
+        Event *event = userXEvent.event;
         NSDate *date = event.date;
         NSString *key = [self getDayStringOfDate:date];
         if([pastKey isEqualToString:key]) {
