@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) Friendship *userFriendship;
 @property (nonatomic, weak) NSMutableArray *friends;
 @property (nonatomic, weak) NSMutableArray *friendRequests;
+@property (nonatomic, weak) Friendship *currentUserFriendship;
 @end
 
 NS_ASSUME_NONNULL_END

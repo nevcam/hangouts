@@ -39,7 +39,6 @@
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     self.profilePhotoView.image = nil;
     [self.profilePhotoView setImageWithURL:profilePhotoURL];
-    // make profile photo a circle
     self.profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.height /2;
     self.profilePhotoView.layer.masksToBounds = YES;
     self.profilePhotoView.layer.borderWidth = 0;
@@ -60,29 +59,34 @@
     self->_friendUsers = [[NSMutableArray alloc] init];
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
-    [query whereKey:@"username" equalTo:[PFUser currentUser][@"username"]];
+    [query includeKey:@"user"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
     query.limit = 1;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
             Friendship *friendship = friendships[0];
             NSArray *friends = friendship[@"friends"];
-            for(NSString *friendUsername in friends) {
-                PFQuery *query = [PFUser query];
-                [query orderByDescending:@"createdAt"];
-                query.limit = 1;
-                [query whereKey:@"username" equalTo:friendUsername];
-                [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
-                    if (users) {
-                        [self->_friendUsers addObjectsFromArray:users];
-                        if (self->_friendUsers.count==friends.count) {
-                            [self.tableView reloadData];
-                        }
-                        [self.tableView reloadData];
-                    } else {
-                        NSLog(@"Error: %@", error.localizedDescription);
-                    }
-                }];
+            NSMutableArray *friendIds = [NSMutableArray new];
+            
+            for (PFUser *friendPointer in friends) {
+                [friendIds addObject:friendPointer.objectId];
             }
+            PFQuery *query = [PFUser query];
+            [query orderByDescending:@"createdAt"];
+            query.limit = 1;
+            [query whereKey:@"objectId" containedIn:friendIds];
+            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
+                if (users) {
+                    [self->_friendUsers addObjectsFromArray:users];
+                    if (self->_friendUsers.count==friends.count) {
+                        [self.tableView reloadData];
+                    }
+                    [self.tableView reloadData];
+                } else {
+                    NSLog(@"Error: %@", error.localizedDescription);
+                }
+            }];
+            
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }

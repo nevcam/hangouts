@@ -18,7 +18,7 @@
 @end
 
 @implementation FriendRequestsViewController {
-    NSMutableArray* _objects;
+    NSMutableArray* _requests;
 }
 
 - (void)viewDidLoad {
@@ -30,19 +30,18 @@
 }
 
 - (void)fetchRequests {
-    for (NSString *username in self.friendRequests) {
+    NSMutableArray *incomingFriendRequests = (NSMutableArray *)self.currentUserFriendship.incomingRequests;
+    for (PFUser *request in incomingFriendRequests) {
         PFQuery *query = [PFUser query];
-        [query orderByDescending:@"createdAt"];
-        query.limit = 1;
-        [query whereKey:@"username" equalTo:username];
-        [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
-            if (users) {
-
-                if(!self->_objects){
-                    self->_objects = [[NSMutableArray alloc] init];
+        [query getObjectInBackgroundWithId:request.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+            if (object) {
+                PFUser *user = (PFUser *)object;
+                NSLog(@"user: %@", user);
+                if(!self->_requests){
+                    self->_requests = [[NSMutableArray alloc] init];
                 }
-                [self->_objects addObjectsFromArray:users];
-                if (self->_objects.count==self.friendRequests.count) {
+                [self->_requests addObject:user];
+                if (self->_requests.count==incomingFriendRequests.count) {
                     [self.tableView reloadData];
                 }
             } else {
@@ -53,12 +52,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.friendRequests.count;
+    return self.currentUserFriendship.incomingRequests.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FriendRequestCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendRequestCell"];
-    PFUser *user = self->_objects[indexPath.row];
+    PFUser *user = self->_requests[indexPath.row];
+    NSLog(@"user cell: %@", user);
     cell.user = user;
     cell.delegate = self;
     cell.indexPath = indexPath;
