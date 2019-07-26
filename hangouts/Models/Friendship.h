@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSPointerArray *incomingRequests;
 @property (nonatomic, strong) PFUser *user;
 
-+ (void) createFriendshipForUser: (NSString * _Nullable )username withCompletion: (PFBooleanResultBlock  _Nullable)completion;
++ (void) createFriendshipForUser: (PFUser * _Nullable )user withCompletion: (PFBooleanResultBlock  _Nullable)completion;
 
 @end
 

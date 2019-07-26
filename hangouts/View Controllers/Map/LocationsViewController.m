@@ -20,9 +20,14 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 @end
 
 @implementation LocationsViewController
+
+#pragma mark - Global Variables
+
 {
-    NSArray *_results;
+    NSMutableArray *_results;
 }
+
+#pragma mark - Load View Controller
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,11 +37,11 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     self.searchBar.delegate = self;
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Load Locations
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self->_results.count;
@@ -47,6 +52,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [cell updateWithLocation:self->_results[indexPath.row]];
     return cell;
 }
+
+#pragma mark - Save Location When Selected
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // This is the selected venue
@@ -60,6 +67,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [self.delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng name:loc_name address:loc_address];
 }
 
+#pragma mark - Search Bar
+
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     NSString *newText = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
     [self fetchLocationsWithQuery:newText nearCity:@"San Francisco"];
@@ -69,6 +78,10 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self fetchLocationsWithQuery:searchBar.text nearCity:@"San Francisco"];
 }
+
+// Cancel button implemented through view controller
+
+#pragma mark - Fetch Locations From API
 
 - (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city {
     NSString *baseURLString = @"https://api.foursquare.com/v2/venues/search?";
@@ -80,18 +93,15 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
-    // __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        __strong typeof(self) strongSelf = weakSelf;
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            self->_results = [responseDictionary valueForKeyPath:@"response.venues"];
-//            __strong typeof(self) strongSelf = weakSelf;
-//
-//            if (!strongSelf->_results) {
-//                strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
-//            } else {
-//                NSLog(@"Error: in loading self");
-//            }
+            
+            strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
+            
             [self.tableView reloadData];
         }
     }];

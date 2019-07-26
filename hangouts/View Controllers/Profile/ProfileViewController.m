@@ -79,7 +79,7 @@
             
             [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
                 if (friends) {
-                    __strong typeof(self) strongSelf = weakSelf;
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
                     
                     if (!strongSelf->_friendships) {
                         strongSelf->_friendships = [NSMutableArray new];

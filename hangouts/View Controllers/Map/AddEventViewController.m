@@ -27,6 +27,9 @@
 @end
 
 @implementation AddEventViewController
+
+#pragma mark - Global Variables
+
 {
     __weak NSNumber *_location_lat;
     __weak NSNumber *_location_lng;
@@ -34,6 +37,8 @@
     __weak NSString *_location_address;
            NSMutableArray *_invitedFriends;
 }
+
+#pragma mark - Loading and Popping Controller
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,11 +50,13 @@
     [self.eventDatePicker setMinimumDate: [NSDate date]];
 }
 
-
 // Closes "Add Event" view controller when user clicks respective button
 - (IBAction)clickedCancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - Load New Event to Parse
+
 // Adds an event to database
 - (IBAction)clickedCreateEvent:(id)sender {
     
@@ -119,13 +126,17 @@
     }
 }
 
+#pragma mark - Load and Choose Event Location
 
 // Triggered when user wants to choose a location
 - (IBAction)clickedChooseLocation:(id)sender {
     [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
 }
 // Locally saves location if user has chosen one
-- (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude name:(NSString *)name address:(NSString *)address {
+- (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude
+                      longitude:(NSNumber *)longitude
+                           name:(NSString *)name
+                        address:(NSString *)address {
     
     _location_lat = latitude;
     _location_lng = longitude;
@@ -138,6 +149,8 @@
     [self.navigationController popToViewController:self animated:YES];
 }
 
+#pragma mark - Load and Invite Friends
+
 // Triggered when user wants to see the list of friends that are invited to the event
 - (IBAction)clickedInviteFriends:(id)sender {
     [self performSegueWithIdentifier:@"eventFriendsSegue" sender:nil];
@@ -148,6 +161,7 @@
     [self.inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
 }
 
+#pragma mark - Friends and Locations Segues
 
 // Segues to location and friends view controllers
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -161,6 +175,8 @@
         friendsInvitedController.invitedFriends = _invitedFriends;
     }
 }
+
+#pragma mark - Validate Event Information
 
 // RUNS alerts to prevent user from inputing an event with empty fields. Boolean to exit function as soon as an error is encountered
 - (BOOL)validateFields {
@@ -176,8 +192,8 @@
     return YES;
 }
 
+#pragma mark - View Controller Layout Code
 
-// VIEW CONTROLLER LAYOUT CODE
 // Disables field to prevent users from adding random locations
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return NO;
@@ -206,13 +222,14 @@
         [self.eventDescriptionField resignFirstResponder];
     }
 }
--(void) textViewShouldEndEditing:(UITextView *)textView {
+-(BOOL) textViewShouldEndEditing:(UITextView *)textView {
     if(self.eventDescriptionField.text.length == 0) {
         self.eventDescriptionField.textColor = [UIColor lightGrayColor];
         self.eventDescriptionField.text = @"Description";
         [self.eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         [self.eventDescriptionField resignFirstResponder];
     }
+    return YES;
 }
 
 @end
