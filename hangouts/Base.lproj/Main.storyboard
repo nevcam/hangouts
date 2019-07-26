@@ -442,7 +442,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j41-WR-7nJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-176.80000000000001" y="4660.1199400299856"/>
+            <point key="canvasLocation" x="-607" y="5205"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="NjA-vg-NWg">
@@ -578,21 +578,42 @@
             </objects>
             <point key="canvasLocation" x="-4500" y="3099"/>
         </scene>
-        <!--View Controller-->
+        <!--Photos View Controller-->
         <scene sceneID="ubO-qI-kgN">
             <objects>
-                <viewController id="q3X-Ki-4NZ" sceneMemberID="viewController">
+                <viewController id="q3X-Ki-4NZ" customClass="PhotosViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kno-4z-oaD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lu3-oD-A2g">
+                                <rect key="frame" x="317" y="76" width="37" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedAddPhoto:" destination="q3X-Ki-4NZ" eventType="touchUpInside" id="qAV-cy-4VV"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j7G-qd-ow5">
+                                <rect key="frame" x="67" y="200" width="240" height="238"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kEb-Ya-jqX"/>
                     </view>
                     <navigationItem key="navigationItem" id="yaI-Ag-d8C"/>
+                    <connections>
+                        <outlet property="imageView" destination="j7G-qd-ow5" id="umF-YV-aZP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJB-pG-NoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2953" y="3099"/>
+            <point key="canvasLocation" x="-2954.4000000000001" y="3098.5007496251878"/>
         </scene>
         <!--Event Tab Bar Controller-->
         <scene sceneID="Pkf-Gx-QD1">
@@ -1655,7 +1676,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ftJ-XV-gxu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1906" y="4656"/>
+            <point key="canvasLocation" x="-1758" y="5205"/>
         </scene>
         <!--Details-->
         <scene sceneID="kzj-4a-wYq">

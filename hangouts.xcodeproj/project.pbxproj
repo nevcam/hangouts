@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */; };
+		3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3722EB8ACC002732DB /* PhotosViewController.m */; };
+		3C313D3B22EBAE9B002732DB /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3A22EBAE9B002732DB /* Photo.m */; };
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
@@ -66,6 +68,10 @@
 
 /* Begin PBXFileReference section */
 		288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangoutsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C313D3622EB8ACC002732DB /* PhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
+		3C313D3722EB8ACC002732DB /* PhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
+		3C313D3922EBAE9B002732DB /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		3C313D3A22EBAE9B002732DB /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		3CE7D01122DF9681005E5C29 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3CE7D01222DF9681005E5C29 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddEventViewController.h; sourceTree = "<group>"; };
@@ -289,6 +295,8 @@
 				3CE7D01B22DFA214005E5C29 /* Event.m */,
 				D9DF805522E685C4003D240F /* Chat_Message.h */,
 				D9DF805622E685C4003D240F /* Chat_Message.m */,
+				3C313D3922EBAE9B002732DB /* Photo.h */,
+				3C313D3A22EBAE9B002732DB /* Photo.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -311,6 +319,8 @@
 				D9DF804922E670C9003D240F /* EventDetailsViewController.m */,
 				D9DF804C22E6761C003D240F /* ChatViewController.h */,
 				D9DF804D22E6761C003D240F /* ChatViewController.m */,
+				3C313D3622EB8ACC002732DB /* PhotosViewController.h */,
+				3C313D3722EB8ACC002732DB /* PhotosViewController.m */,
 			);
 			path = "Event Details";
 			sourceTree = "<group>";
@@ -619,6 +629,7 @@
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
+				3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */,
 				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */,
 				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
@@ -635,6 +646,7 @@
 				3CE7D02222E0D9E7005E5C29 /* LocationCell.m in Sources */,
 				D9DF804A22E670C9003D240F /* EventDetailsViewController.m in Sources */,
 				3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */,
+				3C313D3B22EBAE9B002732DB /* Photo.m in Sources */,
 				D9DF804722E28D76003D240F /* FriendViewCell.m in Sources */,
 				3CE7D01F22E0D930005E5C29 /* LocationsViewController.m in Sources */,
 			);
