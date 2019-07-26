@@ -24,7 +24,7 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 #pragma mark - Global Variables
 
 {
-    NSArray *_results;
+    NSMutableArray *_results;
 }
 
 #pragma mark - Load View Controller
@@ -79,6 +79,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [self fetchLocationsWithQuery:searchBar.text nearCity:@"San Francisco"];
 }
 
+// Cancel button implemented through view controller
+
 #pragma mark - Fetch Locations From API
 
 - (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city {
@@ -91,18 +93,15 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
-    // __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        __strong typeof(self) strongSelf = weakSelf;
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            self->_results = [responseDictionary valueForKeyPath:@"response.venues"];
-//            __strong typeof(self) strongSelf = weakSelf;
-//
-//            if (!strongSelf->_results) {
-//                strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
-//            } else {
-//                NSLog(@"Error: in loading self");
-//            }
+            
+            strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
+            
             [self.tableView reloadData];
         }
     }];
