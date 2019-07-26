@@ -59,29 +59,37 @@
 // Saves photo when image has been chosen
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    
     if (!self->_photosCollection) {
         self->_photosCollection = [NSMutableArray new];
     }
     [self->_photosCollection addObject:info[UIImagePickerControllerOriginalImage]];
     
-//    PFObject *photo = [PFObject objectWithClassName:@"Photo"];
-//    photo.photo = info[UIImagePickerControllerOriginalImage];
-//    photo[@"user"] = [PFUser currentUser];
-//    photo[@"event"] = _currentEvent;
-//    
-////    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_photosCollection.count inSection:0];
-////    NSMutableArray *paths = [NSMutableArray new];
-////    [paths addObject:indexPath];
-//    
-//    [photo saveInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
-//        if (succeeded) {
-//            [self fetchPhotos];
-//        } else {
-//            NSLog(@"Problem saving photo: %@", error.localizedDescription);
-//        }
-//    }];
+     UIImage *imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
+    
+    [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
+        if (error) {
+            NSLog(@"Failed to upload photo");
+        }
+    }];
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+// Resize image for it to fit server conditions
+- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
+    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    
+    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
+    resizeImageView.image = image;
+    
+    UIGraphicsBeginImageContext(size);
+    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 /*
