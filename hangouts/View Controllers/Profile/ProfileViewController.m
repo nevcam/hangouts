@@ -26,11 +26,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.rowHeight = 80;
-    
     self.user = [PFUser currentUser];
     self.usernameLabel.text = self.user[@"username"];
     self.fullnameLabel.text = self.user[@"fullname"];
@@ -87,7 +86,7 @@
                         [strongSelf->_friendships addObjectsFromArray:friends];
                         if (strongSelf->_friendships.count == friendPointers.count) {
                             strongSelf->_friendUsers = strongSelf->_friendships;
-                            [self.tableView reloadData];
+                            [strongSelf.tableView reloadData];
                         }
                     } else {
                         NSLog(@"Error");
