@@ -49,7 +49,6 @@
         imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
     }
     else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
         imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     }
     
@@ -71,6 +70,8 @@
     [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to upload photo");
+        } else {
+            NSLog(@"Succecss upload photo");
         }
     }];
     

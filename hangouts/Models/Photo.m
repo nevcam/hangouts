@@ -23,6 +23,7 @@
     newPhoto.user = [PFUser currentUser];
     newPhoto.event = event;
     
+    [newPhoto saveInBackgroundWithBlock: completion];
 }
 
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
