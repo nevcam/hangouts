@@ -45,7 +45,7 @@
         if (userXEvents) {
             NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
             NSArray *sortedArray = [userXEvents sortedArrayUsingDescriptors:descriptors];
-            typeof(self) strongSelf = weakSelf; // works with weakself as well (??)
+            typeof(weakSelf) strongSelf = weakSelf; // works with weakself as well (??)
             if (strongSelf) {
                 [strongSelf initArrayWithEvents:sortedArray];
                 [strongSelf.tableView reloadData];
