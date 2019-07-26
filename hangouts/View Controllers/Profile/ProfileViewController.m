@@ -21,6 +21,7 @@
 
 @implementation ProfileViewController {
     NSMutableArray* _friendUsers;
+    NSMutableArray *_friendships;
 }
 
 - (void)viewDidLoad {
@@ -56,37 +57,45 @@
 }
 
 - (void)fetchFriends {
-    self->_friendUsers = [[NSMutableArray alloc] init];
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
-    [query includeKey:@"user"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    [query includeKey:@"user"];
     query.limit = 1;
+    
+    __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            Friendship *friendship = friendships[0];
-            NSArray *friends = friendship[@"friends"];
+            NSMutableArray *friendPointers = (NSMutableArray *)friendships[0][@"friends"];
             NSMutableArray *friendIds = [NSMutableArray new];
             
-            for (PFUser *friendPointer in friends) {
+            for (PFUser *friendPointer in friendPointers) {
                 [friendIds addObject:friendPointer.objectId];
             }
+            
             PFQuery *query = [PFUser query];
             [query orderByDescending:@"createdAt"];
-            query.limit = 1;
             [query whereKey:@"objectId" containedIn:friendIds];
-            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
-                if (users) {
-                    [self->_friendUsers addObjectsFromArray:users];
-                    if (self->_friendUsers.count==friends.count) {
-                        [self.tableView reloadData];
+            
+            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
+                if (friends) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    
+                    if (!strongSelf->_friendships) {
+                        strongSelf->_friendships = [NSMutableArray new];
+                        strongSelf->_friendUsers = [NSMutableArray new];
+                        [strongSelf->_friendships addObjectsFromArray:friends];
+                        if (strongSelf->_friendships.count == friendPointers.count) {
+                            strongSelf->_friendUsers = strongSelf->_friendships;
+                            [self.tableView reloadData];
+                        }
+                    } else {
+                        NSLog(@"Error");
                     }
-                    [self.tableView reloadData];
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
                 }
             }];
-            
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
