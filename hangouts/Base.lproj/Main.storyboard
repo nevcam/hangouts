@@ -365,9 +365,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="614"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" text="" id="rh6-gu-BVH">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendsToEventCell" rowHeight="80" id="04u-K1-CE9" customClass="FriendsToEventCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="04u-K1-CE9" id="QAi-5z-IxS">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -431,6 +436,7 @@
                         <viewLayoutGuide key="safeArea" id="URz-2Y-JvJ"/>
                     </view>
                     <connections>
+                        <outlet property="searchBar" destination="rh6-gu-BVH" id="8qe-v3-K8J"/>
                         <outlet property="tableView" destination="RVH-Zq-KqS" id="p8c-LY-jsL"/>
                     </connections>
                 </viewController>

@@ -13,15 +13,17 @@
 #import "Friendship.h"
 #import "Event.h"
 
-@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate, FriendEventCellDelegate>
+@interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate, FriendEventCellDelegate, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
 
 @implementation FriendsInviteViewController
 {
     NSMutableArray *_friendships;
+    NSMutableArray *_results;
 }
 
 - (void)viewDidLoad {
@@ -29,6 +31,7 @@
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.searchBar.delegate = self;
     
     if (!self.invitedFriends) {
         self.invitedFriends = [NSMutableArray new];
@@ -66,11 +69,13 @@
                     
                     if (!strongSelf->_friendships) {
                         strongSelf->_friendships = [NSMutableArray new];
+                        strongSelf->_results = [NSMutableArray new];
                         
                         for (PFUser *friend in friends) {
                             [strongSelf->_friendships addObject:friend];
                         }
                         if (strongSelf->_friendships.count == friendPointers.count) {
+                            strongSelf->_results = strongSelf->_friendships;
                             [self.tableView reloadData];
                         }
                     } else {
@@ -87,13 +92,13 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self->_friendships.count;
+    return self->_results.count;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"friendsToEventCell"];
-    PFUser *user = self->_friendships[indexPath.row];
+    PFUser *user = self->_results[indexPath.row];
     cell.user = user;
     
     cell.usernameLabel.text = user[@"username"];
@@ -133,5 +138,33 @@
     [self.delegate saveFriendsList:self.invitedFriends];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+    if (searchText.length != 0) {
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(PFUser *evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject[@"fullname"] containsString:searchText];
+        }];
+        self->_results = (NSMutableArray *)[self->_friendships filteredArrayUsingPredicate:predicate];
+    }
+    else {
+        self->_results = self->_friendships;
+    }
+    [self.tableView reloadData];
+}
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = NO;
+    self.searchBar.text = @"";
+    [self.searchBar resignFirstResponder];
+    self->_results = self->_friendships;
+    [self.tableView reloadData];
+}
+
 
 @end
