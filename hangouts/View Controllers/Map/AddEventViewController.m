@@ -22,17 +22,18 @@
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 
-// Location information - saved in the background for database
-@property (strong, nonatomic) NSNumber *location_lat;
-@property (strong, nonatomic) NSNumber *location_lng;
-@property (strong, nonatomic) NSString *location_name;
-@property (strong, nonatomic) NSString *location_address;
-
-@property (strong, nonatomic) NSMutableArray *invitedFriends;
+// @property (strong, nonatomic) NSMutableArray *invitedFriends;
 
 @end
 
 @implementation AddEventViewController
+{
+    __weak NSNumber *_location_lat;
+    __weak NSNumber *_location_lng;
+    __weak NSString *_location_name;
+    __weak NSString *_location_address;
+           NSMutableArray *_invitedFriends;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -72,11 +73,20 @@
         NSString *newEventName = self.eventNameField.text;
         NSDate *newEventDate = self.eventDatePicker.date;
         NSString *description = self.eventDescriptionField.text;
-        NSString *location_name = self.location_name;
+        NSString *location_name = _location_name;
         
         // Calls function that adds objects to class
-        [Event createEvent:newEventName withDate:newEventDate withDescription:description withLat:self.location_lat withLng:self.location_lng withName:location_name withAddress:self.location_address users_invited:self.invitedFriends withCompletion:^(Event *event, NSError *error) {
-            if (error) {
+        [Event createEvent:newEventName
+                      date:newEventDate
+               description:description
+                       lat:_location_lat
+                       lng:_location_lng
+                      name:location_name
+                   address:_location_address
+             users_invited:_invitedFriends
+            withCompletion:^(Event *event, NSError *error) {
+            
+                if (error) {
                 NSLog(@"Not working");
             } else {
                 [self handleSuccessCreatingEventWithEvent:event];
@@ -88,14 +98,20 @@
 
 // If event is created successfully, we add owner and friends to UserXEvent Class
 - (void) handleSuccessCreatingEventWithEvent:(Event *)event {
-    [UserXEvent createUserXEventForUser:[PFUser currentUser] withEvent:event withType:@"owned" withCompletion:^(BOOL succeeded, NSError *error) {
+    [UserXEvent createUserXEventForUser:[PFUser currentUser]
+                                  event:event
+                                   type:@"owned"
+                         withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to add owner to UserXEvent class");
         }
     }];
     
-    for (PFUser *friend in self.invitedFriends) {
-        [UserXEvent createUserXEventForUser:friend withEvent:event withType:@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+    for (PFUser *friend in _invitedFriends) {
+        [UserXEvent createUserXEventForUser:friend
+                                      event:event
+                                       type:@"invited"
+                             withCompletion:^(BOOL succeeded, NSError *error) {
             if (error) {
                 NSLog(@"Failed to add user to UserXEvent class");
             }
@@ -111,10 +127,10 @@
 // Locally saves location if user has chosen one
 - (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude name:(NSString *)name address:(NSString *)address {
     
-    self.location_lat = latitude;
-    self.location_lng = longitude;
-    self.location_address = address;
-    self.location_name = name;
+    _location_lat = latitude;
+    _location_lng = longitude;
+    _location_address = address;
+    _location_name = name;
     
     // We show the name, rather than the address because not all locations have address
     self.eventLocationField.text = name;
@@ -128,7 +144,7 @@
 }
 // Follows protocol to save friends list from list view controller
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
-    self.invitedFriends = friendsList;
+    self->_invitedFriends = friendsList;
     [self.inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
 }
 
@@ -142,7 +158,7 @@
     else if ([segue.identifier isEqualToString:@"eventFriendsSegue"]) {
         FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
         friendsInvitedController.delegate = self;
-        friendsInvitedController.invitedFriends = self.invitedFriends;
+        friendsInvitedController.invitedFriends = _invitedFriends;
     }
 }
 

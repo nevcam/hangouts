@@ -37,8 +37,8 @@
     self.acceptedTableView.dataSource = self;
     self.acceptedTableView.delegate = self;
     
-    [self fetchEventsOfType:@"invited"];
-    [self fetchEventsOfType:@"accepted"];
+    [self fetchInvitedEvents];
+    [self fetchAcceptedEvents];
     
     self.invitedRefreshControl = [[UIRefreshControl alloc] init];
     [self.invitedRefreshControl addTarget:self action:@selector(fetchInvitedEvents) forControlEvents:UIControlEventValueChanged];
@@ -51,46 +51,55 @@
 
 #pragma mark -  Getting data
 
-- (void)fetchEventsOfType:(NSString *)type {
+- (void)fetchInvitedEvents {
     PFQuery *userXEventQuery = [UserXEvent query];
     [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
-    [userXEventQuery whereKey:@"type" equalTo:type];
+    [userXEventQuery whereKey:@"type" equalTo:@"invited"];
     [userXEventQuery includeKey:@"event"];
-    [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event", @"type", nil]];
     
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            if([type isEqualToString:@"accepted"]) {
-                [self.acceptedRefreshControl endRefreshing];
-                self.acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
-                [self.acceptedTableView reloadData];
-            } else {
-                [self.invitedRefreshControl endRefreshing];
-                self.invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
-                [self.invitedTableView reloadData];
-            }
+            [self.invitedRefreshControl endRefreshing];
+            self.invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+            [self.invitedTableView reloadData];
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
         }
     }];
 }
 
-// Had to add the following two methods to use refresh control (cannot pass arguments in @selector)
-- (void)fetchInvitedEvents {
-    [self fetchEventsOfType:@"invited"];
-}
-
 - (void)fetchAcceptedEvents {
-    [self fetchEventsOfType:@"accepted"];
+    PFQuery *userXEventQuery1 = [UserXEvent query];
+    [userXEventQuery1 whereKey:@"user" equalTo:[PFUser currentUser]];
+    [userXEventQuery1 whereKey:@"type" equalTo:@"accepted"];
+    
+    PFQuery *userXEventQuery2 = [UserXEvent query];
+    [userXEventQuery2 whereKey:@"user" equalTo:[PFUser currentUser]];
+    [userXEventQuery2 whereKey:@"type" equalTo:@"owned"];
+    
+    PFQuery *userXEventQuery = [PFQuery orQueryWithSubqueries:@[userXEventQuery1,userXEventQuery2]];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event", @"type", nil]];
+    
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
+        if (events) {
+            [self.acceptedRefreshControl endRefreshing];
+            self.acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+            [self.acceptedTableView reloadData];
+        } else {
+            NSLog(@"Error getting events: %@", error.localizedDescription);
+        }
+    }];
 }
 
 #pragma mark - Even Cell protocol methods
 
 - (void)changedUserXEventTypeTo:(NSString *)type {
     if([type isEqualToString:@"accepted"]) {
-        [self fetchEventsOfType:@"accepted"];
+        [self fetchAcceptedEvents];
     }
-    [self fetchEventsOfType:@"invited"];
+    [self fetchInvitedEvents];
 }
 
 #pragma mark -  Table view protocols methods
@@ -107,7 +116,7 @@
     }
     Event *event = userXEvent.event;
     EventCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    [cell configureCell:event];
+    [cell configureCell:event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.delegate = self;
     return cell;

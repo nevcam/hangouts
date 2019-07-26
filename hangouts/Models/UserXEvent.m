@@ -18,7 +18,11 @@
     return @"UserXEvent";
 }
 
-+ (void) createUserXEventForUser:(PFUser *)user withEvent:(Event *)event withType:(NSString *)type withCompletion:(PFBooleanResultBlock)completion {
++ (void) createUserXEventForUser:(PFUser *)user
+                           event:(Event *)event
+                            type:(NSString *)type
+                  withCompletion:(PFBooleanResultBlock)completion {
+    
     UserXEvent *newUserXEvent = [UserXEvent new];
     newUserXEvent.user = user;
     newUserXEvent.event = event;

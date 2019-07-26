@@ -26,12 +26,12 @@
 
 // Method to create events from Add Events view controller
 + (void)createEvent:(NSString *)name
-           withDate:(NSDate *)date
-    withDescription:(NSString *)description
-            withLat:(NSNumber *)lat
-            withLng:(NSNumber *)lng
-           withName:(NSString *)locName
-        withAddress:(NSString *)locAddress
+               date:(NSDate *)date
+        description:(NSString *)description
+                lat:(NSNumber *)lat
+                lng:(NSNumber *)lng
+               name:(NSString *)locName
+            address:(NSString *)locAddress
       users_invited:(NSMutableArray *)users_invited
      withCompletion:(EventCreationCompletionBlock)completion
 {
