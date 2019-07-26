@@ -28,7 +28,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    UINavigationController *navController = (UINavigationController *) self.parentViewController;
+    EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
+    _currentEvent = tabBar.event;
 }
 
 #pragma mark - FetchPhotos
@@ -65,13 +68,11 @@
     }
     [self->_photosCollection addObject:info[UIImagePickerControllerOriginalImage]];
     
-     UIImage *imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
+    UIImage *imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
     
     [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to upload photo");
-        } else {
-            NSLog(@"Succecss upload photo");
         }
     }];
     
