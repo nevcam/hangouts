@@ -224,7 +224,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xtg-vI-YWu">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xtg-vI-YWu">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
@@ -499,28 +499,40 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="76.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xF3-Y7-Os2">
-                                                    <rect key="frame" x="15" y="0.0" width="219" height="72"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xF3-Y7-Os2">
+                                                    <rect key="frame" x="15" y="4" width="225" height="68.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f2d-wW-xf9">
-                                                            <rect key="frame" x="5" y="8" width="211" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f2d-wW-xf9">
+                                                            <rect key="frame" x="8" y="8" width="209" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9V5-5Y-FI0">
-                                                            <rect key="frame" x="5" y="26" width="211" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9V5-5Y-FI0">
+                                                            <rect key="frame" x="8" y="26" width="209" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9V5-5Y-FI0" secondAttribute="bottom" constant="8" id="22x-3Q-Wat"/>
+                                                        <constraint firstAttribute="width" constant="225" id="515-IS-hHP"/>
+                                                        <constraint firstItem="f2d-wW-xf9" firstAttribute="leading" secondItem="xF3-Y7-Os2" secondAttribute="leading" constant="8" id="8Eg-Cl-etm"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9V5-5Y-FI0" secondAttribute="trailing" constant="8" id="MbY-io-rVR"/>
+                                                        <constraint firstItem="9V5-5Y-FI0" firstAttribute="top" secondItem="xF3-Y7-Os2" secondAttribute="top" constant="26" id="XQ8-Jl-VOQ"/>
+                                                        <constraint firstItem="f2d-wW-xf9" firstAttribute="top" secondItem="xF3-Y7-Os2" secondAttribute="top" constant="8" id="aRF-KB-WE8"/>
+                                                        <constraint firstItem="9V5-5Y-FI0" firstAttribute="leading" secondItem="xF3-Y7-Os2" secondAttribute="leading" constant="8" id="bng-tr-rnQ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="f2d-wW-xf9" secondAttribute="trailing" constant="8" id="nfm-yD-p1w"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="xF3-Y7-Os2" secondAttribute="bottom" constant="4" id="JEj-KG-eAZ"/>
+                                                <constraint firstItem="xF3-Y7-Os2" firstAttribute="top" secondItem="pop-tl-9Ka" secondAttribute="top" constant="4" id="fO6-pz-0fx"/>
+                                                <constraint firstItem="xF3-Y7-Os2" firstAttribute="leading" secondItem="pop-tl-9Ka" secondAttribute="leading" constant="15" id="may-jc-Gcw"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chatMessageLabel" destination="9V5-5Y-FI0" id="K3v-LK-Pd7"/>
@@ -883,7 +895,7 @@
                                             <outlet property="nameLabel" destination="7Vx-0I-3Bj" id="VJ3-zF-peA"/>
                                             <outlet property="ownedLabel" destination="qt3-dC-geV" id="12A-8Z-hgV"/>
                                             <outlet property="ownerUsernameLabel" destination="N1Y-Yi-nNv" id="NxI-ju-8Sc"/>
-                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" id="5KP-IG-gNm"/>
+                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="eventDetailsSegue" id="5KP-IG-gNm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

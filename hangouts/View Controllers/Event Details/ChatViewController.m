@@ -25,7 +25,6 @@
     self.event = tabBar.event;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.rowHeight = 80;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
     [self fetchMessages];
@@ -37,6 +36,7 @@
     [postQuery orderByDescending:@"createdAt"];
     [postQuery includeKey:@"user"];
     postQuery.limit = 100;
+    [postQuery whereKey:@"event" equalTo:self.event];
     
     // fetch data asynchronously
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable messages, NSError * _Nullable error) {
