@@ -138,6 +138,7 @@
          NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
          UserXEvent *userxevent = self.acceptedUserXEvents[indexPath.row];
          Event *event = userxevent.event;
+//         NSLog(@"EVENT %@", event);
          EventTabBarController *tabBarViewControllers = [segue destinationViewController];
          UINavigationController *navController = tabBarViewControllers.viewControllers[0];
          EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
