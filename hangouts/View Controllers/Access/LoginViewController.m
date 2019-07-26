@@ -46,6 +46,8 @@
 - (void)loginUser {
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;
+    
+    __weak typeof(self) weakSelf = self;
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         [SVProgressHUD dismiss];
         if (error != nil) {
@@ -53,16 +55,25 @@
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
                 [alert addAction:okAction];
-                [self presentViewController:alert animated:YES completion:nil];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    [strongSelf presentViewController:alert animated:YES completion:nil];
+                }
             } else {
-                self.errorLabel.text = @"Incorrect user/password";
-                self.errorLabel.backgroundColor = [UIColor redColor];
-                [self.errorLabel setHidden:NO];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    strongSelf.errorLabel.text = @"Incorrect user/password";
+                    strongSelf.errorLabel.backgroundColor = [UIColor redColor];
+                    [strongSelf.errorLabel setHidden:NO];
+                }
                 NSLog(@"User log in failed: %@", error.localizedDescription);
             }
         } else {
-            [self.errorLabel setHidden:YES];
-            [self performSegueWithIdentifier:@"loginSegue" sender:self];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if(strongSelf) {
+                [strongSelf.errorLabel setHidden:YES];
+                [strongSelf performSegueWithIdentifier:@"loginSegue" sender:self];
+            }
         }
     }];
 }
