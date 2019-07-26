@@ -50,31 +50,26 @@
     __weak typeof(self) weakSelf = self;
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         [SVProgressHUD dismiss];
-        if (error != nil) {
-            if(error.code == 100) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
-                [alert addAction:okAction];
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                if(strongSelf) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            if (error != nil) {
+                if(error.code == 100) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
+                    [alert addAction:okAction];
                     [strongSelf presentViewController:alert animated:YES completion:nil];
-                }
-            } else {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                if(strongSelf) {
+                } else {
                     strongSelf.errorLabel.text = @"Incorrect user/password";
                     strongSelf.errorLabel.backgroundColor = [UIColor redColor];
                     [strongSelf.errorLabel setHidden:NO];
+                    NSLog(@"User log in failed: %@", error.localizedDescription);
                 }
-                NSLog(@"User log in failed: %@", error.localizedDescription);
-            }
-        } else {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if(strongSelf) {
+            } else {
                 [strongSelf.errorLabel setHidden:YES];
                 [strongSelf performSegueWithIdentifier:@"loginSegue" sender:self];
             }
         }
+        
     }];
 }
 
