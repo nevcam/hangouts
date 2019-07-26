@@ -883,6 +883,7 @@
                                             <outlet property="nameLabel" destination="7Vx-0I-3Bj" id="VJ3-zF-peA"/>
                                             <outlet property="ownedLabel" destination="qt3-dC-geV" id="12A-8Z-hgV"/>
                                             <outlet property="ownerUsernameLabel" destination="N1Y-Yi-nNv" id="NxI-ju-8Sc"/>
+                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" id="5KP-IG-gNm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1104,7 +1105,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wE5-cC-RjU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="3100.2998500749627"/>
+            <point key="canvasLocation" x="657" y="3099"/>
         </scene>
         <!--Profile Edit View Controller-->
         <scene sceneID="Ngf-I1-U63">
