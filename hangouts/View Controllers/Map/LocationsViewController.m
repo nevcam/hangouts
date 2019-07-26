@@ -20,9 +20,14 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 @end
 
 @implementation LocationsViewController
+
+#pragma mark - Global Variables
+
 {
     NSArray *_results;
 }
+
+#pragma mark - Load View Controller
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -32,11 +37,11 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     self.searchBar.delegate = self;
 }
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Load Locations
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self->_results.count;
@@ -47,6 +52,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [cell updateWithLocation:self->_results[indexPath.row]];
     return cell;
 }
+
+#pragma mark - Save Location When Selected
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // This is the selected venue
@@ -60,6 +67,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [self.delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng name:loc_name address:loc_address];
 }
 
+#pragma mark - Search Bar
+
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     NSString *newText = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
     [self fetchLocationsWithQuery:newText nearCity:@"San Francisco"];
@@ -69,6 +78,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self fetchLocationsWithQuery:searchBar.text nearCity:@"San Francisco"];
 }
+
+#pragma mark - Fetch Locations From API
 
 - (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city {
     NSString *baseURLString = @"https://api.foursquare.com/v2/venues/search?";

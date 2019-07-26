@@ -20,11 +20,15 @@
 
 @end
 
+#pragma mark - Global Variables
+
 @implementation FriendsInviteViewController
 {
     NSMutableArray *_friendships;
     NSMutableArray *_results;
 }
+
+#pragma mark - Load View Controller
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,6 +44,8 @@
     
     self.tableView.rowHeight = 80;
 }
+
+#pragma mark - Load Friends
 
 - (void)fetchFriendships {
     PFQuery *query = [Friendship query];
@@ -124,6 +130,8 @@
     return cell;
 }
 
+#pragma mark - Invite/Uninvite Friends To Event
+
 // Follows cell'ss protocol to add/remove friends from local array
 - (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove {
     if (!remove) {
@@ -138,6 +146,8 @@
     [self.delegate saveFriendsList:self.invitedFriends];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma mark - Search Bar
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
