@@ -26,6 +26,8 @@
 		7BEBF5A222E67DA10008E648 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A122E67DA10008E648 /* CalendarViewController.m */; };
 		7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A522E7CD450008E648 /* DateFormatterManager.m */; };
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
+		D934D1D822EBA10100B761D8 /* CustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D934D1D722EBA10100B761D8 /* CustomAnnotationView.m */; };
+		D934D1DB22EBA2A000B761D8 /* CustomPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D934D1DA22EBA2A000B761D8 /* CustomPointAnnotation.m */; };
 		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
 		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
 		D9DF803822DFE181003D240F /* Friendship.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803722DFE181003D240F /* Friendship.m */; };
@@ -104,6 +106,10 @@
 		B292598FB64D6C47C72E9F9D /* Pods-hangouts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangouts.debug.xcconfig"; path = "Target Support Files/Pods-hangouts/Pods-hangouts.debug.xcconfig"; sourceTree = "<group>"; };
 		C0C85B00E63547B4468D820E /* Pods-hangoutsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsTests.release.xcconfig"; path = "Target Support Files/Pods-hangoutsTests/Pods-hangoutsTests.release.xcconfig"; sourceTree = "<group>"; };
 		C81CEDA2E12046CB59AA8ECE /* Pods-hangoutsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hangoutsUITests.debug.xcconfig"; path = "Target Support Files/Pods-hangoutsUITests/Pods-hangoutsUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D934D1D622EBA10100B761D8 /* CustomAnnotationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomAnnotationView.h; sourceTree = "<group>"; };
+		D934D1D722EBA10100B761D8 /* CustomAnnotationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotationView.m; sourceTree = "<group>"; };
+		D934D1D922EBA2A000B761D8 /* CustomPointAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomPointAnnotation.h; sourceTree = "<group>"; };
+		D934D1DA22EBA2A000B761D8 /* CustomPointAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomPointAnnotation.m; sourceTree = "<group>"; };
 		D9DF803022DF8C74003D240F /* FriendSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendSearchViewController.h; sourceTree = "<group>"; };
 		D9DF803122DF8C74003D240F /* FriendSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendSearchViewController.m; sourceTree = "<group>"; };
 		D9DF803322DF8D3A003D240F /* FriendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
@@ -199,8 +205,12 @@
 		3CF5DCDE22E123C500FF2128 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				D934D1D622EBA10100B761D8 /* CustomAnnotationView.h */,
+				D934D1D722EBA10100B761D8 /* CustomAnnotationView.m */,
 				3CE7D01122DF9681005E5C29 /* MapViewController.h */,
 				3CE7D01222DF9681005E5C29 /* MapViewController.m */,
+				D934D1D922EBA2A000B761D8 /* CustomPointAnnotation.h */,
+				D934D1DA22EBA2A000B761D8 /* CustomPointAnnotation.m */,
 				3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */,
 				3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */,
 				3CE7D01D22E0D930005E5C29 /* LocationsViewController.h */,
@@ -608,6 +618,7 @@
 			files = (
 				D9DF804E22E6761C003D240F /* ChatViewController.m in Sources */,
 				D9DF805422E68355003D240F /* ChatCell.m in Sources */,
+				D934D1D822EBA10100B761D8 /* CustomAnnotationView.m in Sources */,
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
 				3CF5DCF622E260CA00FF2128 /* FriendsInviteViewController.m in Sources */,
 				7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */,
@@ -625,6 +636,7 @@
 				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
+				D934D1DB22EBA2A000B761D8 /* CustomPointAnnotation.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
 				7B61D50322E1147300007250 /* UserXEvent.m in Sources */,
 				D9DF805122E6778E003D240F /* EventTabBarController.m in Sources */,
