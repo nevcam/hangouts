@@ -222,13 +222,14 @@
         [self.eventDescriptionField resignFirstResponder];
     }
 }
--(void) textViewShouldEndEditing:(UITextView *)textView {
+-(BOOL) textViewShouldEndEditing:(UITextView *)textView {
     if(self.eventDescriptionField.text.length == 0) {
         self.eventDescriptionField.textColor = [UIColor lightGrayColor];
         self.eventDescriptionField.text = @"Description";
         [self.eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         [self.eventDescriptionField resignFirstResponder];
     }
+    return YES;
 }
 
 @end

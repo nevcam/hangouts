@@ -69,6 +69,7 @@
 }
 
 - (void)registerUser:(PFUser *)newUser {
+    __weak typeof(self) weakSelf = self;
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
             [SVProgressHUD dismiss];
@@ -76,10 +77,16 @@
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
                 UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
                 [alert addAction:okAction];
-                [self presentViewController:alert animated:YES completion:nil];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    [strongSelf presentViewController:alert animated:YES completion:nil];
+                }
             } else {
-                self.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
-                [self.errorLabel setHidden:NO];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    strongSelf.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
+                    [strongSelf.errorLabel setHidden:NO];
+                }
                 NSLog(@"Error: %@", error.localizedDescription);
             }
         } else {
@@ -89,9 +96,12 @@
                     NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
                 }
                 // User was created successfully, independent from friendship creation
-                [self.errorLabel setHidden:YES];
-                [self.delegate registerUserWithStatus:YES];
-                [self dismissViewControllerAnimated:true completion:nil];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    [strongSelf.errorLabel setHidden:YES];
+                    [strongSelf.delegate registerUserWithStatus:YES];
+                    [strongSelf dismissViewControllerAnimated:true completion:nil];
+                }
             }];
         }
     }];

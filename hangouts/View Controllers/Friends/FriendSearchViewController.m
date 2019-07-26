@@ -14,7 +14,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "FriendRequestCell.h"
 
-@interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *requestView;
 @property (weak, nonatomic) IBOutlet UILabel *requestCount;
