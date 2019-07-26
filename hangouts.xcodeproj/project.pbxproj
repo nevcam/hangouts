@@ -23,6 +23,8 @@
 		7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FA22E0F77400007250 /* MyEventsViewController.m */; };
 		7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FE22E0F84A00007250 /* EventCell.m */; };
 		7B61D50322E1147300007250 /* UserXEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D50222E1147300007250 /* UserXEvent.m */; };
+		7B94621D22EBA8050035E9A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B6322DE7E080003F9CE /* main.m */; };
+		7B94621E22EBA8050035E9A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		7BEBF5A222E67DA10008E648 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A122E67DA10008E648 /* CalendarViewController.m */; };
 		7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A522E7CD450008E648 /* DateFormatterManager.m */; };
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
@@ -38,11 +40,9 @@
 		D9DF805122E6778E003D240F /* EventTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805022E6778E003D240F /* EventTabBarController.m */; };
 		D9DF805422E68355003D240F /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805322E68355003D240F /* ChatCell.m */; };
 		D9DF805722E685C4003D240F /* Chat_Message.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF805622E685C4003D240F /* Chat_Message.m */; };
-		D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		D9F09B5C22DE7E060003F9CE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5A22DE7E060003F9CE /* Main.storyboard */; };
 		D9F09B5E22DE7E080003F9CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5D22DE7E080003F9CE /* Assets.xcassets */; };
 		D9F09B6122DE7E080003F9CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9F09B5F22DE7E080003F9CE /* LaunchScreen.storyboard */; };
-		D9F09B6422DE7E080003F9CE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B6322DE7E080003F9CE /* main.m */; };
 		D9F09B6E22DE7E080003F9CE /* hangoutsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B6D22DE7E080003F9CE /* hangoutsTests.m */; };
 		D9F09B7922DE7E080003F9CE /* hangoutsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B7822DE7E080003F9CE /* hangoutsUITests.m */; };
 /* End PBXBuildFile section */
@@ -452,7 +452,7 @@
 		D9F09B4922DE7E060003F9CE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = nev;
 				TargetAttributes = {
 					D9F09B5022DE7E060003F9CE = {
@@ -611,18 +611,16 @@
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
 				3CF5DCF622E260CA00FF2128 /* FriendsInviteViewController.m in Sources */,
 				7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */,
-				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
-				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
+				7B94621D22EBA8050035E9A3 /* main.m in Sources */,
+				7B94621E22EBA8050035E9A3 /* AppDelegate.m in Sources */,
 				D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */,
 				3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */,
 				D9DF803B22DFF116003D240F /* FriendRequestsViewController.m in Sources */,
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
-				D9F09B6422DE7E080003F9CE /* main.m in Sources */,
 				7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */,
 				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
-				D9F09B5622DE7E060003F9CE /* AppDelegate.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
