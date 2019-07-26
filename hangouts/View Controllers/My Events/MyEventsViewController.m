@@ -127,7 +127,8 @@
      if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
          UITableViewCell *tappedCell = sender;
          NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
-         Event *event = self.acceptedUserXEvents[indexPath.row];
+         UserXEvent *userxevent = self.acceptedUserXEvents[indexPath.row];
+         Event *event = userxevent.event;
          EventTabBarController *tabBarViewControllers = [segue destinationViewController];
          UINavigationController *navController = tabBarViewControllers.viewControllers[0];
          EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
