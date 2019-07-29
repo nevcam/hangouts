@@ -88,7 +88,6 @@
 }
 
 - (void) addToCurrentUsersFriends {
-//    NSString *username = self.user[@"username"];
     [self.currentUserFriendship addObject:self.user forKey:@"friends"];
     [self.currentUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {

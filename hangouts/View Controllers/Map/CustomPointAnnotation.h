@@ -7,11 +7,14 @@
 //
 
 #import <MapKit/MapKit.h>
+#import "Event.h"
 @import Parse;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CustomPointAnnotation : MKPointAnnotation
 @property (strong, nonatomic) PFUser *friend;
+@property (strong, nonatomic) Event *event;
+@property (strong, nonatomic) NSString *tag;
 @end
 
 NS_ASSUME_NONNULL_END
