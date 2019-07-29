@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EventTabBarController.h"
+#import "Photo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

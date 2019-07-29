@@ -11,10 +11,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol RemovePhotoDelegate <NSObject>
+- (void)removeAPhoto:(Photo *)oldPhoto;
+@end
+
 @interface PhotoDetailsViewController : UIViewController
 
 @property (nonatomic, strong) Photo *photoObject;
+@property (nonatomic, weak) id <RemovePhotoDelegate> delegate;
+
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+
+
+

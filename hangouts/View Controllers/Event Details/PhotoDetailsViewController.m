@@ -1,3 +1,4 @@
+
 //
 //  PhotoDetailsViewController.m
 //  hangouts
@@ -7,6 +8,7 @@
 //
 
 #import "PhotoDetailsViewController.h"
+#import "PhotosViewController.h"
 
 @interface PhotoDetailsViewController ()
 
@@ -46,6 +48,23 @@
 #pragma mark - Delete Image
 
 - (IBAction)clickedDelete:(id)sender {
+    PFQuery *query = [PFQuery queryWithClassName:@"Photo"];
+    [query whereKey:@"objectId" equalTo:self.photoObject.objectId];
+    
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject *object, NSError *error) {
+        if (object) {
+            [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                     [self.delegate removeAPhoto:self.photoObject];
+                     [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                     NSLog(@"Error while deleting photo %@.", error);
+                }
+            }];
+        } else {
+            NSLog(@"Error while accessing parse %@.", error);
+        }
+    }];
 }
 
 #pragma mark - Customize Date

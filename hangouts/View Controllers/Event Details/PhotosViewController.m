@@ -12,7 +12,7 @@
 #import "PhotoCell.h"
 #import "PhotoDetailsViewController.h"
 
-@interface PhotosViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface PhotosViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, RemovePhotoDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -161,9 +161,15 @@
         Photo *checkPhoto = _photosCollection[indexPath.row];
         
         PhotoDetailsViewController *detailsView = [segue destinationViewController];
-        
         detailsView.photoObject = checkPhoto;
+        detailsView.delegate = self;
     }
+}
+
+#pragma mark - Delegate Method when deleting photos
+
+- (void)removeAPhoto:(Photo *)oldPhoto {
+    [self fetchPhotos];
 }
 
 #pragma mark - View Controller Layout
