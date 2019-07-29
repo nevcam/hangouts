@@ -10,13 +10,35 @@
 
 @interface PhotoDetailsViewController ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *photoView;
+@property (weak, nonatomic) IBOutlet UIButton *downloadButton;
+
 @end
 
 @implementation PhotoDetailsViewController
 
+#pragma mark - Load View Controller
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self refreshData];
+}
+
+#pragma mark - Fetch Post
+
+- (void)refreshData {
+    [self.photoObject.photo getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        if (!data) {
+            return NSLog(@"%@", error);
+        }
+        self.photoView.image = [UIImage imageWithData:data];
+    }];
+}
+
+#pragma mark - Download Image
+
+- (IBAction)clickedDownload:(id)sender {
+    UIImageWriteToSavedPhotosAlbum(self.photoView.image, nil, nil, nil);
 }
 
 @end

@@ -149,20 +149,20 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    [self performSegueWithIdentifier:@"photoDetailsSegue" sender:nil];
+    [self performSegueWithIdentifier:@"photoDetailsSegue" sender:[collectionView cellForItemAtIndexPath:indexPath]];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if ([segue.identifier isEqualToString:@"photoDetailsSegue"]) {
-        UICollectionViewCell *tappedCell = sender;
+        PhotoCell *tappedCell = sender;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
         
-        Photo *photo = _photosCollection[indexPath.row];
+        Photo *checkPhoto = _photosCollection[indexPath.row];
         
         PhotoDetailsViewController *detailsView = [segue destinationViewController];
         
-        detailsView.photo = photo;
+        detailsView.photoObject = checkPhoto;
     }
 }
 
