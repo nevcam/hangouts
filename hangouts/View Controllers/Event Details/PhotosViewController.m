@@ -9,10 +9,12 @@
 #import "PhotosViewController.h"
 #import "Photo.h"
 #import "Event.h"
+#import "PhotoCell.h"
+#import "PhotoDetailsViewController.h"
 
-@interface PhotosViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface PhotosViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -29,18 +31,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    
     UINavigationController *navController = (UINavigationController *) self.parentViewController;
     EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
     _currentEvent = tabBar.event;
+    
+    [self fetchPhotos];
+    [self setCollectionLayout];
 }
 
 #pragma mark - FetchPhotos
 
 - (void)fetchPhotos {
+    PFQuery *photoQuery = [Photo query];
+    [photoQuery orderByDescending:@"createdAt"];
+    [photoQuery includeKey:@"user"];
+    photoQuery.limit = 100;
+    [photoQuery whereKey:@"event" equalTo:_currentEvent];
     
+    __weak typeof(self) weakSelf = self;
+    [photoQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable photos, NSError * _Nullable error) {
+        if (photos) {
+            
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if (!strongSelf->_photosCollection) {
+                 strongSelf->_photosCollection = [NSMutableArray new];
+            }
+            strongSelf->_photosCollection = (NSMutableArray *)photos;
+            [self.collectionView reloadData];
+            
+        } else {
+            NSLog(@"Error getting photod: %@", error.localizedDescription);
+        }
+    }];
 }
 
-#pragma mark - Load Image Selector View Controller
+#pragma mark - Image Selector View Controller
 
 // Pushes Add Photo View Controller when triggered
 - (IBAction)clickedAddPhoto:(id)sender {
@@ -73,6 +102,8 @@
     [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
             NSLog(@"Failed to upload photo");
+        } else {
+            [self fetchPhotos];
         }
     }];
     
@@ -94,14 +125,66 @@
     return newImage;
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Load Photos to Collection View
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    PhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotCollectionCell" forIndexPath:indexPath];
+    Photo *newPhoto = self->_photosCollection[indexPath.row];
+    
+    [newPhoto.photo getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        if (!data) {
+            return NSLog(@"%@", error);
+        }
+        cell.image.image = [UIImage imageWithData:data];
+    }];
+    return cell;
 }
-*/
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self->_photosCollection.count;
+}
+
+#pragma mark - Photo Details Segue
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self performSegueWithIdentifier:@"photoDetailsSegue" sender:[collectionView cellForItemAtIndexPath:indexPath]];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"photoDetailsSegue"]) {
+        PhotoCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
+        
+        Photo *checkPhoto = _photosCollection[indexPath.row];
+        
+        PhotoDetailsViewController *detailsView = [segue destinationViewController];
+        
+        detailsView.photoObject = checkPhoto;
+    }
+}
+
+#pragma mark - View Controller Layout
+
+// Sets spacing and margins between the cells in the collection view
+- (void)setCollectionLayout {
+    
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    
+    // Sets margins between posts, view, and other posts
+    layout.minimumInteritemSpacing = 7;
+    layout.minimumLineSpacing = 7;
+    CGFloat margins = 14;
+    
+    // Sets amount of posters per line
+    CGFloat postersPerLine = 3;
+    
+    // Sets post width and height, based on previous values
+    CGFloat itemWidth = (self.collectionView.frame.size.width - margins - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
+    CGFloat itemHeight = itemWidth * 1.5;
+    layout.itemSize = CGSizeMake (itemWidth, itemHeight);
+}
 
 @end

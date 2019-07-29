@@ -1,5 +1,5 @@
 //
-//  PhotoCell.h
+//  PhotoDetailsViewController.h
 //  hangouts
 //
 //  Created by josemurillo on 7/29/19.
@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Photo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PhotoCell : UICollectionViewCell
+@interface PhotoDetailsViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIImageView *image;
+@property (nonatomic, strong) Photo *photoObject;
 
 @end
 
