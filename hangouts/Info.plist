@@ -70,5 +70,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Calendar access is needed to add your hangouts to your Apple Calendar.</string>
 </dict>
 </plist>
