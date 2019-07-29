@@ -55,7 +55,7 @@
         if (object) {
             [object deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                     [self.delegate removeAPhoto:self.photoObject];
+                     [self.delegate removeAPhoto];
                      [self.navigationController popViewControllerAnimated:YES];
                 } else {
                      NSLog(@"Error while deleting photo %@.", error);
