@@ -637,11 +637,36 @@
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="0pg-ef-WPF" id="WeU-DM-qLF"/>
+                        <segue destination="jJR-qW-3DO" kind="show" identifier="photoDetailsSegue" id="5Lj-0a-CR9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJB-pG-NoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2954.4000000000001" y="3098.5007496251878"/>
+        </scene>
+        <!--Photo Details View Controller-->
+        <scene sceneID="R9H-bx-aus">
+            <objects>
+                <viewController id="jJR-qW-3DO" customClass="PhotoDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kyU-ph-jGE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PHOTOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qvQ-BL-eOy">
+                                <rect key="frame" x="176" y="287" width="68" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="z6u-bf-aBA"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bCK-vu-GcZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2954" y="3913"/>
         </scene>
         <!--Event Tab Bar Controller-->
         <scene sceneID="Pkf-Gx-QD1">

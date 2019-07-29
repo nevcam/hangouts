@@ -10,6 +10,7 @@
 #import "Photo.h"
 #import "Event.h"
 #import "PhotoCell.h"
+#import "PhotoDetailsViewController.h"
 
 @interface PhotosViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -142,6 +143,27 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self->_photosCollection.count;
+}
+
+#pragma mark - Photo Details Segue
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self performSegueWithIdentifier:@"photoDetailsSegue" sender:nil];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"photoDetailsSegue"]) {
+        UICollectionViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
+        
+        Photo *photo = _photosCollection[indexPath.row];
+        
+        PhotoDetailsViewController *detailsView = [segue destinationViewController];
+        
+        detailsView.photo = photo;
+    }
 }
 
 #pragma mark - View Controller Layout
