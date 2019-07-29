@@ -12,15 +12,18 @@
 #import "EventCell.h"
 #import "Event.h"
 @import Parse;
+@import EventKit;
+@import EventKitUI;
 
-@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
+@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate, EKEventEditViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
 @implementation CalendarViewController {
-    NSMutableArray *userXEventArray;
+    NSMutableArray *userXEventOrderedArray;
+    NSMutableArray *eventArray;
 }
 
 - (void)viewDidLoad {
@@ -60,7 +63,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    NSArray *array = self->userXEventArray[indexPath.section];
+    NSArray *array = self->userXEventOrderedArray[indexPath.section];
     UserXEvent *userXEvent = array[indexPath.row];
     [cell configureCell:userXEvent.event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -69,17 +72,17 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self->userXEventArray[section] count];
+    return [self->userXEventOrderedArray[section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self->userXEventArray count];
+    return [self->userXEventOrderedArray count];
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
     [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
-    NSArray *array = [self->userXEventArray objectAtIndex:section];
+    NSArray *array = [self->userXEventOrderedArray objectAtIndex:section];
     UserXEvent *userXEvent = array[0];
     Event *event = userXEvent.event;
     NSDate *date = event.date;
@@ -101,23 +104,54 @@
 }
 
 - (void)initArrayWithEvents:(NSArray *)userXEvents {
-    self->userXEventArray = [NSMutableArray new];
+    self->userXEventOrderedArray = [NSMutableArray new];
+    self->eventArray = [NSMutableArray new];
     NSString *pastKey = @"";
     int i = -1;
     for (UserXEvent *userXEvent in userXEvents) {
         Event *event = userXEvent.event;
+        [self->eventArray addObject:event];
         NSDate *date = event.date;
         NSString *key = [self getDayStringOfDate:date];
         if([pastKey isEqualToString:key]) {
-            NSMutableArray *array = self->userXEventArray[i];
+            NSMutableArray *array = self->userXEventOrderedArray[i];
             [array addObject:userXEvent];
         } else {
             i++;
             pastKey = key;
             NSMutableArray *array = [NSMutableArray arrayWithObject:userXEvent];
-            [self->userXEventArray addObject:array];
+            [self->userXEventOrderedArray addObject:array];
         }
     }
+}
+
+#pragma mark - Sync Calendar methods
+
+- (IBAction)didTapSync:(id)sender {
+    EKEventStore *store = [[EKEventStore alloc] init];
+    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+        NSArray *calendars = [store calendarsForEntityType:EKEntityTypeEvent];
+        for (EKCalendar *calendar in calendars) {
+            if([calendar.title isEqualToString:@"Hangouts"]) {
+                for (Event *event in self->eventArray) {
+                    EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
+                    ekEvent.calendar = calendar;
+                    ekEvent.title = event.name;
+                    ekEvent.startDate = event.date;
+                    ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
+                    
+                    if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
+                        NSLog(@"Could not add event.");
+                    }
+                }
+            }
+        }
+    }];
+    
+}
+
+- (void)eventEditViewController:(nonnull EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
+    NSLog(@"%lu", action);
 }
 
 @end

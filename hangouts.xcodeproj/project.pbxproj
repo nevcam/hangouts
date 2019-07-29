@@ -10,6 +10,8 @@
 		085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */; };
 		3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3722EB8ACC002732DB /* PhotosViewController.m */; };
 		3C313D3B22EBAE9B002732DB /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3A22EBAE9B002732DB /* Photo.m */; };
+		3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3D22EF67DF002732DB /* PhotoCell.m */; };
+		3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */; };
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
@@ -75,6 +77,10 @@
 		3C313D3722EB8ACC002732DB /* PhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
 		3C313D3922EBAE9B002732DB /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		3C313D3A22EBAE9B002732DB /* Photo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		3C313D3C22EF67DF002732DB /* PhotoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		3C313D3D22EF67DF002732DB /* PhotoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
+		3C313D3F22EF8CD2002732DB /* PhotoDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetailsViewController.h; sourceTree = "<group>"; };
+		3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailsViewController.m; sourceTree = "<group>"; };
 		3CE7D01122DF9681005E5C29 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3CE7D01222DF9681005E5C29 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddEventViewController.h; sourceTree = "<group>"; };
@@ -104,6 +110,8 @@
 		7B61D4FE22E0F84A00007250 /* EventCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventCell.m; sourceTree = "<group>"; };
 		7B61D50122E1147300007250 /* UserXEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserXEvent.h; sourceTree = "<group>"; };
 		7B61D50222E1147300007250 /* UserXEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserXEvent.m; sourceTree = "<group>"; };
+		7BCCFB3622EF883100DB0D8D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		7BCCFB3822EF886C00DB0D8D /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		7BEBF5A022E67DA10008E648 /* CalendarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
 		7BEBF5A122E67DA10008E648 /* CalendarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
 		7BEBF5A422E7CD450008E648 /* DateFormatterManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateFormatterManager.h; sourceTree = "<group>"; };
@@ -191,6 +199,8 @@
 		0284D96AB72073174D220AF5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7BCCFB3822EF886C00DB0D8D /* EventKitUI.framework */,
+				7BCCFB3622EF883100DB0D8D /* EventKit.framework */,
 				7B61D4F122DF94B100007250 /* Parse.framework */,
 				9E09CBBDABCC61446D309861 /* Pods_hangouts.framework */,
 				288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */,
@@ -293,6 +303,8 @@
 				D9DF804622E28D76003D240F /* FriendViewCell.m */,
 				D9DF805222E68355003D240F /* ChatCell.h */,
 				D9DF805322E68355003D240F /* ChatCell.m */,
+				3C313D3C22EF67DF002732DB /* PhotoCell.h */,
+				3C313D3D22EF67DF002732DB /* PhotoCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -334,6 +346,8 @@
 				D9DF804D22E6761C003D240F /* ChatViewController.m */,
 				3C313D3622EB8ACC002732DB /* PhotosViewController.h */,
 				3C313D3722EB8ACC002732DB /* PhotosViewController.m */,
+				3C313D3F22EF8CD2002732DB /* PhotoDetailsViewController.h */,
+				3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */,
 			);
 			path = "Event Details";
 			sourceTree = "<group>";
@@ -630,6 +644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */,
 				D9DF804E22E6761C003D240F /* ChatViewController.m in Sources */,
 				D9DF805422E68355003D240F /* ChatCell.m in Sources */,
 				3CE7D01C22DFA214005E5C29 /* Event.m in Sources */,
@@ -647,6 +662,7 @@
 				7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */,
 				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
+				3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
 				D934D1DB22EBA2A000B761D8 /* CustomPointAnnotation.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
@@ -835,13 +851,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -853,13 +869,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
