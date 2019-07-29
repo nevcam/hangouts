@@ -26,7 +26,6 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
     [self fetchMessages];
 }
 
@@ -37,18 +36,17 @@
     [postQuery includeKey:@"user"];
     postQuery.limit = 100;
     [postQuery whereKey:@"event" equalTo:self.event];
-    
+    __weak typeof(self) weakSelf = self;
     // fetch data asynchronously
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable messages, NSError * _Nullable error) {
         if (messages) {
-            // do something with the data fetched
-            self.messages = (NSMutableArray *)messages;
-            NSLog(@"%@", self.messages);
-            [self.tableView reloadData];
-            if (self.messages.count > 0)
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.messages = (NSMutableArray *)messages;
+            [strongSelf.tableView reloadData];
+            if (strongSelf.messages.count > 0)
             {
-                [self.tableView
-                 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+                [strongSelf.tableView
+                 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:strongSelf.messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
             }
         }
         else {
@@ -67,12 +65,12 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.messages.count inSection:0];
     NSMutableArray *paths = [NSMutableArray new];
     [paths addObject:indexPath];
-    
+    __weak typeof(self) weakSelf = self;
     [chatMessage saveInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (succeeded) {
-            NSLog(@"The message was saved!");
-            self.chatMessageField.text = @"";
-            [self fetchMessages];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.chatMessageField.text = @"";
+            [strongSelf fetchMessages];
         } else {
             NSLog(@"Problem saving message: %@", error.localizedDescription);
         }
@@ -98,7 +96,6 @@
     cell.usernameLabel.text = user.username;
     if ([user[@"username"] isEqual:[PFUser currentUser][@"username"]]){
         CGRect frame = cell.messageBubbleView.frame;
-//        frame.origin.x = frame.origin.x + 300;
         frame.origin.x = self.view.frame.origin.x + 140;
         [cell.messageBubbleView setBackgroundColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
         [cell.messageBubbleView setFrame:frame];

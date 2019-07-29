@@ -36,10 +36,12 @@
     NSData *imageData = UIImageJPEGRepresentation(self.profilePhotoView.image, 0.5f);
     PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"Profileimage.png" data:imageData];
     self.user[@"profilePhoto"] = imageFile;
+    __weak typeof(self) weakSelf = self;
     [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            [self.delegate didSave];
-            [self dismissViewControllerAnimated:true completion:nil];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            [strongSelf.delegate didSave];
+            [strongSelf dismissViewControllerAnimated:true completion:nil];
         } else {
         }
     }];

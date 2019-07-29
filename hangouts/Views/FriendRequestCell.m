@@ -45,11 +45,13 @@
         }
     }
     self.currentUserFriendship.incomingRequests = (NSPointerArray *)friendRequests;
+    __weak typeof(self) weakSelf = self;
     [self.currentUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!error) {
             NSLog(@"success");
-            self.acceptButton.enabled = NO;
-            self.denyButton.enabled = NO;
+            strongSelf.acceptButton.enabled = NO;
+            strongSelf.denyButton.enabled = NO;
         } else {
             NSLog(@"error");
         }
@@ -63,15 +65,16 @@
     [query whereKey:@"user" equalTo:self.user];
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            self.cellUserFriendship = friendships[0];
-            NSMutableArray *cellUserOutgoingRequests = (NSMutableArray *)self.cellUserFriendship.outgoingRequests;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.cellUserFriendship = friendships[0];
+            NSMutableArray *cellUserOutgoingRequests = (NSMutableArray *)strongSelf.cellUserFriendship.outgoingRequests;
             for (PFUser *outgoingRequestUser in cellUserOutgoingRequests) {
                 if ([[PFUser currentUser].objectId isEqual:outgoingRequestUser.objectId]) {
                     [cellUserOutgoingRequests removeObject:outgoingRequestUser];
                 }
             }
-            self.cellUserFriendship.outgoingRequests = (NSPointerArray *)cellUserOutgoingRequests;
-            [self.cellUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            strongSelf.cellUserFriendship.outgoingRequests = (NSPointerArray *)cellUserOutgoingRequests;
+            [strongSelf.cellUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error) {
                     NSLog(@"success");
                 } else {
@@ -101,12 +104,14 @@
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
     [query includeKey:@"user"];
-    [query whereKey:@"user" equalTo:self.user];;
+    [query whereKey:@"user" equalTo:self.user];
+    __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            self.cellUserFriendship = friendships[0];
-            [self.cellUserFriendship addObject:[PFUser currentUser] forKey:@"friends"];
-            [self.cellUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            strongSelf.cellUserFriendship = friendships[0];
+            [strongSelf.cellUserFriendship addObject:[PFUser currentUser] forKey:@"friends"];
+            [strongSelf.cellUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                 if (!error) {
                     NSLog(@"success");
                 } else {
