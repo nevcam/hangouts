@@ -113,7 +113,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FriendViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendViewCell"];
     PFUser *user = self->_friendUsers[indexPath.row];
-    
     cell.user = user;
     PFFileObject *imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
@@ -163,18 +162,20 @@
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
     [query whereKey:@"username" equalTo:self.user[@"username"]];
+    __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
         if (users) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             PFUser *user = users[0];
-            self.fullnameLabel.text = user[@"fullname"];
-            self.bioLabel.text = user[@"bio"];
+            strongSelf.fullnameLabel.text = user[@"fullname"];
+            strongSelf.bioLabel.text = user[@"bio"];
             PFFileObject *imageFile = user[@"profilePhoto"];
             NSURL *photoURL = [NSURL URLWithString:imageFile.url];
-            self.profilePhotoView.image = nil;
-            [self.profilePhotoView setImageWithURL:photoURL];
-            self.profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.width / 2;
-            self.profilePhotoView.layer.masksToBounds = YES;
-            [self.view addSubview: self.profilePhotoView];
+            strongSelf.profilePhotoView.image = nil;
+            [strongSelf.profilePhotoView setImageWithURL:photoURL];
+            strongSelf.profilePhotoView.layer.cornerRadius = strongSelf.profilePhotoView.frame.size.width / 2;
+            strongSelf.profilePhotoView.layer.masksToBounds = YES;
+            [strongSelf.view addSubview: strongSelf.profilePhotoView];
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
