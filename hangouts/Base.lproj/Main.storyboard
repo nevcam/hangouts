@@ -653,13 +653,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sSl-ed-pRg">
-                                <rect key="frame" x="0.0" y="64" width="375" height="374"/>
+                                <rect key="frame" x="0.0" y="115" width="375" height="374"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0R-gI-hNH">
-                                <rect key="frame" x="157" y="483" width="61" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2PN-Xf-sdc">
+                                <rect key="frame" x="132" y="566" width="111" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Downlod"/>
+                                <color key="backgroundColor" red="1" green="0.82997252936629562" blue="0.84605326850685225" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Delete"/>
+                                <connections>
+                                    <action selector="clickedDelete:" destination="jJR-qW-3DO" eventType="touchUpInside" id="zGJ-xg-Nlf"/>
+                                    <action selector="clickedDownload:" destination="jJR-qW-3DO" eventType="touchUpInside" id="bnH-GC-JGw"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9W-9A-gRq">
+                                <rect key="frame" x="32" y="76" width="327" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0R-gI-hNH">
+                                <rect key="frame" x="132" y="523" width="111" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.9168150907" green="0.9168150907" blue="0.9168150907" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Download"/>
                                 <connections>
                                     <action selector="clickedDownload:" destination="jJR-qW-3DO" eventType="touchUpInside" id="xGX-Az-Vz0"/>
                                 </connections>
@@ -669,6 +691,7 @@
                         <viewLayoutGuide key="safeArea" id="z6u-bf-aBA"/>
                     </view>
                     <connections>
+                        <outlet property="dateView" destination="h9W-9A-gRq" id="h8H-0y-vmD"/>
                         <outlet property="downloadButton" destination="F0R-gI-hNH" id="BoY-Mk-ad3"/>
                         <outlet property="photoView" destination="sSl-ed-pRg" id="aoG-uf-w0S"/>
                     </connections>
