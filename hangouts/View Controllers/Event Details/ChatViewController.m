@@ -19,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     UINavigationController *navController = (UINavigationController *) self.parentViewController;
     EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
     self.event = tabBar.event;
@@ -30,14 +30,14 @@
 }
 
 - (void)fetchMessages {
-    // construct PFQuery
+
     PFQuery *postQuery = [Chat_Message query];
     [postQuery orderByDescending:@"createdAt"];
     [postQuery includeKey:@"user"];
     postQuery.limit = 100;
     [postQuery whereKey:@"event" equalTo:self.event];
     __weak typeof(self) weakSelf = self;
-    // fetch data asynchronously
+
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable messages, NSError * _Nullable error) {
         if (messages) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -58,7 +58,7 @@
 
 - (IBAction)didTapSend:(id)sender {
     PFObject *chatMessage = [PFObject objectWithClassName:@"Chat_Message"];
-    // Use the name of your outlet to get the text the user typed
+
     chatMessage[@"text"] = self.chatMessageField.text;
     chatMessage[@"user"] = [PFUser currentUser];
     chatMessage[@"event"] = self.event;
