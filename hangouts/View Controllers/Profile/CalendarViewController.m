@@ -15,7 +15,7 @@
 @import EventKit;
 @import EventKitUI;
 
-@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate, EKEventEditViewDelegate>
+@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
