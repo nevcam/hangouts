@@ -21,32 +21,32 @@
 @end
 
 @implementation MyEventsViewController {
-    NSMutableArray *invitedUserXEvents;
-    NSMutableArray *acceptedUserXEvents;
+    NSMutableArray *_invitedUserXEvents;
+    NSMutableArray *_acceptedUserXEvents;
     
-    UIRefreshControl *invitedRefreshControl;
-    UIRefreshControl *acceptedRefreshControl;
+    UIRefreshControl *_invitedRefreshControl;
+    UIRefreshControl *_acceptedRefreshControl;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.invitedTableView.dataSource = self;
-    self.invitedTableView.delegate = self;
+    _invitedTableView.dataSource = self;
+    _invitedTableView.delegate = self;
     
-    self.acceptedTableView.dataSource = self;
-    self.acceptedTableView.delegate = self;
+    _acceptedTableView.dataSource = self;
+    _acceptedTableView.delegate = self;
     
     [self fetchInvitedEvents];
     [self fetchAcceptedEvents];
     
-    self->invitedRefreshControl = [[UIRefreshControl alloc] init];
-    [self->invitedRefreshControl addTarget:self action:@selector(fetchInvitedEvents) forControlEvents:UIControlEventValueChanged];
-    [self.invitedTableView insertSubview:self->invitedRefreshControl atIndex:0];
+    _invitedRefreshControl = [[UIRefreshControl alloc] init];
+    [_invitedRefreshControl addTarget:self action:@selector(fetchInvitedEvents) forControlEvents:UIControlEventValueChanged];
+    [_invitedTableView insertSubview:_invitedRefreshControl atIndex:0];
     
-    self->acceptedRefreshControl = [[UIRefreshControl alloc] init];
-    [self->acceptedRefreshControl addTarget:self action:@selector(fetchAcceptedEvents) forControlEvents:UIControlEventValueChanged];
-    [self.acceptedTableView insertSubview:self->acceptedRefreshControl atIndex:0];
+    _acceptedRefreshControl = [[UIRefreshControl alloc] init];
+    [_acceptedRefreshControl addTarget:self action:@selector(fetchAcceptedEvents) forControlEvents:UIControlEventValueChanged];
+    [_acceptedTableView insertSubview:_acceptedRefreshControl atIndex:0];
 }
 
 #pragma mark -  Getting data
@@ -63,8 +63,8 @@
         if (events) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if(strongSelf) {
-                [strongSelf->invitedRefreshControl endRefreshing];
-                strongSelf->invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+                [strongSelf->_invitedRefreshControl endRefreshing];
+                strongSelf->_invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
                 [strongSelf.invitedTableView reloadData];
             }
         } else {
@@ -91,8 +91,8 @@
         if (events) {
             __strong typeof(weakSelf) strongSelf = self;
             if(strongSelf) {
-                [strongSelf->acceptedRefreshControl endRefreshing];
-                strongSelf->acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+                [strongSelf->_acceptedRefreshControl endRefreshing];
+                strongSelf->_acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
                 [strongSelf.acceptedTableView reloadData];
             }
         } else {
@@ -115,12 +115,12 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSString *cellIdentifier;
     UserXEvent *userXEvent;
-    if(tableView == self.acceptedTableView) {
+    if(tableView == _acceptedTableView) {
         cellIdentifier = @"AcceptedEventCell";
-        userXEvent = self->acceptedUserXEvents[indexPath.row];
+        userXEvent = _acceptedUserXEvents[indexPath.row];
     } else {
         cellIdentifier = @"InvitedEventCell";
-        userXEvent = self->invitedUserXEvents[indexPath.row];
+        userXEvent = _invitedUserXEvents[indexPath.row];
     }
     Event *event = userXEvent.event;
     EventCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -131,10 +131,10 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(tableView == self.acceptedTableView) {
-        return self->acceptedUserXEvents.count;
+    if(tableView == _acceptedTableView) {
+        return _acceptedUserXEvents.count;
     } else {
-        return self->invitedUserXEvents.count;
+        return _invitedUserXEvents.count;
     }
 }
 
@@ -143,8 +143,8 @@
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
      if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
          UITableViewCell *tappedCell = sender;
-         NSIndexPath *indexPath = [self.acceptedTableView indexPathForCell:tappedCell];
-         UserXEvent *userxevent = self->acceptedUserXEvents[indexPath.row];
+         NSIndexPath *indexPath = [_acceptedTableView indexPathForCell:tappedCell];
+         UserXEvent *userxevent = _acceptedUserXEvents[indexPath.row];
          Event *event = userxevent.event;
          EventTabBarController *tabBarViewControllers = [segue destinationViewController];
          UINavigationController *navController = tabBarViewControllers.viewControllers[0];
