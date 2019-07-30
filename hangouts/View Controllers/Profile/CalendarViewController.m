@@ -15,7 +15,7 @@
 @import EventKit;
 @import EventKitUI;
 
-@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate, EKEventEditViewDelegate>
+@interface CalendarViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -130,28 +130,62 @@
 - (IBAction)didTapSync:(id)sender {
     EKEventStore *store = [[EKEventStore alloc] init];
     [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
-        NSArray *calendars = [store calendarsForEntityType:EKEntityTypeEvent];
-        for (EKCalendar *calendar in calendars) {
-            if([calendar.title isEqualToString:@"Hangouts"]) {
-                for (Event *event in self->eventArray) {
-                    EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
-                    ekEvent.calendar = calendar;
-                    ekEvent.title = event.name;
-                    ekEvent.startDate = event.date;
-                    ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
-                    
-                    if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
-                        NSLog(@"Could not add event.");
-                    }
+        EKCalendar *cal;
+        if (![self getCalendarID] || ![store calendarWithIdentifier:[self getCalendarID]]) {
+            EKSource *icloudSource = nil;
+            for (EKSource *source in store.sources) {
+                if (source.sourceType == EKSourceTypeCalDAV) {
+                    icloudSource = source;
+                    break;
                 }
+            }
+            cal = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
+            cal.title = @"Hangouts";
+            cal.source = icloudSource;
+            [store saveCalendar:cal commit:YES error:nil];
+            [self saveCalendarID:cal.calendarIdentifier];
+        } else {
+            cal = [store calendarWithIdentifier:[self getCalendarID]];
+        }
+        for (Event *event in self->eventArray) {
+            EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
+            ekEvent.calendar = cal;
+            ekEvent.title = event.name;
+            ekEvent.startDate = event.date;
+            ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
+            
+            if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
+                NSLog(@"Could not add event.");
             }
         }
     }];
-    
 }
 
-- (void)eventEditViewController:(nonnull EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action {
-    NSLog(@"%lu", action);
+- (void)saveCalendarID:(NSString *) calendarID {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"data.plist"];
+
+    NSDictionary *plistDict = [[NSDictionary alloc] initWithObjects: [NSArray arrayWithObject: calendarID] forKeys:[NSArray arrayWithObject: @"Calendar ID"]];
+    NSError *error = nil;
+    NSData *plistData = [NSPropertyListSerialization dataWithPropertyList:plistDict format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
+
+    if(plistData) {
+        [plistData writeToFile:plistPath atomically:YES];
+    }
+}
+
+- (NSString *)getCalendarID {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *path = [documentsPath stringByAppendingPathComponent:@"data.plist"];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
+    }
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
+    return [dict objectForKey:@"Calendar ID"];
 }
 
 @end
