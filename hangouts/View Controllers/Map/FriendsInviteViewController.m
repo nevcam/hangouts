@@ -30,16 +30,18 @@
 
 #pragma mark - Load View Controller
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.searchBar.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _searchBar.delegate = self;
     
-    if (!self.invitedFriends) {
-        self.invitedFriends = [NSMutableArray new];
+    if (!_invitedFriends) {
+        _invitedFriends = [NSMutableArray array];
     }
+    _friendships = [NSMutableArray array];
     [self fetchFriendships];
     
     self.tableView.rowHeight = 80;
@@ -47,7 +49,8 @@
 
 #pragma mark - Load Friends
 
-- (void)fetchFriendships {
+- (void)fetchFriendships
+{
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -73,19 +76,15 @@
                 if (friends) {
                     __strong typeof(self) strongSelf = weakSelf;
                     
-                    if (!strongSelf->_friendships) {
-                        strongSelf->_friendships = [NSMutableArray new];
-                        strongSelf->_results = [NSMutableArray new];
-                        
-                        for (PFUser *friend in friends) {
-                            [strongSelf->_friendships addObject:friend];
-                        }
+                    if (strongSelf) {
+                        [strongSelf->_friendships addObjectsFromArray:(NSMutableArray *)friends];
+
                         if (strongSelf->_friendships.count == friendPointers.count) {
                             strongSelf->_results = strongSelf->_friendships;
-                            [self.tableView reloadData];
+                            [strongSelf.tableView reloadData];
                         }
                     } else {
-                        NSLog(@"Error: in loading self");
+                        NSLog(@"Error: View Controller has been closed.");
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -97,27 +96,29 @@
     }];
 }
 
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self->_results.count;
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _results.count;
 }
 
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
     
     FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"friendsToEventCell"];
-    PFUser *user = self->_results[indexPath.row];
+    PFUser *user = _results[indexPath.row];
     cell.user = user;
     
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     
-    if ([self.invitedFriends containsObject:user[@"username"]]) {
+    if ([_invitedFriends containsObject:user[@"username"]]) {
         cell.invited = YES;
     } else {
         cell.invited = NO;
     }
     
-    PFFileObject *imageFile = user[@"profilePhoto"];
-    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    PFFileObject *const imageFile = user[@"profilePhoto"];
+    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
     cell.profilePhotoView.image = nil;
     [cell.profilePhotoView setImageWithURL:profilePhotoURL];
     // make profile photo a circle
@@ -133,17 +134,18 @@
 #pragma mark - Invite/Uninvite Friends To Event
 
 // Follows cell'ss protocol to add/remove friends from local array
-- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove {
+- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove
+{
     if (!remove) {
-        [self.invitedFriends addObject:friend];
+        [_invitedFriends addObject:friend];
     } else {
-        [self.invitedFriends removeObject:friend];
+        [_invitedFriends removeObject:friend];
     }
 }
 
 // Sends list of invtied friends to AddEvent view controller
 - (IBAction)saveList:(id)sender {
-    [self.delegate saveFriendsList:self.invitedFriends];
+    [_delegate saveFriendsList:_invitedFriends];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -155,25 +157,26 @@
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(PFUser *evaluatedObject, NSDictionary *bindings) {
             return [evaluatedObject[@"fullname"] containsString:searchText];
         }];
-        self->_results = (NSMutableArray *)[self->_friendships filteredArrayUsingPredicate:predicate];
+        // Casting is necessary because filteredArrayUsingPredicate returns an array
+        _results = (NSMutableArray *)[_friendships filteredArrayUsingPredicate:predicate];
     }
     else {
-        self->_results = self->_friendships;
+        _results = _friendships;
     }
-    [self.tableView reloadData];
+    [_tableView reloadData];
 }
 
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    self.searchBar.showsCancelButton = YES;
+    _searchBar.showsCancelButton = YES;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    self.searchBar.showsCancelButton = NO;
-    self.searchBar.text = @"";
-    [self.searchBar resignFirstResponder];
-    self->_results = self->_friendships;
-    [self.tableView reloadData];
+    _searchBar.showsCancelButton = NO;
+    _searchBar.text = @"";
+    [_searchBar resignFirstResponder];
+    _results = _friendships;
+    [_tableView reloadData];
 }
 
 

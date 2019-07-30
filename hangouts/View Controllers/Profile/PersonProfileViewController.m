@@ -29,16 +29,19 @@
     [self setProfileFeatures];
 }
 
+// REMOVE REMOVE
 - (void)setProfileFeatures {
-    self.usernameLabel.text = self.user[@"username"];
+    _usernameLabel.text = self.user[@"username"];
     self.fullnameLabel.text = self.user[@"fullname"];
     self.emailLabel.text = self.user[@"email"];
     self.bioLabel.text = self.user[@"bio"];
     [self setProfileImageLayout];
 }
 
+// NO SPACING AFTER VIOID - PARANTHESIS AFTER LINE
 - (void) setProfileImageLayout {
-    PFFileObject *imageFile = self.user[@"profilePhoto"];
+    // CONST - CAN'T CHANGE
+    PFFileObject *const imageFile = self.user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     self.profilePhotoView.image = nil;
     [self.profilePhotoView setImageWithURL:profilePhotoURL];

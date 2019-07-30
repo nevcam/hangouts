@@ -1700,7 +1700,7 @@
         <scene sceneID="69b-8n-cTt">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1br-Cr-0f2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Friends" id="f3o-9I-JLl"/>
+                    <tabBarItem key="tabBarItem" title="Friends" selectedImage="friends" id="f3o-9I-JLl"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ltu-fY-Df7">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1914,6 +1914,7 @@
     <resources>
         <image name="calendar" width="33.333332061767578" height="33.666667938232422"/>
         <image name="close-icon" width="26" height="24"/>
+        <image name="friends" width="66.666664123535156" height="66.666664123535156"/>
         <image name="logo" width="500" height="500"/>
         <image name="profile" width="248" height="248"/>
     </resources>

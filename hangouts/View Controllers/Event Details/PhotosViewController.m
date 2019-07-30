@@ -54,14 +54,17 @@
     __weak typeof(self) weakSelf = self;
     [photoQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable photos, NSError * _Nullable error) {
         if (photos) {
-            
+            // Make changes
             __strong typeof(self) strongSelf = weakSelf;
             
-            if (!strongSelf->_photosCollection) {
-                 strongSelf->_photosCollection = [NSMutableArray new];
-            }
-            strongSelf->_photosCollection = (NSMutableArray *)photos;
-            [self.collectionView reloadData];
+            // Unecessary.
+//            if (!strongSelf->_photosCollection) {
+//                 strongSelf->_photosCollection = [NSMutableArray new];
+//            }
+            // if not nill!
+            strongSelf->_photosCollection = [NSMutableArray arrayWithArray:photos];
+            // Should be strong
+            [strongSelf.collectionView reloadData];
             
         } else {
             NSLog(@"Error getting photod: %@", error.localizedDescription);
