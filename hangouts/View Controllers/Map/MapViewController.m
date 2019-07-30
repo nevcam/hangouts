@@ -14,8 +14,10 @@
 #import "Friendship.h"
 #import "UIImageView+AFNetworking.h"
 #import "CustomPointAnnotation.h"
+#import "EventPointAnnotation.h"
 #import "UIImageView+AFNetworking.h"
 #import "PersonDetailMapView.h"
+
 
 
 @interface MapViewController () <MKMapViewDelegate>
@@ -59,7 +61,6 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 //    NSLog(@"last location %@", [locations lastObject]);
-//    NSLog(@"locations %@", locations);
     
     self->currentLocation = [locations objectAtIndex:0];
     [self->locationManager stopUpdatingLocation];
@@ -69,8 +70,6 @@
          if (!(error))
          {
              CLPlacemark *placemark = [placemarks objectAtIndex:0];
-//             NSLog(@"\nCurrent Location Detected\n");
-//             NSLog(@"placemark %@",placemark);
              self->centre.latitude = self->currentLocation.coordinate.latitude;
              self->centre.longitude = self->currentLocation.coordinate.longitude;
              PFUser *user = [PFUser currentUser];
@@ -83,7 +82,7 @@
                  } else {
                  }
              }];
-             MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:MKCoordinateRegionMakeWithDistance(self->centre, 600, 600)];
+             MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:MKCoordinateRegionMakeWithDistance(self->centre, 1500, 1500)];
              [self.mapView setRegion:adjustedRegion animated:YES];
          }
          else
@@ -115,7 +114,6 @@
 
 #pragma mark - Getting Event Locations
 
-// Makes request for locations of accepted events to add respective pointers in the map
 - (void)fetchEventPointers {
     PFQuery *userXEventQuery = [UserXEvent query];
     [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -125,7 +123,6 @@
     
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            self->_events = (NSMutableArray *)events;
             [self annotationEvents:events];
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
@@ -174,7 +171,7 @@
     }];
 }
 
-#pragma mark - Add Annotations for friends
+#pragma mark - Add Annotations
 
 - (void)annotationFriends {
     for (PFUser *friend in self->_friendships){
@@ -187,28 +184,23 @@
         myAnnotation.coordinate = coordinate;
         myAnnotation.title = friend[@"username"];
         myAnnotation.friend = friend;
-        myAnnotation.tag = @"friend";
-//        myAnnotation.event = nil;
         [self.mapView addAnnotation:myAnnotation];
     }
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
-
 
 - (void) annotationEvents:(NSArray *)events {
     for (UserXEvent *addEvent in events) {
         CLLocationCoordinate2D coordinate;
         NSNumber *latitude = addEvent.event.location_lat;
         NSNumber *longitude = addEvent.event.location_lng;
+        NSLog(@"lat: %@", latitude);
         coordinate.latitude = latitude.floatValue;
         coordinate.longitude = longitude.floatValue;
-        CustomPointAnnotation *myAnnotation = [[CustomPointAnnotation alloc] init];
-        myAnnotation.coordinate = coordinate;
+        EventPointAnnotation *myAnnotation = [[EventPointAnnotation alloc] init];
+        myAnnotation.coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
         myAnnotation.title = addEvent[@"event"][@"name"];
-//        myAnnotation.friend = nil;
         myAnnotation.event = addEvent[@"event"];
-        myAnnotation.tag = @"event";
-//        NSLog(@"event calls: %@", myAnnotation.event);
-//        NSLog(@"coordinate: %@", myAnnotation.coordinate);
         [self.mapView addAnnotation:myAnnotation];
     }
     [self.mapView showAnnotations:self.mapView.annotations animated:YES];
@@ -217,27 +209,29 @@
 #pragma mark - Annotation customization
 
 - (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id <MKAnnotation>)annotation {
-    NSLog(@"count, %@", annotation.title);
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
     static NSString *AnnotationViewID = @"annotationView";
     MKAnnotationView *annotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+    static NSString *EventAnnotationViewID = @"eventAnnotationView";
+    MKAnnotationView *eventAnnotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:EventAnnotationViewID];
     if (annotationView == nil){
-        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
-        annotationView.canShowCallout = YES;
         if ([annotation isKindOfClass:[CustomPointAnnotation class]]) {
+            annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+            annotationView.canShowCallout = YES;
             CustomPointAnnotation *customAnnotation = (CustomPointAnnotation *)annotation;
-            if ([customAnnotation.tag isEqualToString:@"friend"]) {
-                PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
-                NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-                UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
-                annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
-            } else if ([customAnnotation.tag isEqualToString:@"event"]) {
-                NSLog(@"event annotation %@", customAnnotation.event);
-//                annotationView = [[MKMarkerAnnotationView alloc] initWithAnnotation:customAnnotation reuseIdentifier:AnnotationViewID];
-//                return annotationView;
-            }
+            PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
+            NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
+            annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
+        } else if ([annotation isKindOfClass:[EventPointAnnotation class]]) {
+            eventAnnotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+            eventAnnotationView.canShowCallout = YES;
+            EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
+            eventAnnotationView = [[MKMarkerAnnotationView alloc] initWithAnnotation:eventAnnotation reuseIdentifier:EventAnnotationViewID];
+            eventAnnotationView.annotation = eventAnnotation;
+            return eventAnnotationView;
         }
     }
     annotationView.annotation = annotation;
@@ -269,16 +263,6 @@
     UIGraphicsEndImageContext();
     
     return newImage;
-}
-
-// Creates a pointer im the map
-- (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
-    
-    MKPointAnnotation *annotation = [MKPointAnnotation new];
-    annotation.coordinate = coordinate;
-    annotation.title = @"Event!";
-    [self.mapView addAnnotation:annotation];
 }
 
 // Allows user to create an event
