@@ -12,6 +12,7 @@
 		3C313D3B22EBAE9B002732DB /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3A22EBAE9B002732DB /* Photo.m */; };
 		3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3D22EF67DF002732DB /* PhotoCell.m */; };
 		3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */; };
+		3C313D4722EFC324002732DB /* PersonProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4622EFC324002732DB /* PersonProfileViewController.m */; };
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
@@ -81,6 +82,8 @@
 		3C313D3D22EF67DF002732DB /* PhotoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		3C313D3F22EF8CD2002732DB /* PhotoDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDetailsViewController.h; sourceTree = "<group>"; };
 		3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailsViewController.m; sourceTree = "<group>"; };
+		3C313D4522EFC324002732DB /* PersonProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonProfileViewController.h; sourceTree = "<group>"; };
+		3C313D4622EFC324002732DB /* PersonProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonProfileViewController.m; sourceTree = "<group>"; };
 		3CE7D01122DF9681005E5C29 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3CE7D01222DF9681005E5C29 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddEventViewController.h; sourceTree = "<group>"; };
@@ -269,6 +272,8 @@
 				D9DF804322E23CFC003D240F /* ProfileEditViewController.m */,
 				7BEBF5A022E67DA10008E648 /* CalendarViewController.h */,
 				7BEBF5A122E67DA10008E648 /* CalendarViewController.m */,
+				3C313D4522EFC324002732DB /* PersonProfileViewController.h */,
+				3C313D4622EFC324002732DB /* PersonProfileViewController.m */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -663,6 +668,7 @@
 				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */,
+				3C313D4722EFC324002732DB /* PersonProfileViewController.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
 				D934D1DB22EBA2A000B761D8 /* CustomPointAnnotation.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
