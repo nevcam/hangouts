@@ -11,6 +11,7 @@
 #import "Friendship.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@protocol FriendCellDelegate;
 
 @interface FriendCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
@@ -22,6 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) NSMutableArray *friends;
 @property (nonatomic, weak) NSMutableArray *friendRequests;
 @property (nonatomic, weak) Friendship *currentUserFriendship;
+
+@property (nonatomic, weak) id<FriendCellDelegate> delegate;
 @end
+
+@protocol FriendCellDelegate
+- (void)tapProfile:(FriendCell *)friendCell didTap: (PFUser *)user;
+@end
+
 
 NS_ASSUME_NONNULL_END

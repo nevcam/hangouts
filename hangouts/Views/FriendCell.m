@@ -13,7 +13,11 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    
+    // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
+    UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
+    [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
+    [self.profilePhotoView setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -66,6 +70,10 @@
      
     }
      */
+}
+
+- (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
+    [self.delegate tapProfile:self didTap:self.user];
 }
 
 @end
