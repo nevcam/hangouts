@@ -32,9 +32,9 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.searchBar.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _searchBar.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,66 +43,73 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 
 #pragma mark - Load Locations
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self->_results.count;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _results.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     LocationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LocationCell" forIndexPath:indexPath];
-    [cell updateWithLocation:self->_results[indexPath.row]];
+    [cell updateWithLocation:_results[indexPath.row]];
     return cell;
 }
 
 #pragma mark - Save Location When Selected
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // This is the selected venue
-    NSDictionary *venue = self->_results[indexPath.row];
-    NSNumber *lat = [venue valueForKeyPath:@"location.lat"];
-    NSNumber *lng = [venue valueForKeyPath:@"location.lng"];
-    NSString *loc_name = venue[@"name"];
-    NSString *loc_address = [venue valueForKeyPath:@"location.address"];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *const venue = _results[indexPath.row];
+    NSNumber *const lat = [venue valueForKeyPath:@"location.lat"];
+    NSNumber *const lng = [venue valueForKeyPath:@"location.lng"];
+    NSString *const loc_name = venue[@"name"];
+    NSString *const loc_address = [venue valueForKeyPath:@"location.address"];
     
-    NSLog(@"%@, %@", lat, lng);
-    [self.delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng name:loc_name address:loc_address];
+    [_delegate locationsViewController: self didPickLocationWithLatitude:lat longitude:lng name:loc_name address:loc_address];
 }
 
 #pragma mark - Search Bar
 
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    NSString *newText = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *const newText = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
     [self fetchLocationsWithQuery:newText nearCity:@"San Francisco"];
     return true;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     [self fetchLocationsWithQuery:searchBar.text nearCity:@"San Francisco"];
 }
 
-// Cancel button implemented through view controller
+// Cancel button has been implemented through view controller
 
 #pragma mark - Fetch Locations From API
 
-- (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city {
-    NSString *baseURLString = @"https://api.foursquare.com/v2/venues/search?";
+- (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city
+{
+    NSString *const baseURLString = @"https://api.foursquare.com/v2/venues/search?";
     NSString *queryString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&v=20141020&near=%@,CA&query=%@", clientID, clientSecret, city, query];
     queryString = [queryString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
-    NSURL *url = [NSURL URLWithString:[baseURLString stringByAppendingString:queryString]];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURL *const url = [NSURL URLWithString:[baseURLString stringByAppendingString:queryString]];
+    NSURLRequest *const request = [NSURLRequest requestWithURL:url];
     
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSession *const session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
     __weak typeof(self) weakSelf = self;
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
-        __strong typeof(self) strongSelf = weakSelf;
         if (data) {
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            
-            strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
-            
-            [self.tableView reloadData];
+            __strong typeof(self) strongSelf = weakSelf;
+            if (strongSelf) {
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                strongSelf->_results = [responseDictionary valueForKeyPath:@"response.venues"];
+                [self.tableView reloadData];
+                
+            } else {
+                NSLog(@"Error: View Controller was closed");
+            }
         }
     }];
     [task resume];

@@ -105,7 +105,7 @@
 {
     
     FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"friendsToEventCell"];
-    PFUser *user = _results[indexPath.row];
+    PFUser *const user = _results[indexPath.row];
     cell.user = user;
     
     cell.usernameLabel.text = user[@"username"];
