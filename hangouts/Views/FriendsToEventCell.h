@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
 #import "Friendship.h"
+@class FriendsToEventCell;
 
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol FriendEventCellDelegate <NSObject>
-- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove;
+- (void)addFriendToEvent:(PFUser *)friend remove:(BOOL)remove;
+- (void)tapProfile:(FriendsToEventCell *)friendCell didTap: (PFUser *)user;
 @end
 
 
