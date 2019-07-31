@@ -12,6 +12,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "Friendship.h"
 #import "Event.h"
+#import "PersonProfileViewController.h"
 
 @interface FriendsInviteViewController () <UITableViewDataSource, UITableViewDelegate, FriendEventCellDelegate, UISearchBarDelegate>
 
@@ -181,5 +182,18 @@
     [_tableView reloadData];
 }
 
+#pragma mark - Check a Profile
+
+- (void)tapProfile:(nonnull FriendsToEventCell *)friendCell didTap:(nonnull PFUser *)user {
+    NSLog(@"%@", user);
+    [self performSegueWithIdentifier:@"eventFriendsListToProfileSegue" sender:user];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier  isEqual:@"eventFriendsListToProfileSegue"]) {
+        PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.user = sender;
+    }
+}
 
 @end

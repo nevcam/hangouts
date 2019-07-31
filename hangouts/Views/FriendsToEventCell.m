@@ -15,6 +15,11 @@
     
     [self changeButtonLayout:NO];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
+    UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
+    [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
+    [self.profilePhotoView setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -47,6 +52,10 @@
         [self.addFriendButton setTitle:@"Invite" forState:UIControlStateNormal];
         self.addFriendButton.backgroundColor = [UIColor colorWithRed:0.69 green:0.93 blue:0.57 alpha:1.0];
     }
+}
+
+- (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
+    [self.delegate tapProfile:self didTap:self.user];
 }
 
 @end

@@ -90,14 +90,13 @@
 
 #pragma mark - Navigation
 - (void)tapProfile:(nonnull FriendRequestCell *)friendCell didTap:(nonnull PFUser *)user {
-    NSLog(@"%@", user);
     [self performSegueWithIdentifier:@"requestsListToProfileSegue" sender:user];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier  isEqual:@"requestsListToProfileSegue"]) {
-        PersonProfileViewController *requestProfileController = segue.destinationViewController;
-        requestProfileController.user = sender;
+        PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.user = sender;
     }
 }
 

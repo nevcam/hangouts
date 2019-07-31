@@ -178,7 +178,6 @@
 #pragma mark - Navigation
 
 - (void)tapProfile:(nonnull FriendCell *)friendCell didTap:(nonnull PFUser *)user {
-    NSLog(@"%@", user);
     [self performSegueWithIdentifier:@"friendListToProfileSegue" sender:user];
 }
 
