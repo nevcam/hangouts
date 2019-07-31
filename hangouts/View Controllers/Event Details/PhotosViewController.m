@@ -31,11 +31,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
     
-    UINavigationController *navController = (UINavigationController *) self.parentViewController;
-    EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
+    UINavigationController *const navController = (UINavigationController *) self.parentViewController;
+    EventTabBarController *const tabBar = (EventTabBarController *)navController.parentViewController;
     _currentEvent = tabBar.event;
     
     [self fetchPhotos];
@@ -54,18 +54,13 @@
     __weak typeof(self) weakSelf = self;
     [photoQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable photos, NSError * _Nullable error) {
         if (photos) {
-            // Make changes
             __strong typeof(self) strongSelf = weakSelf;
-            
-            // Unecessary.
-//            if (!strongSelf->_photosCollection) {
-//                 strongSelf->_photosCollection = [NSMutableArray new];
-//            }
-            // if not nill!
-            strongSelf->_photosCollection = [NSMutableArray arrayWithArray:photos];
-            // Should be strong
-            [strongSelf.collectionView reloadData];
-            
+            if (strongSelf) {
+                strongSelf->_photosCollection = [NSMutableArray arrayWithArray:photos];
+                [strongSelf.collectionView reloadData];
+            } else {
+                NSLog(@"Error: view controller has been closed");
+            }
         } else {
             NSLog(@"Error getting photod: %@", error.localizedDescription);
         }
@@ -93,14 +88,14 @@
 // Saves photo when image has been chosen
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *const originalImage = info[UIImagePickerControllerOriginalImage];
     
-    if (!self->_photosCollection) {
-        self->_photosCollection = [NSMutableArray new];
+    if (!_photosCollection) {
+        _photosCollection = [NSMutableArray new];
     }
-    [self->_photosCollection addObject:info[UIImagePickerControllerOriginalImage]];
+    [_photosCollection addObject:info[UIImagePickerControllerOriginalImage]];
     
-    UIImage *imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
+    UIImage *const imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
     
     [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {
@@ -109,7 +104,6 @@
             [self fetchPhotos];
         }
     }];
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -133,7 +127,7 @@
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     PhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotCollectionCell" forIndexPath:indexPath];
-    Photo *newPhoto = self->_photosCollection[indexPath.row];
+    Photo *newPhoto = _photosCollection[indexPath.row];
     
     [newPhoto.photo getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
@@ -145,7 +139,7 @@
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self->_photosCollection.count;
+    return _photosCollection.count;
 }
 
 #pragma mark - Photo Details Segue
@@ -159,7 +153,7 @@
     
     if ([segue.identifier isEqualToString:@"photoDetailsSegue"]) {
         PhotoCell *tappedCell = sender;
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
+        NSIndexPath *indexPath = [_collectionView indexPathForCell:tappedCell];
         
         Photo *checkPhoto = _photosCollection[indexPath.row];
         
@@ -180,19 +174,19 @@
 // Sets spacing and margins between the cells in the collection view
 - (void)setCollectionLayout {
     
-    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     
     // Sets margins between posts, view, and other posts
     layout.minimumInteritemSpacing = 7;
     layout.minimumLineSpacing = 7;
-    CGFloat margins = 14;
+    const CGFloat margins = 14;
     
     // Sets amount of posters per line
-    CGFloat postersPerLine = 3;
+    const CGFloat postersPerLine = 3;
     
     // Sets post width and height, based on previous values
-    CGFloat itemWidth = (self.collectionView.frame.size.width - margins - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
-    CGFloat itemHeight = itemWidth * 1.5;
+    const CGFloat itemWidth = (_collectionView.frame.size.width - margins - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
+    const CGFloat itemHeight = itemWidth * 1.5;
     layout.itemSize = CGSizeMake (itemWidth, itemHeight);
 }
 

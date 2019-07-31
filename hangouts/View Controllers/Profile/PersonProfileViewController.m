@@ -32,9 +32,9 @@
 // REMOVE REMOVE
 - (void)setProfileFeatures {
     _usernameLabel.text = self.user[@"username"];
-    self.fullnameLabel.text = self.user[@"fullname"];
-    self.emailLabel.text = self.user[@"email"];
-    self.bioLabel.text = self.user[@"bio"];
+    _fullnameLabel.text = self.user[@"fullname"];
+    _emailLabel.text = self.user[@"email"];
+    _bioLabel.text = self.user[@"bio"];
     [self setProfileImageLayout];
 }
 
@@ -42,12 +42,12 @@
 - (void) setProfileImageLayout {
     // CONST - CAN'T CHANGE
     PFFileObject *const imageFile = self.user[@"profilePhoto"];
-    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-    self.profilePhotoView.image = nil;
-    [self.profilePhotoView setImageWithURL:profilePhotoURL];
-    self.profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.height /2;
-    self.profilePhotoView.layer.masksToBounds = YES;
-    self.profilePhotoView.layer.borderWidth = 0;
+    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    _profilePhotoView.image = nil;
+    [_profilePhotoView setImageWithURL:profilePhotoURL];
+    _profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.height /2;
+    _profilePhotoView.layer.masksToBounds = YES;
+    _profilePhotoView.layer.borderWidth = 0;
 }
 
 @end
