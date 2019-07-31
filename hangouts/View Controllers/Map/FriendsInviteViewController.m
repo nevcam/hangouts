@@ -111,12 +111,14 @@
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     
-    if ([_invitedFriends containsObject:user[@"username"]]) {
-        cell.invited = YES;
-    } else {
-        cell.invited = NO;
+    // Could not use containsObject built-in function because locally, the dequed user and the one saved in the array have different IDs, meaning that when calling containsObject, they are identified as different users.
+    cell.invited = NO;
+    for (PFUser *invitedFriend in _invitedFriends) {
+        if ([user.objectId isEqualToString:invitedFriend.objectId]) {
+            cell.invited = YES;
+        }
     }
-    
+ 
     PFFileObject *const imageFile = user[@"profilePhoto"];
     NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
     cell.profilePhotoView.image = nil;
@@ -134,7 +136,7 @@
 #pragma mark - Invite/Uninvite Friends To Event
 
 // Follows cell'ss protocol to add/remove friends from local array
-- (void)addFriendToEvent:(NSString *)friend remove:(BOOL)remove
+- (void)addFriendToEvent:(PFUser *)friend remove:(BOOL)remove
 {
     if (!remove) {
         [_invitedFriends addObject:friend];

@@ -31,11 +31,11 @@
 #pragma mark - Global Variables
 
 {
-    __weak NSNumber *_location_lat;
-    __weak NSNumber *_location_lng;
-    __weak NSString *_location_name;
-    __weak NSString *_location_address;
-           NSMutableArray *_invitedFriends;
+    NSNumber *_location_lat;
+    NSNumber *_location_lng;
+    NSString *_location_name;
+    NSString *_location_address;
+    NSMutableArray *_invitedFriends;
 }
 
 #pragma mark - Loading and Popping Controller
@@ -136,7 +136,8 @@
     [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
 }
 // Locally saves location if user has chosen one
-- (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude
+- (void)locationsViewController:(LocationsViewController *)controller
+    didPickLocationWithLatitude:(NSNumber *)latitude
                       longitude:(NSNumber *)longitude
                            name:(NSString *)name
                         address:(NSString *)address
