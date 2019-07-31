@@ -1332,7 +1332,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="Y7M-EX-CSF" id="0kG-xX-8vy"/>
-                        <segue destination="4ta-Ah-gRE" kind="show" identifier="requestListToProfileSegue" id="gyE-XP-bW1"/>
+                        <segue destination="4ta-Ah-gRE" kind="show" identifier="requestsListToProfileSegue" id="gyE-XP-bW1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wE5-cC-RjU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2031,6 +2031,6 @@
         <image name="profile" width="248" height="248"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="w2F-AF-ITO"/>
+        <segue reference="gyE-XP-bW1"/>
     </inferredMetricsTieBreakers>
 </document>

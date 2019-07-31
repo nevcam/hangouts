@@ -12,6 +12,7 @@
 #import "Friendship.h"
 #import "UIImageView+AFNetworking.h"
 #import "FriendRequestCell.h"
+#import "PersonProfileViewController.h"
 
 @interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -86,14 +87,19 @@
 }
 
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - Navigation
+- (void)tapProfile:(nonnull FriendRequestCell *)friendCell didTap:(nonnull PFUser *)user {
+    NSLog(@"%@", user);
+    [self performSegueWithIdentifier:@"requestsListToProfileSegue" sender:user];
 }
-*/
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier  isEqual:@"requestsListToProfileSegue"]) {
+        PersonProfileViewController *requestProfileController = segue.destinationViewController;
+        requestProfileController.user = sender;
+    }
+}
+
 
 @end
