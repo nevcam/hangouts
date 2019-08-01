@@ -27,14 +27,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.nameField.delegate = self;
-    self.usernameField.delegate = self;
-    self.emailField.delegate = self;
-    self.passwordField.delegate = self;
+    _nameField.delegate = self;
+    _usernameField.delegate = self;
+    _emailField.delegate = self;
+    _passwordField.delegate = self;
     // make profile photo a circle
-    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height /2;
-    self.profileImageView.layer.masksToBounds = YES;
-    self.profileImageView.layer.borderWidth = 0;
+    _profileImageView.layer.cornerRadius = _profileImageView.frame.size.height /2;
+    _profileImageView.layer.masksToBounds = YES;
+    _profileImageView.layer.borderWidth = 0;
 }
 
 #pragma mark -  class methods
@@ -42,19 +42,19 @@
 - (IBAction)didTapRegister:(id)sender {
     [SVProgressHUD show];
     PFUser *newUser = [PFUser user];
-    newUser.username = self.usernameField.text;
-    newUser.email = self.emailField.text;
-    newUser.password = self.passwordField.text;
-    [newUser setObject:self.nameField.text forKey:@"fullname"];
+    newUser.username = _usernameField.text;
+    newUser.email = _emailField.text;
+    newUser.password = _passwordField.text;
+    [newUser setObject:_nameField.text forKey:@"fullname"];
     [self assignImageToUser:newUser];
     
-    NSArray *fieldsStrings = [NSArray arrayWithObjects:self.usernameField.text, self.nameField.text, self.emailField.text, self.passwordField.text, nil];
+    NSArray *fieldsStrings = [NSArray arrayWithObjects:_usernameField.text, _nameField.text, _emailField.text, _passwordField.text, nil];
     if([self validateStrings:fieldsStrings]) {
-        [self.errorLabel setHidden:YES];
+        [_errorLabel setHidden:YES];
         [self registerUser:newUser];
     } else {
-        self.errorLabel.text = @"Please fill in all fields";
-        [self.errorLabel setHidden:NO];
+        _errorLabel.text = @"Please fill in all fields";
+        [_errorLabel setHidden:NO];
     }
 }
 
@@ -131,7 +131,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     UIImage *resizedImage = [self resizeImage:editedImage withSize:CGSizeMake(350, 350)];
-    self.profileImageView.image = resizedImage;
+    _profileImageView.image = resizedImage;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -149,8 +149,8 @@
 
 - (void)assignImageToUser: (PFUser *)user {
     NSData *imageData;
-    if(self.profileImageView.image != nil) {
-        imageData = UIImageJPEGRepresentation(self.profileImageView.image, 1.0);
+    if(_profileImageView.image != nil) {
+        imageData = UIImageJPEGRepresentation(_profileImageView.image, 1.0);
     } else {
         UIImage *pic = [UIImage imageNamed:@"profile"];
         imageData = UIImageJPEGRepresentation(pic, 1.0);
@@ -170,10 +170,10 @@
 
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
-    [self.nameField resignFirstResponder];
-    [self.usernameField resignFirstResponder];
-    [self.emailField resignFirstResponder];
-    [self.passwordField resignFirstResponder];
+    [_nameField resignFirstResponder];
+    [_usernameField resignFirstResponder];
+    [_emailField resignFirstResponder];
+    [_passwordField resignFirstResponder];
 }
 
 // The following methods let the view move up/down when keybord is shown/dismissed
