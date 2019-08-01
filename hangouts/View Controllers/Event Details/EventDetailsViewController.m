@@ -22,11 +22,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet MKMapView *locationMapView;
 @property (weak, nonatomic) IBOutlet UICollectionView *goingCollectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
 
 @end
 
 @implementation EventDetailsViewController {
     NSArray *_goingUserXEvents;
+    NSArray *_invitedUserXEvents;
 }
 
 - (void)viewDidLoad {
@@ -38,10 +40,13 @@
     
     _goingCollectionView.delegate = self;
     _goingCollectionView.dataSource = self;
+    _invitedCollectionView.delegate = self;
+    _invitedCollectionView.dataSource = self;
     
     [self setLabels];
     [self setMap];
     [self fetchGoingUsers];
+    [self fetchInvitedUsers];
 }
 
 - (IBAction)didTapClose:(id)sender {
@@ -110,17 +115,50 @@
     }];
 }
 
+- (void)fetchInvitedUsers {
+    PFQuery *invitedUserXEventQuery = [UserXEvent query];
+    [invitedUserXEventQuery whereKey:@"event" equalTo:_event];
+    [invitedUserXEventQuery whereKey:@"type" equalTo:@"invited"];
+    [invitedUserXEventQuery includeKey:@"user"];
+    [invitedUserXEventQuery selectKeys:[NSArray arrayWithObject:@"user"]];
+    
+    __weak typeof(self) weakSelf = self;
+    [invitedUserXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
+        if (userXEvents) {
+            __strong typeof(weakSelf) strongSelf = self;
+            if(strongSelf) {
+                strongSelf->_invitedUserXEvents = [[NSMutableArray alloc] initWithArray:userXEvents];
+                [strongSelf.invitedCollectionView reloadData];
+            }
+        } else {
+            NSLog(@"Error getting events: %@", error.localizedDescription);
+        }
+    }];
+}
+
 #pragma mark - Collection View Protocol Methods
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    UserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GoingUserCell" forIndexPath:indexPath];
-    UserXEvent *userXEvent = _goingUserXEvents[indexPath.item];
+    UserCell *cell;
+    UserXEvent *userXEvent;
+    if (collectionView == _goingCollectionView) {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GoingUserCell" forIndexPath:indexPath];
+        userXEvent = _goingUserXEvents[indexPath.item];
+    } else {
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"InvitedUserCell" forIndexPath:indexPath];
+        userXEvent = _invitedUserXEvents[indexPath.item];
+    }
     [cell configureCell:userXEvent.user];
     return cell;
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _goingUserXEvents.count;
+    if (collectionView == _goingCollectionView) {
+        return _goingUserXEvents.count;
+    } else {
+        return _invitedUserXEvents.count;
+    }
+    
 }
 
 @end
