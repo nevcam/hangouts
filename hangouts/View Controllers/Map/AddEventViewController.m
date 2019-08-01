@@ -16,11 +16,13 @@
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
 
 // Features displayed/edited in the view controller
-@property (weak, nonatomic) IBOutlet UITextField *eventLocationField;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocatinNameField;
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
 
 // @property (strong, nonatomic) NSMutableArray *invitedFriends;
 
@@ -43,8 +45,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _eventLocationField.delegate = self;
     
     // Layout for fields and date picker
     [self setInitialPlaceholder];
@@ -147,9 +147,15 @@
     _location_address = address;
     _location_name = name;
     
-    // We show the name, rather than the address because not all locations have address
-    _eventLocationField.text = name;
-    
+    _eventLocatinNameField.text = name;
+    // Not all locations have an address
+    if (address) {
+        _eventLocationField.text = address;
+    }
+    if (name) {
+        [self.locationButton setTitle:@"Change" forState:UIControlStateNormal];
+    }
+
     [self.navigationController popToViewController:self animated:YES];
 }
 
