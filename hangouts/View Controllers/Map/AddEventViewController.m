@@ -173,8 +173,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"locationsViewSegue"]) {
-        UINavigationController *locationController = [segue destinationViewController];
+        LocationsViewController *locationController = [segue destinationViewController];
         locationController.delegate = self;
+        locationController.userLocation = _userLocation;
     }
     else if ([segue.identifier isEqualToString:@"eventFriendsSegue"]) {
         FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
