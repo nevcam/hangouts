@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol RemovePhotoDelegate <NSObject>
-- (void)removeAPhoto:(Photo *)oldPhoto;
+- (void)removeAPhoto;
 @end
 
 @interface PhotoDetailsViewController : UIViewController

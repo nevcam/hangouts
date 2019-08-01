@@ -168,7 +168,7 @@
 
 #pragma mark - Delegate Method when deleting photos
 
-- (void)removeAPhoto:(Photo *)oldPhoto {
+- (void)removeAPhoto {
     [self fetchPhotos];
 }
 
