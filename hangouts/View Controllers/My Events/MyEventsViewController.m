@@ -74,15 +74,15 @@
 }
 
 - (void)fetchAcceptedEvents {
-    PFQuery *userXEventQuery1 = [UserXEvent query];
-    [userXEventQuery1 whereKey:@"user" equalTo:[PFUser currentUser]];
-    [userXEventQuery1 whereKey:@"type" equalTo:@"accepted"];
+    PFQuery *acceptedUserXEventQuery = [UserXEvent query];
+    [acceptedUserXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
+    [acceptedUserXEventQuery whereKey:@"type" equalTo:@"accepted"];
     
-    PFQuery *userXEventQuery2 = [UserXEvent query];
-    [userXEventQuery2 whereKey:@"user" equalTo:[PFUser currentUser]];
-    [userXEventQuery2 whereKey:@"type" equalTo:@"owned"];
+    PFQuery *ownedUserXEventQuery = [UserXEvent query];
+    [ownedUserXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
+    [ownedUserXEventQuery whereKey:@"type" equalTo:@"owned"];
     
-    PFQuery *userXEventQuery = [PFQuery orQueryWithSubqueries:@[userXEventQuery1,userXEventQuery2]];
+    PFQuery *userXEventQuery = [PFQuery orQueryWithSubqueries:@[acceptedUserXEventQuery,ownedUserXEventQuery]];
     [userXEventQuery includeKey:@"event"];
     [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event", @"type", nil]];
     
