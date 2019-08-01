@@ -585,9 +585,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event's description lala lulu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qj-6B-8gE">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Event's description lala lulu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qj-6B-8gE">
                                 <rect key="frame" x="16" y="279" width="343" height="79"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -599,9 +598,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mre-U6-cW9">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mre-U6-cW9">
                                 <rect key="frame" x="274" y="183" width="85" height="85"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="HeR-QC-Dxk"/>
+                                    <constraint firstAttribute="width" constant="85" id="NFg-fI-jWW"/>
+                                </constraints>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3a-nV-SDD">
                                 <rect key="frame" x="16" y="186" width="69" height="21"/>
@@ -610,9 +613,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location's name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0s6-pc-pif">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Location's name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0s6-pc-pif">
                                 <rect key="frame" x="16" y="215" width="125" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -638,9 +640,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pxu-re-BXd">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pxu-re-BXd">
                                 <rect key="frame" x="16" y="395" width="343" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gWG-Fw-EzH">
                                     <size key="itemSize" width="80" height="80"/>
@@ -659,9 +660,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QKc-yQ-PSb">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QKc-yQ-PSb">
                                 <rect key="frame" x="16" y="512" width="343" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Oc3-oq-da0">
                                     <size key="itemSize" width="80" height="80"/>
@@ -680,8 +680,29 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EtB-bD-sUF">
+                                <rect key="frame" x="274" y="183" width="85" height="85"/>
+                                <connections>
+                                    <action selector="didTapMap:" destination="YXX-rW-Jew" eventType="touchUpInside" id="JA5-Kt-ht3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="centerY" secondItem="0s6-pc-pif" secondAttribute="centerY" id="3s6-oz-pnr"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="top" secondItem="mre-U6-cW9" secondAttribute="top" id="5jc-w6-cSy"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="pxu-re-BXd" secondAttribute="trailing" id="6bW-IL-n0O"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="bottom" secondItem="mre-U6-cW9" secondAttribute="bottom" id="Hg4-kS-CAe"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="leading" secondItem="mre-U6-cW9" secondAttribute="leading" id="ITg-Jz-71M"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="8Qj-6B-8gE" secondAttribute="trailing" id="VLe-Au-Ndu"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="N0k-Xk-E2Q" secondAttribute="trailingMargin" id="abk-pV-p4p"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="pxu-re-BXd" secondAttribute="trailing" id="cXo-SR-o91"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="QKc-yQ-PSb" secondAttribute="trailing" id="oaH-Ba-bjX"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="mre-U6-cW9" secondAttribute="trailing" id="sc9-bI-H67"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="QKc-yQ-PSb" secondAttribute="trailing" id="vRU-eY-s6O"/>
+                            <constraint firstItem="8Qj-6B-8gE" firstAttribute="top" secondItem="EtB-bD-sUF" secondAttribute="bottom" constant="11" id="wzl-d3-9fE"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="top" secondItem="Jj3-Da-Hu2" secondAttribute="top" constant="119" id="xt0-LJ-AV9"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Jj3-Da-Hu2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Details" id="J6T-J0-qcc">
@@ -704,7 +725,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgU-rR-BdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4500" y="3133"/>
+            <point key="canvasLocation" x="-4500" y="3132.6836581709149"/>
         </scene>
         <!--Photos-->
         <scene sceneID="ubO-qI-kgN">

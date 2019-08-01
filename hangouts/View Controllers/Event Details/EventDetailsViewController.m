@@ -54,5 +54,16 @@
 - (IBAction)didTapClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
+- (IBAction)didTapMap:(id)sender {
+    double lat = [_event.location_lat doubleValue];
+    double lng = [_event.location_lng doubleValue];
+    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(lat,lng);
+
+    //Apple Maps, using the MKMapItem class
+    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:location addressDictionary:nil];
+    MKMapItem *item = [[MKMapItem alloc] initWithPlacemark:placemark];
+    item.name = _event.location_name;
+    [item openInMapsWithLaunchOptions:nil];
+}
 
 @end
