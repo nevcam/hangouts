@@ -39,13 +39,13 @@
 
 // This method dismisses the keyboard when you hit return
 - (IBAction)didTapReturn:(id)sender {
-    [self.usernameField resignFirstResponder];
-    [self.passwordField resignFirstResponder];
+    [_usernameField resignFirstResponder];
+    [_passwordField resignFirstResponder];
 }
 
 - (void)loginUser {
-    NSString *username = self.usernameField.text;
-    NSString *password = self.passwordField.text;
+    NSString *username = _usernameField.text;
+    NSString *password = _passwordField.text;
     
     __weak typeof(self) weakSelf = self;
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
@@ -82,9 +82,9 @@
 
 - (void)registerUserWithStatus:(BOOL)successful {
     if(successful) {
-        self.errorLabel.text = @"Account registered successfully!";
-        self.errorLabel.backgroundColor = [UIColor greenColor];
-        [self.errorLabel setHidden:NO];
+        _errorLabel.text = @"Account registered successfully!";
+        _errorLabel.backgroundColor = [UIColor greenColor];
+        [_errorLabel setHidden:NO];
     }
 }
 

@@ -561,7 +561,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7NA-PW-DVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3711.1999999999998" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-3711" y="3133"/>
         </scene>
         <!--Details-->
         <scene sceneID="qDe-DQ-P5e">
@@ -585,9 +585,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event's description lala lulu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qj-6B-8gE">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Event's description lala lulu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qj-6B-8gE">
                                 <rect key="frame" x="16" y="279" width="343" height="79"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -599,9 +598,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mre-U6-cW9">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mre-U6-cW9">
                                 <rect key="frame" x="274" y="183" width="85" height="85"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="HeR-QC-Dxk"/>
+                                    <constraint firstAttribute="width" constant="85" id="NFg-fI-jWW"/>
+                                </constraints>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q3a-nV-SDD">
                                 <rect key="frame" x="16" y="186" width="69" height="21"/>
@@ -610,9 +613,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location's name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0s6-pc-pif">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Location's name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0s6-pc-pif">
                                 <rect key="frame" x="16" y="215" width="125" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -638,9 +640,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pxu-re-BXd">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pxu-re-BXd">
                                 <rect key="frame" x="16" y="395" width="343" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gWG-Fw-EzH">
                                     <size key="itemSize" width="80" height="80"/>
@@ -659,9 +660,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QKc-yQ-PSb">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="QKc-yQ-PSb">
                                 <rect key="frame" x="16" y="512" width="343" height="80"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Oc3-oq-da0">
                                     <size key="itemSize" width="80" height="80"/>
@@ -680,8 +680,29 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EtB-bD-sUF">
+                                <rect key="frame" x="274" y="183" width="85" height="85"/>
+                                <connections>
+                                    <action selector="didTapMap:" destination="YXX-rW-Jew" eventType="touchUpInside" id="JA5-Kt-ht3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="centerY" secondItem="0s6-pc-pif" secondAttribute="centerY" id="3s6-oz-pnr"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="top" secondItem="mre-U6-cW9" secondAttribute="top" id="5jc-w6-cSy"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="pxu-re-BXd" secondAttribute="trailing" id="6bW-IL-n0O"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="bottom" secondItem="mre-U6-cW9" secondAttribute="bottom" id="Hg4-kS-CAe"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="leading" secondItem="mre-U6-cW9" secondAttribute="leading" id="ITg-Jz-71M"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="8Qj-6B-8gE" secondAttribute="trailing" id="VLe-Au-Ndu"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="N0k-Xk-E2Q" secondAttribute="trailingMargin" id="abk-pV-p4p"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="pxu-re-BXd" secondAttribute="trailing" id="cXo-SR-o91"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="trailing" secondItem="QKc-yQ-PSb" secondAttribute="trailing" id="oaH-Ba-bjX"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="mre-U6-cW9" secondAttribute="trailing" id="sc9-bI-H67"/>
+                            <constraint firstItem="EtB-bD-sUF" firstAttribute="trailing" secondItem="QKc-yQ-PSb" secondAttribute="trailing" id="vRU-eY-s6O"/>
+                            <constraint firstItem="8Qj-6B-8gE" firstAttribute="top" secondItem="EtB-bD-sUF" secondAttribute="bottom" constant="11" id="wzl-d3-9fE"/>
+                            <constraint firstItem="mre-U6-cW9" firstAttribute="top" secondItem="Jj3-Da-Hu2" secondAttribute="top" constant="119" id="xt0-LJ-AV9"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Jj3-Da-Hu2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Details" id="J6T-J0-qcc">
@@ -692,12 +713,21 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="pbj-z1-5of"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="dateLabel" destination="oZH-Oz-tkm" id="oMx-6u-WIZ"/>
+                        <outlet property="descriptionLabel" destination="8Qj-6B-8gE" id="RTU-Oa-Dl0"/>
+                        <outlet property="locationAddressLabel" destination="gyz-4c-aNQ" id="S9h-ka-wUa"/>
+                        <outlet property="locationMapView" destination="mre-U6-cW9" id="Yz9-nL-Maq"/>
+                        <outlet property="locationNameLabel" destination="0s6-pc-pif" id="k2I-Ub-nqK"/>
+                        <outlet property="nameLabel" destination="7Ho-Eo-HZm" id="brh-oT-x54"/>
+                        <outlet property="ownerUsernameLabel" destination="v5f-5X-G0b" id="sse-p6-hoL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgU-rR-BdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4500" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-4500" y="3132.6836581709149"/>
         </scene>
-        <!--Photoa-->
+        <!--Photos-->
         <scene sceneID="ubO-qI-kgN">
             <objects>
                 <viewController id="q3X-Ki-4NZ" customClass="PhotosViewController" sceneMemberID="viewController">
@@ -751,7 +781,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kEb-Ya-jqX"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Photoa" id="yaI-Ag-d8C"/>
+                    <navigationItem key="navigationItem" title="Photos" id="yaI-Ag-d8C"/>
                     <connections>
                         <outlet property="collectionView" destination="0pg-ef-WPF" id="WeU-DM-qLF"/>
                         <segue destination="jJR-qW-3DO" kind="show" identifier="photoDetailsSegue" id="5Lj-0a-CR9"/>
@@ -759,7 +789,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJB-pG-NoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2954.4000000000001" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-2954" y="3133"/>
         </scene>
         <!--Photo Details View Controller-->
         <scene sceneID="R9H-bx-aus">
@@ -840,7 +870,7 @@
         <scene sceneID="eFx-cI-UYE">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hcp-pz-WlP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="op0-Wg-Tcw"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="home-icon2" id="op0-Wg-Tcw"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wID-AK-laN">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1798,7 +1828,7 @@
         <scene sceneID="nuF-6o-1md">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="f47-Tn-Kct" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Events" id="qv8-15-Yn4"/>
+                    <tabBarItem key="tabBarItem" title="My Events" image="event-icon" id="qv8-15-Yn4"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nlO-gI-l2a">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1817,7 +1847,7 @@
         <scene sceneID="69b-8n-cTt">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1br-Cr-0f2" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Friends" selectedImage="friends" id="f3o-9I-JLl"/>
+                    <tabBarItem key="tabBarItem" title="Friends" image="friends-icon2" id="f3o-9I-JLl"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ltu-fY-Df7">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1836,7 +1866,7 @@
         <scene sceneID="Jp2-yt-5oS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cpb-U6-icU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="4Yv-K6-adO"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="profile-icon2" id="4Yv-K6-adO"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6BK-ce-tcI">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1974,7 +2004,7 @@
         <scene sceneID="kzj-4a-wYq">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hhd-vA-AX1" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Details" id="mng-a4-nd7"/>
+                    <tabBarItem key="tabBarItem" title="Details" image="details-icon" id="mng-a4-nd7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="X2p-XC-HoI">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1993,7 +2023,7 @@
         <scene sceneID="TYq-Fy-H0R">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ems-96-2fM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" id="I8e-Z7-gwy"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="chat-icon" id="I8e-Z7-gwy"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="MZH-Qh-fVV">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -2012,7 +2042,7 @@
         <scene sceneID="n22-Ze-wMC">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="l7u-Kn-6Au" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Photos" id="T6L-qD-FH7"/>
+                    <tabBarItem key="tabBarItem" title="Photos" image="photos-icon" id="T6L-qD-FH7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ks9-sO-0tR">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -2030,10 +2060,16 @@
     </scenes>
     <resources>
         <image name="calendar" width="33.333332061767578" height="33.666667938232422"/>
+        <image name="chat-icon" width="33.333332061767578" height="30.666666030883789"/>
         <image name="close-icon" width="26" height="24"/>
-        <image name="friends" width="66.666664123535156" height="66.666664123535156"/>
+        <image name="details-icon" width="26.666666030883789" height="26.666666030883789"/>
+        <image name="event-icon" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="friends-icon2" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="home-icon2" width="26.666666030883789" height="26.666666030883789"/>
         <image name="logo" width="500" height="500"/>
+        <image name="photos-icon" width="30" height="30"/>
         <image name="profile" width="248" height="248"/>
+        <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="MnL-qw-Gyu"/>
