@@ -22,14 +22,14 @@
 @end
 
 @implementation CalendarViewController {
-    NSMutableArray *userXEventOrderedArray;
-    NSMutableArray *eventArray;
+    NSMutableArray *_userXEventOrderedArray;
+    NSMutableArray *_eventArray;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     
     [self fetchCalendarEvents];
 }
@@ -48,7 +48,7 @@
         if (userXEvents) {
             NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
             NSArray *sortedArray = [userXEvents sortedArrayUsingDescriptors:descriptors];
-            typeof(weakSelf) strongSelf = weakSelf; // works with weakself as well (??)
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf) {
                 [strongSelf initArrayWithEvents:sortedArray];
                 [strongSelf.tableView reloadData];
@@ -62,8 +62,8 @@
 #pragma mark -  Table View protocol methods
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    EventCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
-    NSArray *array = self->userXEventOrderedArray[indexPath.section];
+    EventCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"CalendarEventCell"];
+    NSArray *array = _userXEventOrderedArray[indexPath.section];
     UserXEvent *userXEvent = array[indexPath.row];
     [cell configureCell:userXEvent.event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -72,17 +72,17 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self->userXEventOrderedArray[section] count];
+    return [_userXEventOrderedArray[section] count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self->userXEventOrderedArray count];
+    return [_userXEventOrderedArray count];
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
     [manager.formatter setDateFormat:@"EEEE MMMM d, Y"];
-    NSArray *array = [self->userXEventOrderedArray objectAtIndex:section];
+    NSArray *array = [_userXEventOrderedArray objectAtIndex:section];
     UserXEvent *userXEvent = array[0];
     Event *event = userXEvent.event;
     NSDate *date = event.date;
@@ -104,23 +104,23 @@
 }
 
 - (void)initArrayWithEvents:(NSArray *)userXEvents {
-    self->userXEventOrderedArray = [NSMutableArray new];
-    self->eventArray = [NSMutableArray new];
+    _userXEventOrderedArray = [NSMutableArray new];
+    _eventArray = [NSMutableArray new];
     NSString *pastKey = @"";
     int i = -1;
     for (UserXEvent *userXEvent in userXEvents) {
         Event *event = userXEvent.event;
-        [self->eventArray addObject:event];
+        [_eventArray addObject:event];
         NSDate *date = event.date;
         NSString *key = [self getDayStringOfDate:date];
         if([pastKey isEqualToString:key]) {
-            NSMutableArray *array = self->userXEventOrderedArray[i];
+            NSMutableArray *array = _userXEventOrderedArray[i];
             [array addObject:userXEvent];
         } else {
             i++;
             pastKey = key;
             NSMutableArray *array = [NSMutableArray arrayWithObject:userXEvent];
-            [self->userXEventOrderedArray addObject:array];
+            [_userXEventOrderedArray addObject:array];
         }
     }
 }
@@ -129,33 +129,37 @@
 
 - (IBAction)didTapSync:(id)sender {
     EKEventStore *store = [[EKEventStore alloc] init];
+    __weak typeof(self) weakSelf = self;
     [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
-        EKCalendar *cal;
-        if (![self getCalendarID] || ![store calendarWithIdentifier:[self getCalendarID]]) {
-            EKSource *icloudSource = nil;
-            for (EKSource *source in store.sources) {
-                if (source.sourceType == EKSourceTypeCalDAV) {
-                    icloudSource = source;
-                    break;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+            EKCalendar *cal;
+            if (![strongSelf getCalendarID] || ![store calendarWithIdentifier:[strongSelf getCalendarID]]) {
+                EKSource *icloudSource = nil;
+                for (EKSource *source in store.sources) {
+                    if (source.sourceType == EKSourceTypeCalDAV) {
+                        icloudSource = source;
+                        break;
+                    }
                 }
+                cal = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
+                cal.title = @"Hangouts";
+                cal.source = icloudSource;
+                [store saveCalendar:cal commit:YES error:nil];
+                [strongSelf saveCalendarID:cal.calendarIdentifier];
+            } else {
+                cal = [store calendarWithIdentifier:[strongSelf getCalendarID]];
             }
-            cal = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
-            cal.title = @"Hangouts";
-            cal.source = icloudSource;
-            [store saveCalendar:cal commit:YES error:nil];
-            [self saveCalendarID:cal.calendarIdentifier];
-        } else {
-            cal = [store calendarWithIdentifier:[self getCalendarID]];
-        }
-        for (Event *event in self->eventArray) {
-            EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
-            ekEvent.calendar = cal;
-            ekEvent.title = event.name;
-            ekEvent.startDate = event.date;
-            ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
-            
-            if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
-                NSLog(@"Could not add event.");
+            for (Event *event in strongSelf->_eventArray) {
+                EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
+                ekEvent.calendar = cal;
+                ekEvent.title = event.name;
+                ekEvent.startDate = event.date;
+                ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
+                
+                if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
+                    NSLog(@"Could not add event.");
+                }
             }
         }
     }];

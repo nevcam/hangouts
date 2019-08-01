@@ -20,7 +20,7 @@
 @end
 
 @implementation ProfileViewController {
-    NSMutableArray* _friendUsers;
+    NSMutableArray *_friendUsers;
     NSMutableArray *_friendships;
 }
 
