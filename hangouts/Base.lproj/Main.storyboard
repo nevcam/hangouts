@@ -561,7 +561,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7NA-PW-DVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3711.1999999999998" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-3711" y="3133"/>
         </scene>
         <!--Details-->
         <scene sceneID="qDe-DQ-P5e">
@@ -692,10 +692,19 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="pbj-z1-5of"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="dateLabel" destination="oZH-Oz-tkm" id="oMx-6u-WIZ"/>
+                        <outlet property="descriptionLabel" destination="8Qj-6B-8gE" id="RTU-Oa-Dl0"/>
+                        <outlet property="locationAddressLabel" destination="gyz-4c-aNQ" id="S9h-ka-wUa"/>
+                        <outlet property="locationMapView" destination="mre-U6-cW9" id="Yz9-nL-Maq"/>
+                        <outlet property="locationNameLabel" destination="0s6-pc-pif" id="k2I-Ub-nqK"/>
+                        <outlet property="nameLabel" destination="7Ho-Eo-HZm" id="brh-oT-x54"/>
+                        <outlet property="ownerUsernameLabel" destination="v5f-5X-G0b" id="sse-p6-hoL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgU-rR-BdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4500" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-4500" y="3133"/>
         </scene>
         <!--Photos-->
         <scene sceneID="ubO-qI-kgN">
@@ -759,7 +768,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJB-pG-NoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2954.4000000000001" y="3098.5007496251878"/>
+            <point key="canvasLocation" x="-2954" y="3133"/>
         </scene>
         <!--Photo Details View Controller-->
         <scene sceneID="R9H-bx-aus">
@@ -2032,12 +2041,12 @@
         <image name="calendar" width="33.333332061767578" height="33.666667938232422"/>
         <image name="chat-icon" width="33.333332061767578" height="30.666666030883789"/>
         <image name="close-icon" width="26" height="24"/>
-        <image name="details-icon" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="details-icon" width="26.666666030883789" height="26.666666030883789"/>
         <image name="event-icon" width="33.333332061767578" height="33.333332061767578"/>
         <image name="friends-icon2" width="33.333332061767578" height="33.333332061767578"/>
         <image name="home-icon2" width="26.666666030883789" height="26.666666030883789"/>
         <image name="logo" width="500" height="500"/>
-        <image name="photos-icon" width="33.333332061767578" height="33.333332061767578"/>
+        <image name="photos-icon" width="30" height="30"/>
         <image name="profile" width="248" height="248"/>
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>

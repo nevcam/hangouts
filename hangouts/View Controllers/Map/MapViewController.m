@@ -194,7 +194,6 @@
         CLLocationCoordinate2D coordinate;
         NSNumber *latitude = addEvent.event.location_lat;
         NSNumber *longitude = addEvent.event.location_lng;
-        NSLog(@"lat: %@", latitude);
         coordinate.latitude = latitude.floatValue;
         coordinate.longitude = longitude.floatValue;
         EventPointAnnotation *myAnnotation = [[EventPointAnnotation alloc] init];
