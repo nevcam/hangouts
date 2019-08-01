@@ -9,6 +9,8 @@
 #import "LocationsViewController.h"
 #import "LocationCell.h"
 
+#define SERVICE_FORMAT @".json"
+
 static NSString * const clientID = @"QA1L0Z0ZNA2QVEEDHFPQWK0I5F1DE3GPLSNW4BZEBGJXUCFL";
 static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH21ZCPUMCU";
 
@@ -73,23 +75,30 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *const newText = [searchBar.text stringByReplacingCharactersInRange:range withString:text];
-    [self fetchLocationsWithQuery:newText nearCity:@"San Francisco"];
+    [self fetchLocationsWithQuery:newText];
     return true;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self fetchLocationsWithQuery:searchBar.text nearCity:@"San Francisco"];
+    [self fetchLocationsWithQuery:searchBar.text];
 }
 
 // Cancel button has been implemented through view controller
 
 #pragma mark - Fetch Locations From API
 
-- (void)fetchLocationsWithQuery:(NSString *)query nearCity:(NSString *)city
+- (void)fetchLocationsWithQuery:(NSString *)query
 {
+    // Default geo-point is MPK
+    NSString *latLong = @"37.452961,-122.181725";
+    if (_userLocation) {
+        latLong = _userLocation;
+    }
+    NSString *todayDate = [self getCurrentDate];
+    
     NSString *const baseURLString = @"https://api.foursquare.com/v2/venues/search?";
-    NSString *queryString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&v=20141020&near=%@,CA&query=%@", clientID, clientSecret, city, query];
+    NSString *queryString = [NSString stringWithFormat:@"client_id=%@&client_secret=%@&ll=%@&query=%@&v=%@", clientID, clientSecret, latLong, query, todayDate];
     queryString = [queryString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSURL *const url = [NSURL URLWithString:[baseURLString stringByAppendingString:queryString]];
@@ -115,5 +124,14 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [task resume];
 }
 
+- (NSString *)getCurrentDate
+{
+    NSDate *date= [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    return dateString;
+}
 
 @end

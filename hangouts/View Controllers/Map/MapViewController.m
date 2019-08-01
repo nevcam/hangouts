@@ -16,6 +16,7 @@
 #import "CustomPointAnnotation.h"
 #import "UIImageView+AFNetworking.h"
 #import "PersonDetailMapView.h"
+#import "AddEventViewController.h"
 
 
 @interface MapViewController () <MKMapViewDelegate>
@@ -93,6 +94,7 @@
          }
      }];
 }
+
 
 #pragma mark - Location authorization
 
@@ -287,7 +289,16 @@
 }
 
 // Segue to present modally "Add Event" view controller
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    AddEventViewController *addEventViewController = [(UINavigationController*)segue.destinationViewController topViewController];
+    
+    NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
+    NSString *lon = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.longitude];
+    NSString *latLong = [NSString stringWithFormat:@"%@,%@", lat, lon];
+    
+    addEventViewController.userLocation = latLong;
+    
 }
 
 @end
