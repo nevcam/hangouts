@@ -79,17 +79,18 @@
             [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
-                    
-                    if (!strongSelf->_friendships) {
-                        strongSelf->_friendships = [NSMutableArray new];
-                        strongSelf->_friendUsers = [NSMutableArray new];
-                        [strongSelf->_friendships addObjectsFromArray:friends];
-                        if (strongSelf->_friendships.count == friendPointers.count) {
-                            strongSelf->_friendUsers = strongSelf->_friendships;
-                            [strongSelf.tableView reloadData];
+                    if(strongSelf) {
+                        if (!strongSelf->_friendships) {
+                            strongSelf->_friendships = [NSMutableArray new];
+                            strongSelf->_friendUsers = [NSMutableArray new];
+                            [strongSelf->_friendships addObjectsFromArray:friends];
+                            if (strongSelf->_friendships.count == friendPointers.count) {
+                                strongSelf->_friendUsers = strongSelf->_friendships;
+                                [strongSelf.tableView reloadData];
+                            }
+                        } else {
+                            NSLog(@"Error");
                         }
-                    } else {
-                        NSLog(@"Error");
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -107,12 +108,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self->_friendUsers.count;
+    return _friendUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FriendViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendViewCell"];
-    PFUser *user = self->_friendUsers[indexPath.row];
+    PFUser *user = _friendUsers[indexPath.row];
     cell.user = user;
     PFFileObject *imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
@@ -162,20 +163,23 @@
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
     [query whereKey:@"username" equalTo:_user[@"username"]];
+    
     __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
         if (users) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            PFUser *user = users[0];
-            strongSelf.fullnameLabel.text = user[@"fullname"];
-            strongSelf.bioLabel.text = user[@"bio"];
-            PFFileObject *imageFile = user[@"profilePhoto"];
-            NSURL *photoURL = [NSURL URLWithString:imageFile.url];
-            strongSelf.profilePhotoView.image = nil;
-            [strongSelf.profilePhotoView setImageWithURL:photoURL];
-            strongSelf.profilePhotoView.layer.cornerRadius = strongSelf.profilePhotoView.frame.size.width / 2;
-            strongSelf.profilePhotoView.layer.masksToBounds = YES;
-            [strongSelf.view addSubview: strongSelf.profilePhotoView];
+            if(strongSelf) {
+                PFUser *user = users[0];
+                strongSelf.fullnameLabel.text = user[@"fullname"];
+                strongSelf.bioLabel.text = user[@"bio"];
+                PFFileObject *imageFile = user[@"profilePhoto"];
+                NSURL *photoURL = [NSURL URLWithString:imageFile.url];
+                strongSelf.profilePhotoView.image = nil;
+                [strongSelf.profilePhotoView setImageWithURL:photoURL];
+                strongSelf.profilePhotoView.layer.cornerRadius = strongSelf.profilePhotoView.frame.size.width / 2;
+                strongSelf.profilePhotoView.layer.masksToBounds = YES;
+                [strongSelf.view addSubview: strongSelf.profilePhotoView];
+            }
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
