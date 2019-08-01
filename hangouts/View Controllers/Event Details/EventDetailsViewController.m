@@ -32,9 +32,9 @@
     tabBar.event = _event;
     
     _nameLabel.text = _event.name;
-    _ownerUsernameLabel.text = _event.ownerUsername;
+    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@", _event.ownerUsername];
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
-    [manager.formatter setDateFormat:@"EEE MMM dd"];
+    [manager.formatter setDateFormat:@"EEEE MMMM dd, Y"];
     _dateLabel.text = [manager.formatter stringFromDate:_event.date];
     _locationNameLabel.text = _event.location_name;
     _locationAddressLabel.text = _event.location_address;
