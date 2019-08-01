@@ -11,7 +11,7 @@
 #import "Chat_Message.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 //@property (nonatomic, strong) NSMutableArray *messages;
 @end
@@ -26,6 +26,7 @@
     UINavigationController *navController = (UINavigationController *) self.parentViewController;
     EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
     self.event = tabBar.event;
+    self.chatMessageField.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -94,7 +95,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
-    
+    cell.profilePhotoView.image = nil;
     [cell.contentView removeConstraint: cell.leftBubbleConstraint];
     [cell.contentView removeConstraint: cell.rightBubbleConstraint];
     [cell.contentView removeConstraint: cell.topBubbleConstraint];
@@ -109,7 +110,12 @@
     [cell.messageBubbleView setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0]];
     [cell.messageBubbleView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [cell.chatMessageLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
+    PFFileObject *const imageFile = user[@"profilePhoto"];
+    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    [cell.profilePhotoView setImageWithURL:profilePhotoURL];
+    cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
+    cell.profilePhotoView.layer.masksToBounds = YES;
+    cell.profilePhotoView.layer.borderWidth = 0;
     if ([user[@"username"] isEqual:[PFUser currentUser][@"username"]]){
         cell.usernameLabel.text = @"";
         [cell.messageBubbleView setBackgroundColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
@@ -119,18 +125,13 @@
         [cell.contentView addConstraint:cell.rightBubbleConstraint];
         cell.topBubbleConstraint = [NSLayoutConstraint constraintWithItem:cell.messageBubbleView attribute:NSLayoutAttributeTop  relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTop multiplier:1 constant:4.5];
         [cell.contentView addConstraint:cell.topBubbleConstraint];
-        cell.profilePhotoView.image = nil;
+        cell.profilePhotoView.hidden = YES;
     } else {
         cell.leftBubbleConstraint = [NSLayoutConstraint constraintWithItem:cell.messageBubbleView attribute:NSLayoutAttributeLeft  relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:40];
         [cell.contentView addConstraint:cell.leftBubbleConstraint];
         cell.topBubbleConstraint = [NSLayoutConstraint constraintWithItem:cell.messageBubbleView attribute:NSLayoutAttributeTop  relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTop multiplier:1 constant:16];
         [cell.contentView addConstraint:cell.topBubbleConstraint];
-        PFFileObject *const imageFile = user[@"profilePhoto"];
-        NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
-        [cell.profilePhotoView setImageWithURL:profilePhotoURL];
-        cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
-        cell.profilePhotoView.layer.masksToBounds = YES;
-        cell.profilePhotoView.layer.borderWidth = 0;
+        cell.profilePhotoView.hidden = NO;
     }
     
     [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.messageBubbleView attribute:NSLayoutAttributeBottom  relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:-3]];
@@ -149,5 +150,46 @@
     return _messages.count;
 }
 
+#pragma mark - Keyboard Methods
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
+    [self.view endEditing:YES];
+    return YES;
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.2 animations:^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            CGRect frame = strongSelf.view.frame;
+            frame.origin.y = -keyboardSize.height + 55;
+            strongSelf.view.frame = frame;
+        }
+    }];
+}
+
+-(void)keyboardWillHide:(NSNotification *)notification {
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.2 animations:^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            CGRect frame = strongSelf.view.frame;
+            frame.origin.y = 0;
+            strongSelf.view.frame = frame;
+        }
+    }];
+}
+
+- (IBAction)didTapReturn:(id)sender {
+    [self.chatMessageField resignFirstResponder];
+}
 
 @end

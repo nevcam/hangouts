@@ -485,6 +485,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="didTapReturn:" destination="3kX-i2-kpK" eventType="editingDidEndOnExit" id="AHc-HZ-Qf5"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Bg-UW-dZ9">
                                 <rect key="frame" x="318" y="572" width="36" height="30"/>
