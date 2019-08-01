@@ -245,4 +245,23 @@
     return YES;
 }
 
+#pragma mark - Dismiss Keyboard
+
+// For name text field
+- (IBAction)didTapReturn:(id)sender
+{
+    [self.eventNameField resignFirstResponder];
+}
+
+// For description text view
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"]) {
+        [self.eventDescriptionField resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
+
+
 @end

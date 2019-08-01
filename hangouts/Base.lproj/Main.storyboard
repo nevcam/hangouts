@@ -216,7 +216,7 @@
             </objects>
             <point key="canvasLocation" x="2008.8" y="124.58770614692655"/>
         </scene>
-        <!--Map View Controller-->
+        <!--Map-->
         <scene sceneID="S7u-MV-FUG">
             <objects>
                 <viewController id="ynw-i4-5mD" customClass="MapViewController" sceneMemberID="viewController">
@@ -243,7 +243,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="IVH-i1-YjA"/>
                     </view>
-                    <navigationItem key="navigationItem" id="16T-m1-gvx"/>
+                    <navigationItem key="navigationItem" title="Map" id="16T-m1-gvx"/>
                     <connections>
                         <outlet property="mapView" destination="xtg-vI-YWu" id="jnE-tl-2UF"/>
                         <segue destination="gbc-Dl-cRW" kind="presentation" identifier="addEventSegue" id="bna-kp-jZo"/>
@@ -253,7 +253,7 @@
             </objects>
             <point key="canvasLocation" x="-1151.2" y="2399.5502248875564"/>
         </scene>
-        <!--Add Event View Controller-->
+        <!--Add Event-->
         <scene sceneID="wEh-xh-9YR">
             <objects>
                 <viewController id="qRP-5W-y9A" customClass="AddEventViewController" sceneMemberID="viewController">
@@ -267,6 +267,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="didTapReturn:" destination="qRP-5W-y9A" eventType="editingDidEndOnExit" id="WcI-ot-Wrs"/>
+                                </connections>
                             </textField>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VEA-HW-yxj">
                                 <rect key="frame" x="27" y="130" width="320" height="1"/>
@@ -293,6 +296,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="didTapReturn:" destination="qRP-5W-y9A" eventType="editingDidEnd" id="dCa-2r-6BY"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbV-Ly-lhU">
                                 <rect key="frame" x="252" y="413" width="83" height="34"/>
@@ -327,7 +333,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="H9a-9A-a1z"/>
                     </view>
-                    <navigationItem key="navigationItem" id="znc-rL-GRK">
+                    <navigationItem key="navigationItem" title="Add Event" id="znc-rL-GRK">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="4eU-OZ-RCh">
                             <connections>
                                 <action selector="clickedCancel:" destination="qRP-5W-y9A" id="SKx-6Y-7zu"/>
@@ -557,7 +563,7 @@
             </objects>
             <point key="canvasLocation" x="-3711.1999999999998" y="3098.5007496251878"/>
         </scene>
-        <!--Event Details View Controller-->
+        <!--Details-->
         <scene sceneID="qDe-DQ-P5e">
             <objects>
                 <viewController id="YXX-rW-Jew" customClass="EventDetailsViewController" sceneMemberID="viewController">
@@ -678,7 +684,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Jj3-Da-Hu2"/>
                     </view>
-                    <navigationItem key="navigationItem" id="J6T-J0-qcc">
+                    <navigationItem key="navigationItem" title="Details" id="J6T-J0-qcc">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="close-icon" id="vjk-IT-SLO">
                             <connections>
                                 <action selector="didTapClose:" destination="YXX-rW-Jew" id="lCV-fh-Q5u"/>
@@ -691,7 +697,7 @@
             </objects>
             <point key="canvasLocation" x="-4500" y="3098.5007496251878"/>
         </scene>
-        <!--Photos View Controller-->
+        <!--Photoa-->
         <scene sceneID="ubO-qI-kgN">
             <objects>
                 <viewController id="q3X-Ki-4NZ" customClass="PhotosViewController" sceneMemberID="viewController">
@@ -745,9 +751,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kEb-Ya-jqX"/>
                     </view>
-                    <navigationItem key="navigationItem" id="yaI-Ag-d8C">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Photoa" id="yaI-Ag-d8C"/>
                     <connections>
                         <outlet property="collectionView" destination="0pg-ef-WPF" id="WeU-DM-qLF"/>
                         <segue destination="jJR-qW-3DO" kind="show" identifier="photoDetailsSegue" id="5Lj-0a-CR9"/>
@@ -851,7 +855,7 @@
             </objects>
             <point key="canvasLocation" x="-1151" y="1665"/>
         </scene>
-        <!--My Events View Controller-->
+        <!--My Events-->
         <scene sceneID="lhc-cL-ec6">
             <objects>
                 <viewController id="Aoc-b5-aub" customClass="MyEventsViewController" sceneMemberID="viewController">
@@ -1147,7 +1151,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Ep-9q-80Z"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Dry-Um-mEG"/>
+                    <navigationItem key="navigationItem" title="My Events" id="Dry-Um-mEG"/>
                     <connections>
                         <outlet property="acceptedTableView" destination="R5o-Fc-vZv" id="Mbv-qf-izM"/>
                         <outlet property="invitedTableView" destination="ZwB-l4-jWc" id="gu9-NC-SW2"/>
@@ -1157,7 +1161,7 @@
             </objects>
             <point key="canvasLocation" x="-271" y="2411"/>
         </scene>
-        <!--Friend Search View Controller-->
+        <!--Search-->
         <scene sceneID="5hs-2m-khi">
             <objects>
                 <viewController id="lkr-Ct-rAP" customClass="FriendSearchViewController" sceneMemberID="viewController">
@@ -1247,7 +1251,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="JKg-IO-HH3"/>
                     </view>
-                    <navigationItem key="navigationItem" id="gPD-ZP-uWl"/>
+                    <navigationItem key="navigationItem" title="Search" id="gPD-ZP-uWl"/>
                     <connections>
                         <outlet property="requestCount" destination="q0P-xN-p6M" id="o2b-kL-CzN"/>
                         <outlet property="requestView" destination="6nl-Mn-z05" id="Odm-8D-pqo"/>
@@ -1500,7 +1504,7 @@
             </objects>
             <point key="canvasLocation" x="1508" y="3099.400299850075"/>
         </scene>
-        <!--Profile View Controller-->
+        <!--Profile-->
         <scene sceneID="Ees-0t-HtL">
             <objects>
                 <viewController id="cSb-Hr-SRc" customClass="ProfileViewController" sceneMemberID="viewController">
@@ -1595,7 +1599,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="0Hh-As-dvc"/>
                     </view>
-                    <navigationItem key="navigationItem" id="y4E-IP-w0B">
+                    <navigationItem key="navigationItem" title="Profile" id="y4E-IP-w0B">
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="ak5-A6-6HU">
                             <connections>
                                 <action selector="didTapLogout:" destination="cSb-Hr-SRc" id="cXL-qr-R4B"/>
