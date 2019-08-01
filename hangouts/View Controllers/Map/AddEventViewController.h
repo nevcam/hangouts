@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddEventViewController : UIViewController
 
+@property (strong, nonatomic) NSString *const userLocation;
+
 @end
 
 NS_ASSUME_NONNULL_END

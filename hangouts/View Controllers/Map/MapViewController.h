@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
     CLLocationManager *locationManager;
     CLLocation *currentLocation;
     CLLocationCoordinate2D centre;
+
 }
 
 @end

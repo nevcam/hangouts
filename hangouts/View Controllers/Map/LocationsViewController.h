@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LocationsViewController : UIViewController
 
 @property (weak, nonatomic) id<LocationsViewControllerDelegate> delegate;
+@property (strong, nonatomic) NSString *const userLocation;
 
 @end
 
