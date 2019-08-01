@@ -22,30 +22,30 @@
 }
 
 - (void) configureCell:(Event *)event {
-    self.event = event;
-    self.nameLabel.text = event.name;
+    _event = event;
+    _nameLabel.text = event.name;
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
     [manager.formatter setDateFormat:@"EEE MMM dd"];
-    self.dateLabel.text = [manager.formatter stringFromDate:event.date];
-    self.locationLabel.text = event.location_name;
-    self.ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
-    self.descriptionLabel.text = event.eventDescription;
+    _dateLabel.text = [manager.formatter stringFromDate:event.date];
+    _locationLabel.text = event.location_name;
+    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
+    _descriptionLabel.text = event.eventDescription;
 }
 
 - (void)configureCell:(Event *)event withType:(NSString *)type {
     [self configureCell:event];
     if([type isEqualToString:@"invited"]) {
-        [self.acceptButton setHidden:NO];
-        [self.declineButton setHidden:NO];
-        [self.ownedLabel setHidden:YES];
+        [_acceptButton setHidden:NO];
+        [_declineButton setHidden:NO];
+        [_ownedLabel setHidden:YES];
     } else if ([type isEqualToString:@"owned"]) {
-        [self.acceptButton setHidden:YES];
-        [self.declineButton setHidden:YES];
-        [self.ownedLabel setHidden:NO];
+        [_acceptButton setHidden:YES];
+        [_declineButton setHidden:YES];
+        [_ownedLabel setHidden:NO];
     } else {
-        [self.acceptButton setHidden:YES];
-        [self.declineButton setHidden:YES];
-        [self.ownedLabel setHidden:YES];
+        [_acceptButton setHidden:YES];
+        [_declineButton setHidden:YES];
+        [_ownedLabel setHidden:YES];
     }
 }
 
@@ -53,18 +53,22 @@
 
 - (void)updateType: (NSString *)type {
     PFQuery *userXEventQuery = [UserXEvent query];
-    [userXEventQuery whereKey:@"event" equalTo:self.event];
+    [userXEventQuery whereKey:@"event" equalTo:_event];
     [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
     
+    __weak typeof(self) weakSelf = self;
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
         if (userXEvents) {
             UserXEvent *userXEvent = [userXEvents objectAtIndex:0];
             userXEvent[@"type"] = type;
             [UserXEvent saveAllInBackground:userXEvents block:^(BOOL succeeded, NSError * _Nullable error) {
-                if(!error) {
-                    [self.delegate changedUserXEventTypeTo:type];
-                } else {
-                    NSLog(@"Unable to update event type");
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    if(!error) {
+                        [strongSelf.delegate changedUserXEventTypeTo:type];
+                    } else {
+                        NSLog(@"Unable to update event type");
+                    }
                 }
             }];
         } else {

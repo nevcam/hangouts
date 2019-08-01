@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Parse/Parse.h"
 #import "Friendship.h"
+@class FriendRequestCell;
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol FriendRequestCellDelegate <NSObject>
 - (void)deleteCellForIndexPath:(NSIndexPath *)indexPath;
+- (void)tapProfile:(FriendRequestCell *)friendCell didTap: (PFUser *)user;
 @end
 
 @interface FriendRequestCell : UITableViewCell

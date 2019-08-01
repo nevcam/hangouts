@@ -13,8 +13,9 @@
 #import "FriendRequestsViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "FriendRequestCell.h"
+#import "PersonProfileViewController.h"
 
-@interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
+@interface FriendSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, FriendCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *requestView;
 @property (weak, nonatomic) IBOutlet UILabel *requestCount;
@@ -108,6 +109,9 @@
     cell.profilePhotoView.layer.borderWidth = 0;
     cell.currentUserFriendship = self.currentUserFriendship;
 
+    // For FriendCellDelegate
+    cell.delegate = self;
+    
     // checks whether current user is friends with this user
     for (PFUser *friend in self.currentUserFriends){
         if ([friend.objectId isEqualToString:user.objectId]) {
@@ -173,6 +177,11 @@
 
 #pragma mark - Navigation
 
+- (void)tapProfile:(nonnull FriendCell *)friendCell didTap:(nonnull PFUser *)user {
+    [self performSegueWithIdentifier:@"friendListToProfileSegue" sender:user];
+}
+
+
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -180,6 +189,9 @@
     if ([segue.identifier  isEqual: @"requestSegue"]) {
         FriendRequestsViewController *friendRequestsViewController = segue.destinationViewController;
         friendRequestsViewController.currentUserFriendship = self.currentUserFriendship;
+    } else if ([segue.identifier  isEqual:@"friendListToProfileSegue"]) {
+        PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.user = sender;
     }
 }
 

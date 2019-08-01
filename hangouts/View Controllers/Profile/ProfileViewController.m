@@ -20,32 +20,32 @@
 @end
 
 @implementation ProfileViewController {
-    NSMutableArray* _friendUsers;
+    NSMutableArray *_friendUsers;
     NSMutableArray *_friendships;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.rowHeight = 80;
-    self.user = [PFUser currentUser];
-    self.usernameLabel.text = self.user[@"username"];
-    self.fullnameLabel.text = self.user[@"fullname"];
-    self.emailLabel.text = self.user[@"email"];
-    self.bioLabel.text = self.user[@"bio"];
-    PFFileObject *imageFile = self.user[@"profilePhoto"];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.rowHeight = 80;
+    _user = [PFUser currentUser];
+    _usernameLabel.text = _user[@"username"];
+    _fullnameLabel.text = _user[@"fullname"];
+    _emailLabel.text = _user[@"email"];
+    _bioLabel.text = _user[@"bio"];
+    PFFileObject *imageFile = _user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-    self.profilePhotoView.image = nil;
-    [self.profilePhotoView setImageWithURL:profilePhotoURL];
-    self.profilePhotoView.layer.cornerRadius = self.profilePhotoView.frame.size.height /2;
-    self.profilePhotoView.layer.masksToBounds = YES;
-    self.profilePhotoView.layer.borderWidth = 0;
+    _profilePhotoView.image = nil;
+    [_profilePhotoView setImageWithURL:profilePhotoURL];
+    _profilePhotoView.layer.cornerRadius = _profilePhotoView.frame.size.height /2;
+    _profilePhotoView.layer.masksToBounds = YES;
+    _profilePhotoView.layer.borderWidth = 0;
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
-    [self.tableView insertSubview:refreshControl atIndex:0];
+    [_tableView insertSubview:refreshControl atIndex:0];
     
     [self fetchFriends];
 }
@@ -79,17 +79,18 @@
             [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
-                    
-                    if (!strongSelf->_friendships) {
-                        strongSelf->_friendships = [NSMutableArray new];
-                        strongSelf->_friendUsers = [NSMutableArray new];
-                        [strongSelf->_friendships addObjectsFromArray:friends];
-                        if (strongSelf->_friendships.count == friendPointers.count) {
-                            strongSelf->_friendUsers = strongSelf->_friendships;
-                            [strongSelf.tableView reloadData];
+                    if(strongSelf) {
+                        if (!strongSelf->_friendships) {
+                            strongSelf->_friendships = [NSMutableArray new];
+                            strongSelf->_friendUsers = [NSMutableArray new];
+                            [strongSelf->_friendships addObjectsFromArray:friends];
+                            if (strongSelf->_friendships.count == friendPointers.count) {
+                                strongSelf->_friendUsers = strongSelf->_friendships;
+                                [strongSelf.tableView reloadData];
+                            }
+                        } else {
+                            NSLog(@"Error");
                         }
-                    } else {
-                        NSLog(@"Error");
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -107,12 +108,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self->_friendUsers.count;
+    return _friendUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FriendViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendViewCell"];
-    PFUser *user = self->_friendUsers[indexPath.row];
+    PFUser *user = _friendUsers[indexPath.row];
     cell.user = user;
     PFFileObject *imageFile = user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
@@ -134,7 +135,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if ([segue.identifier  isEqual: @"profileEditSegue"]){
-        PFUser *user = self.user;
+        PFUser *user = _user;
         ProfileEditViewController *profileEditViewController = [segue destinationViewController];
         profileEditViewController.user = user;
         profileEditViewController.delegate = self;
@@ -161,21 +162,24 @@
     PFQuery *query = [PFUser query];
     [query orderByDescending:@"createdAt"];
     query.limit = 1;
-    [query whereKey:@"username" equalTo:self.user[@"username"]];
+    [query whereKey:@"username" equalTo:_user[@"username"]];
+    
     __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
         if (users) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            PFUser *user = users[0];
-            strongSelf.fullnameLabel.text = user[@"fullname"];
-            strongSelf.bioLabel.text = user[@"bio"];
-            PFFileObject *imageFile = user[@"profilePhoto"];
-            NSURL *photoURL = [NSURL URLWithString:imageFile.url];
-            strongSelf.profilePhotoView.image = nil;
-            [strongSelf.profilePhotoView setImageWithURL:photoURL];
-            strongSelf.profilePhotoView.layer.cornerRadius = strongSelf.profilePhotoView.frame.size.width / 2;
-            strongSelf.profilePhotoView.layer.masksToBounds = YES;
-            [strongSelf.view addSubview: strongSelf.profilePhotoView];
+            if(strongSelf) {
+                PFUser *user = users[0];
+                strongSelf.fullnameLabel.text = user[@"fullname"];
+                strongSelf.bioLabel.text = user[@"bio"];
+                PFFileObject *imageFile = user[@"profilePhoto"];
+                NSURL *photoURL = [NSURL URLWithString:imageFile.url];
+                strongSelf.profilePhotoView.image = nil;
+                [strongSelf.profilePhotoView setImageWithURL:photoURL];
+                strongSelf.profilePhotoView.layer.cornerRadius = strongSelf.profilePhotoView.frame.size.width / 2;
+                strongSelf.profilePhotoView.layer.masksToBounds = YES;
+                [strongSelf.view addSubview: strongSelf.profilePhotoView];
+            }
         } else {
             NSLog(@"Error: %@", error.localizedDescription);
         }
