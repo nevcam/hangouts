@@ -72,32 +72,29 @@
     __weak typeof(self) weakSelf = self;
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
         if (error != nil) {
-            [SVProgressHUD dismiss];
-            if(error.code == 100) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
-                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
-                [alert addAction:okAction];
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                if(strongSelf) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if(strongSelf) {
+                [SVProgressHUD dismiss];
+                if(error.code == 100) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Connect" message:@"The Internet connection appears to be offline." preferredStyle:(UIAlertControllerStyleAlert)];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil];
+                    [alert addAction:okAction];
                     [strongSelf presentViewController:alert animated:YES completion:nil];
-                }
-            } else {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                if(strongSelf) {
+                } else {
                     strongSelf.errorLabel.text = [NSString stringWithFormat:@"%@",error.localizedDescription];
                     [strongSelf.errorLabel setHidden:NO];
+                    NSLog(@"Error: %@", error.localizedDescription);
                 }
-                NSLog(@"Error: %@", error.localizedDescription);
             }
         } else {
             [Friendship createFriendshipForUser:newUser withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
-                [SVProgressHUD dismiss];
-                if(!succeeded) {
-                    NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
-                }
-                // User was created successfully, independent from friendship creation
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if(strongSelf) {
+                    [SVProgressHUD dismiss];
+                    if(!succeeded) {
+                        NSLog(@"Couldn't create friendship: %@", error.localizedDescription);
+                    }
+                    // User was created successfully, independent from friendship creation
                     [strongSelf.errorLabel setHidden:YES];
                     [strongSelf.delegate registerUserWithStatus:YES];
                     [strongSelf dismissViewControllerAnimated:true completion:nil];
@@ -190,18 +187,26 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect frame = self.view.frame;
-        frame.origin.y = -keyboardSize.height + 100;
-        self.view.frame = frame;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            CGRect frame = strongSelf.view.frame;
+            frame.origin.y = -keyboardSize.height + 100;
+            strongSelf.view.frame = frame;
+        }
     }];
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification {
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect frame = self.view.frame;
-        frame.origin.y = 0;
-        self.view.frame = frame;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            CGRect frame = strongSelf.view.frame;
+            frame.origin.y = 0;
+            strongSelf.view.frame = frame;
+        }
     }];
 }
 
