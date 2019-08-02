@@ -30,6 +30,7 @@
 		7B61D50322E1147300007250 /* UserXEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D50222E1147300007250 /* UserXEvent.m */; };
 		7B94621D22EBA8050035E9A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B6322DE7E080003F9CE /* main.m */; };
 		7B94621E22EBA8050035E9A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
+		7BCCFB4022F390CB00DB0D8D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCCFB3F22F390CB00DB0D8D /* UserCell.m */; };
 		7BEBF5A222E67DA10008E648 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A122E67DA10008E648 /* CalendarViewController.m */; };
 		7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BEBF5A522E7CD450008E648 /* DateFormatterManager.m */; };
 		9ABA3ADB7839C999C802204B /* Pods_hangoutsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47D5EBA094F4583FAB0CA09E /* Pods_hangoutsUITests.framework */; };
@@ -116,6 +117,8 @@
 		7B61D50222E1147300007250 /* UserXEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserXEvent.m; sourceTree = "<group>"; };
 		7BCCFB3622EF883100DB0D8D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		7BCCFB3822EF886C00DB0D8D /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		7BCCFB3E22F390CB00DB0D8D /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		7BCCFB3F22F390CB00DB0D8D /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		7BEBF5A022E67DA10008E648 /* CalendarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
 		7BEBF5A122E67DA10008E648 /* CalendarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
 		7BEBF5A422E7CD450008E648 /* DateFormatterManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateFormatterManager.h; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 				D9DF805322E68355003D240F /* ChatCell.m */,
 				3C313D3C22EF67DF002732DB /* PhotoCell.h */,
 				3C313D3D22EF67DF002732DB /* PhotoCell.m */,
+				7BCCFB3E22F390CB00DB0D8D /* UserCell.h */,
+				7BCCFB3F22F390CB00DB0D8D /* UserCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */,
 				3C313D4722EFC324002732DB /* PersonProfileViewController.m in Sources */,
+				7BCCFB4022F390CB00DB0D8D /* UserCell.m in Sources */,
 				7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */,
 				D934D1DB22EBA2A000B761D8 /* CustomPointAnnotation.m in Sources */,
 				D9DF804422E23CFC003D240F /* ProfileEditViewController.m in Sources */,
@@ -863,13 +869,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -881,13 +887,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -12,17 +12,25 @@
 #import "LocationsViewController.h"
 #import "FriendsInviteViewController.h"
 #import "UserXEvent.h"
+#import "UIImageView+AFNetworking.h"
 
-@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate>
 
 // Features displayed/edited in the view controller
-@property (weak, nonatomic) IBOutlet UITextField *eventLocationField;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocatinNameField;
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
-
-// @property (strong, nonatomic) NSMutableArray *invitedFriends;
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet UIImageView *friend1View;
+@property (weak, nonatomic) IBOutlet UIImageView *friend2View;
+@property (weak, nonatomic) IBOutlet UIImageView *friend3View;
+@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @end
 
@@ -44,11 +52,9 @@
 {
     [super viewDidLoad];
     
-    _eventLocationField.delegate = self;
-    
-    // Layout for fields and date picker
     [self setInitialPlaceholder];
     [_eventDatePicker setMinimumDate: [NSDate date]];
+    [self getFriendPhotos];
 }
 
 // Closes "Add Event" view controller when user clicks respective button
@@ -78,7 +84,7 @@
         NSString *const newEventName = _eventNameField.text;
         NSDate *const newEventDate = _eventDatePicker.date;
         NSString *const description = _eventDescriptionField.text;
-        NSString *const location_name = _location_name;
+        NSString *const newEventDuration = _eventDurationField.text;
         
         // Calls function that adds objects to class
         [Event createEvent:newEventName
@@ -86,13 +92,14 @@
                description:description
                        lat:_location_lat
                        lng:_location_lng
-                      name:location_name
+                      name:_location_name
                    address:_location_address
-             users_invited:_invitedFriends
+                     photo:_eventPhoto.image
+                  duration:newEventDuration
             withCompletion:^(Event *event, NSError *error)
         {
             if (error) {
-                NSLog(@"Not working");
+                NSLog(@"Unable to create an event");
             } else {
                 [self handleSuccessCreatingEventWithEvent:event];
                 [self dismissViewControllerAnimated:YES completion:nil];
@@ -147,8 +154,20 @@
     _location_address = address;
     _location_name = name;
     
-    // We show the name, rather than the address because not all locations have address
-    _eventLocationField.text = name;
+    _eventLocatinNameField.text = name;
+    // Not all locations have an address
+    if (address) {
+        _eventLocationField.text = address;
+    }
+    if (name) {
+        [self.locationButton setTitle:@"Change" forState:UIControlStateNormal];
+    }
+    
+    if (_location_lng && _location_lat) {
+        [_mapView removeAnnotations:_mapView.annotations];
+        [self getLocationPoint:_location_lat longitude:_location_lng];
+        [_mapView showAnnotations:_mapView.annotations animated:YES];
+    }
     
     [self.navigationController popToViewController:self animated:YES];
 }
@@ -164,7 +183,10 @@
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList
 {
     _invitedFriends = friendsList;
-    [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+    [self getFriendPhotos];
+    if(_invitedFriends && _invitedFriends.count > 0) {
+        [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - Friends and Locations Segues
@@ -264,5 +286,96 @@
     return YES;
 }
 
+#pragma mark - Show Friend Profile Pictures
+
+- (void) getFriendPhotos {
+    if (_invitedFriends) {
+        if (_invitedFriends.count > 2)
+        {
+            PFFileObject *const imageFile = _invitedFriends[2][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend3View.image = nil;
+            [_friend3View setImageWithURL:profilePhotoURL];
+            _friend3View.layer.cornerRadius = _friend3View.frame.size.height /2;
+            _friend3View.layer.masksToBounds = YES;
+            _friend3View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend3View.image = [UIImage imageNamed:@"profile"];
+        }
+        if (_invitedFriends.count > 1)
+        {
+            PFFileObject *const imageFile = _invitedFriends[1][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend2View.image = nil;
+            [_friend2View setImageWithURL:profilePhotoURL];
+            _friend2View.layer.cornerRadius = _friend2View.frame.size.height /2;
+            _friend2View.layer.masksToBounds = YES;
+            _friend2View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend2View.image = [UIImage imageNamed:@"profile"];
+        }
+        if (_invitedFriends.count > 0)
+        {
+            PFFileObject *const imageFile = _invitedFriends[0][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend1View.image = nil;
+            [_friend1View setImageWithURL:profilePhotoURL];
+            _friend1View.layer.cornerRadius = _friend1View.frame.size.height /2;
+            _friend1View.layer.masksToBounds = YES;
+            _friend1View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend1View.image = [UIImage imageNamed:@"profile"];
+        }
+    }
+}
+
+#pragma mark - Show Map in View Controller
+
+// Creates a pointer im the map
+- (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
+    
+    MKPointAnnotation *annotation = [MKPointAnnotation new];
+    annotation.coordinate = coordinate;
+    if (_location_name) {
+        annotation.title = _location_name;
+    } else {
+        annotation.title = @"New Event!";
+    }
+    [self.mapView addAnnotation:annotation];
+}
+
+#pragma mark - Can Edit/Add Progile
+
+- (IBAction)clickedAddPhoto:(id)sender {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+
+// Saves photo when image has been chosen
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    
+    UIImage *const originalImage = info[UIImagePickerControllerOriginalImage];
+    
+    _eventPhoto.image = originalImage;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end
