@@ -23,6 +23,8 @@ typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
 @property (nonatomic, strong) NSString *location_name;
 @property (nonatomic, strong) NSString *location_address;
 @property (nonatomic, strong) NSMutableArray *usersInvited;
+@property (nonatomic, strong) PFFileObject *eventPhoto;
+@property (nonatomic, strong) NSString *duration;
 
 + (void)createEvent:(NSString *)name
                date:(NSDate *)date
@@ -32,7 +34,11 @@ typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
                name:(NSString *)locName
             address:(NSString *)locAddress
       users_invited:(NSMutableArray *)users_invited
+              photo:(UIImage * )photo
+           duration:(NSString *)duration
      withCompletion:(EventCreationCompletionBlock)completion;
+
++ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image;
 
 @end
 

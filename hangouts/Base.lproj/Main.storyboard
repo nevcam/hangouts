@@ -228,13 +228,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qpn-cV-6u8">
-                                <rect key="frame" x="250" y="82" width="109" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qpn-cV-6u8">
+                                <rect key="frame" x="324" y="87" width="35" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Add Event"/>
+                                <state key="normal" image="plus"/>
                                 <connections>
                                     <action selector="clickedAddEvent:" destination="ynw-i4-5mD" eventType="touchUpInside" id="ViZ-Ap-3RW"/>
                                 </connections>
@@ -299,7 +297,7 @@
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickedChooseLocation:" destination="qRP-5W-y9A" eventType="touchUpInside" id="l2R-IQ-ROg"/>
+                                    <action selector="clickedAddPhoto:" destination="qRP-5W-y9A" eventType="touchUpInside" id="Xjz-zq-aBm"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6k-Es-DE5">
@@ -387,11 +385,18 @@
                     <connections>
                         <outlet property="eventDatePicker" destination="Qwb-xE-h7R" id="Rtx-gE-J9F"/>
                         <outlet property="eventDescriptionField" destination="Npr-W1-HOe" id="S8S-0v-Trt"/>
+                        <outlet property="eventDurationField" destination="2oP-k5-Rvt" id="UVx-si-gho"/>
+                        <outlet property="eventImageView" destination="Fo6-i6-xtS" id="sIk-dM-6fL"/>
                         <outlet property="eventLocatinNameField" destination="56B-Fq-gPA" id="wDu-px-XAK"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>
                         <outlet property="eventNameField" destination="5ad-Yo-Z5F" id="L9S-2g-Kei"/>
+                        <outlet property="eventPhoto" destination="Fo6-i6-xtS" id="iun-1H-Ihb"/>
+                        <outlet property="friend1View" destination="u3d-tQ-af3" id="jS1-ny-yyY"/>
+                        <outlet property="friend2View" destination="HKG-Cr-72F" id="XjX-cp-hQ0"/>
+                        <outlet property="friend3View" destination="wMP-gE-YVe" id="64a-d8-HQk"/>
                         <outlet property="inviteFriendsButton" destination="P6k-Es-DE5" id="1Yu-Pz-w0j"/>
                         <outlet property="locationButton" destination="wbV-Ly-lhU" id="xB1-qX-LWS"/>
+                        <outlet property="mapView" destination="aae-Lp-C4u" id="qhz-Fb-Lua"/>
                         <segue destination="yQA-RW-acZ" kind="show" identifier="locationsViewSegue" id="yVn-Ib-jb3"/>
                         <segue destination="cH3-Za-d6o" kind="show" identifier="eventFriendsSegue" id="6CW-bZ-mP9"/>
                     </connections>
@@ -2173,11 +2178,12 @@
         <image name="logo" width="500" height="500"/>
         <image name="party" width="512" height="473"/>
         <image name="photos-icon" width="30" height="30"/>
+        <image name="plus" width="512" height="512"/>
         <image name="profile" width="248" height="248"/>
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MnL-qw-Gyu"/>
+        <segue reference="gyE-XP-bW1"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>
