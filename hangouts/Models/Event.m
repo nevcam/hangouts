@@ -19,6 +19,8 @@
 @dynamic location_name;
 @dynamic location_address;
 @dynamic usersInvited;
+@dynamic eventPhoto;
+@dynamic duration;
 
 + (nonnull NSString *)parseClassName {
     return @"Event";
@@ -33,6 +35,8 @@
                name:(NSString *)locName
             address:(NSString *)locAddress
       users_invited:(NSMutableArray *)users_invited
+              photo:(UIImage * )photo
+           duration:(NSString *)duration
      withCompletion:(EventCreationCompletionBlock)completion
 {
     
@@ -47,6 +51,8 @@
     newEvent.location_lat = lat;
     newEvent.location_lng = lng;
     newEvent.usersInvited = users_invited;
+    newEvent.eventPhoto = [self getPFFileFromImage:photo];
+    newEvent.duration = duration;
     
     [newEvent saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
@@ -56,6 +62,21 @@
             NSLog(@"Could not retrieve ObjectId. Error:%@", error);
         }
     }];
+}
+
++ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
+    
+    if (!image) {
+        return nil;
+    }
+    
+    NSData *imageData = UIImagePNGRepresentation(image);
+    // get image data and check if that is not nil
+    if (!imageData) {
+        return nil;
+    }
+    
+    return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
 }
 
 @end

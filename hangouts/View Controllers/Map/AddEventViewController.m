@@ -85,7 +85,7 @@
         NSString *const newEventName = _eventNameField.text;
         NSDate *const newEventDate = _eventDatePicker.date;
         NSString *const description = _eventDescriptionField.text;
-        NSString *const location_name = _location_name;
+        NSString *const newEventDuration = _eventDurationField.text;
         
         // Calls function that adds objects to class
         [Event createEvent:newEventName
@@ -93,13 +93,15 @@
                description:description
                        lat:_location_lat
                        lng:_location_lng
-                      name:location_name
+                      name:_location_name
                    address:_location_address
              users_invited:_invitedFriends
+                     photo:_eventPhoto.image
+                  duration:newEventDuration
             withCompletion:^(Event *event, NSError *error)
         {
             if (error) {
-                NSLog(@"Not working");
+                NSLog(@"Unable to create an event");
             } else {
                 [self handleSuccessCreatingEventWithEvent:event];
                 [self dismissViewControllerAnimated:YES completion:nil];
