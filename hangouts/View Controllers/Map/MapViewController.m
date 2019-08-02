@@ -213,55 +213,55 @@
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
-    static NSString *AnnotationViewID = @"annotationView";
-    MKAnnotationView *annotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
-    static NSString *EventAnnotationViewID = @"eventAnnotationView";
-    MKAnnotationView *eventAnnotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:EventAnnotationViewID];
-    if (annotationView == nil){
-        if ([annotation isKindOfClass:[CustomPointAnnotation class]]) {
-            annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+    
+    if ([annotation isKindOfClass:[CustomPointAnnotation class]]) {
+        CustomPointAnnotation *customAnnotation = (CustomPointAnnotation *)annotation;
+        static NSString *AnnotationViewID = @"annotationView";
+        MKAnnotationView *annotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+        if (annotationView == nil){
+            annotationView = [[MKAnnotationView alloc] initWithAnnotation:customAnnotation reuseIdentifier:AnnotationViewID];
             annotationView.canShowCallout = YES;
-            CustomPointAnnotation *customAnnotation = (CustomPointAnnotation *)annotation;
-            PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
-            NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-            UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
-            annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
-            UIImageView *leftIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-            leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
-            annotationView.leftCalloutAccessoryView = leftIconView;
-            
-            UIView *myView = [UIView new];
-//            myView.backgroundColor = [UIColor greenColor];
-            
-            [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
-            [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
-            
-            
-            CLLocation *startLocation = self->currentLocation;
-            NSNumber *lat = customAnnotation.friend[@"latitude"];
-            NSNumber *lon = customAnnotation.friend[@"longitude"];
-            CLLocation *endLocation = [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lon.floatValue];
-            CLLocationDistance distance = [startLocation distanceFromLocation:endLocation];
-            UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
-            distLabel.text = [NSString stringWithFormat:@"%.1f miles away",(distance/1609.344)];
-            [distLabel setTextColor:[UIColor blackColor]];
-            [distLabel setBackgroundColor:[UIColor clearColor]];
-            [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
-            [myView addSubview:distLabel];
-            
-            annotationView.detailCalloutAccessoryView = myView;
-            
-        } else if ([annotation isKindOfClass:[EventPointAnnotation class]]) {
-            eventAnnotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
-            eventAnnotationView.canShowCallout = YES;
-            EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
-            eventAnnotationView = [[MKMarkerAnnotationView alloc] initWithAnnotation:eventAnnotation reuseIdentifier:EventAnnotationViewID];
-            eventAnnotationView.annotation = eventAnnotation;
-            return eventAnnotationView;
+        } else {
+            annotationView.annotation = annotation;
         }
+        PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
+        NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+        UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
+        annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
+        UIImageView *leftIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
+        annotationView.leftCalloutAccessoryView = leftIconView;
+
+        UIView *myView = [UIView new];
+        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+
+        CLLocation *startLocation = self->currentLocation;
+        NSNumber *lat = customAnnotation.friend[@"latitude"];
+        NSNumber *lon = customAnnotation.friend[@"longitude"];
+        CLLocation *endLocation = [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lon.floatValue];
+        CLLocationDistance distance = [startLocation distanceFromLocation:endLocation];
+        UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
+        distLabel.text = [NSString stringWithFormat:@"%.1f miles away",(distance/1609.344)];
+        [distLabel setTextColor:[UIColor blackColor]];
+        [distLabel setBackgroundColor:[UIColor clearColor]];
+        [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
+        [myView addSubview:distLabel];
+        annotationView.detailCalloutAccessoryView = myView;
+        return annotationView;
+    } else {
+        EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
+        static NSString *EventAnnotationViewID = @"eventAnnotationView";
+        MKAnnotationView *eventAnnotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:EventAnnotationViewID];
+        
+        if (eventAnnotationView == nil){
+            eventAnnotationView = [[MKMarkerAnnotationView alloc] initWithAnnotation:eventAnnotation reuseIdentifier:EventAnnotationViewID];
+            eventAnnotationView.canShowCallout = YES;
+        } else {
+            eventAnnotationView.annotation = annotation;
+        }
+        return eventAnnotationView;
     }
-    annotationView.annotation = annotation;
-    return annotationView;
 }
 
 
@@ -282,7 +282,7 @@
     CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
     CGContextClosePath (context);
     CGContextClip (context);
-    
+
     CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
     CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
     [image drawInRect:myRect];
@@ -300,7 +300,7 @@
 // Segue to present modally "Add Event" view controller
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    AddEventViewController *addEventViewController = [(UINavigationController*)segue.destinationViewController topViewController];
+    AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
     
     NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
     NSString *lon = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.longitude];
@@ -317,6 +317,10 @@
     } else if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]) {
 
     }
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    
 }
 
 @end
