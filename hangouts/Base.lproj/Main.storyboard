@@ -299,7 +299,7 @@
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickedChooseLocation:" destination="qRP-5W-y9A" eventType="touchUpInside" id="l2R-IQ-ROg"/>
+                                    <action selector="clickedAddPhoto:" destination="qRP-5W-y9A" eventType="touchUpInside" id="Xjz-zq-aBm"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6k-Es-DE5">
@@ -392,11 +392,13 @@
                         <outlet property="eventLocatinNameField" destination="56B-Fq-gPA" id="wDu-px-XAK"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>
                         <outlet property="eventNameField" destination="5ad-Yo-Z5F" id="L9S-2g-Kei"/>
+                        <outlet property="eventPhoto" destination="Fo6-i6-xtS" id="iun-1H-Ihb"/>
                         <outlet property="friend1View" destination="u3d-tQ-af3" id="jS1-ny-yyY"/>
                         <outlet property="friend2View" destination="HKG-Cr-72F" id="XjX-cp-hQ0"/>
                         <outlet property="friend3View" destination="wMP-gE-YVe" id="64a-d8-HQk"/>
                         <outlet property="inviteFriendsButton" destination="P6k-Es-DE5" id="1Yu-Pz-w0j"/>
                         <outlet property="locationButton" destination="wbV-Ly-lhU" id="xB1-qX-LWS"/>
+                        <outlet property="mapView" destination="aae-Lp-C4u" id="qhz-Fb-Lua"/>
                         <segue destination="yQA-RW-acZ" kind="show" identifier="locationsViewSegue" id="yVn-Ib-jb3"/>
                         <segue destination="cH3-Za-d6o" kind="show" identifier="eventFriendsSegue" id="6CW-bZ-mP9"/>
                     </connections>
@@ -2182,5 +2184,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="gyE-XP-bW1"/>
+        <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>

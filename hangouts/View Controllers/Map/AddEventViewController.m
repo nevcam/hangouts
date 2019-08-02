@@ -14,7 +14,7 @@
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
 
-@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate>
 
 // Features displayed/edited in the view controller
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *friend3View;
 @property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
 @property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @end
 
@@ -160,7 +162,13 @@
     if (name) {
         [self.locationButton setTitle:@"Change" forState:UIControlStateNormal];
     }
-
+    
+    if (_location_lng && _location_lat) {
+        [_mapView removeAnnotations:_mapView.annotations];
+        [self getLocationPoint:_location_lat longitude:_location_lng];
+        [_mapView showAnnotations:_mapView.annotations animated:YES];
+    }
+    
     [self.navigationController popToViewController:self animated:YES];
 }
 
@@ -325,6 +333,49 @@
             _friend1View.image = [UIImage imageNamed:@"profile"];
         }
     }
+}
+
+#pragma mark - Show Map in View Controller
+
+// Creates a pointer im the map
+- (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
+    
+    MKPointAnnotation *annotation = [MKPointAnnotation new];
+    annotation.coordinate = coordinate;
+    if (_location_name) {
+        annotation.title = _location_name;
+    } else {
+        annotation.title = @"New Event!";
+    }
+    [self.mapView addAnnotation:annotation];
+}
+
+#pragma mark - Can Edit/Add Progile
+
+- (IBAction)clickedAddPhoto:(id)sender {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+
+// Saves photo when image has been chosen
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    
+    UIImage *const originalImage = info[UIImagePickerControllerOriginalImage];
+    
+    _eventPhoto.image = originalImage;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
