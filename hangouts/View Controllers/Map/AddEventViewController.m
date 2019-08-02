@@ -12,6 +12,7 @@
 #import "LocationsViewController.h"
 #import "FriendsInviteViewController.h"
 #import "UserXEvent.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate>
 
@@ -23,8 +24,11 @@
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
-
-// @property (strong, nonatomic) NSMutableArray *invitedFriends;
+@property (weak, nonatomic) IBOutlet UIImageView *friend1View;
+@property (weak, nonatomic) IBOutlet UIImageView *friend2View;
+@property (weak, nonatomic) IBOutlet UIImageView *friend3View;
+@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
 
 @end
 
@@ -46,9 +50,10 @@
 {
     [super viewDidLoad];
     
-    // Layout for fields and date picker
+    // Layout for features
     [self setInitialPlaceholder];
     [_eventDatePicker setMinimumDate: [NSDate date]];
+    [self getFriendPhotos];
 }
 
 // Closes "Add Event" view controller when user clicks respective button
@@ -170,7 +175,10 @@
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList
 {
     _invitedFriends = friendsList;
-    [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+    [self getFriendPhotos];
+    if(_invitedFriends && _invitedFriends.count > 0) {
+        [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - Friends and Locations Segues
@@ -270,5 +278,53 @@
     return YES;
 }
 
+#pragma mark - Show Friend Profile Pictures
+
+- (void) getFriendPhotos {
+    if (_invitedFriends) {
+        if (_invitedFriends.count > 2)
+        {
+            PFFileObject *const imageFile = _invitedFriends[2][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend3View.image = nil;
+            [_friend3View setImageWithURL:profilePhotoURL];
+            _friend3View.layer.cornerRadius = _friend3View.frame.size.height /2;
+            _friend3View.layer.masksToBounds = YES;
+            _friend3View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend3View.image = [UIImage imageNamed:@"profile"];
+        }
+        if (_invitedFriends.count > 1)
+        {
+            PFFileObject *const imageFile = _invitedFriends[1][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend2View.image = nil;
+            [_friend2View setImageWithURL:profilePhotoURL];
+            _friend2View.layer.cornerRadius = _friend2View.frame.size.height /2;
+            _friend2View.layer.masksToBounds = YES;
+            _friend2View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend2View.image = [UIImage imageNamed:@"profile"];
+        }
+        if (_invitedFriends.count > 0)
+        {
+            PFFileObject *const imageFile = _invitedFriends[0][@"profilePhoto"];
+            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+            _friend1View.image = nil;
+            [_friend1View setImageWithURL:profilePhotoURL];
+            _friend1View.layer.cornerRadius = _friend1View.frame.size.height /2;
+            _friend1View.layer.masksToBounds = YES;
+            _friend1View.layer.borderWidth = 0;
+        }
+        else
+        {
+            _friend1View.image = [UIImage imageNamed:@"profile"];
+        }
+    }
+}
 
 @end

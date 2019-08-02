@@ -29,8 +29,8 @@
     [self setProfileFeatures];
 }
 
-// REMOVE REMOVE
-- (void)setProfileFeatures {
+- (void)setProfileFeatures
+{
     _usernameLabel.text = self.user[@"username"];
     _fullnameLabel.text = self.user[@"fullname"];
     _emailLabel.text = self.user[@"email"];
@@ -38,9 +38,8 @@
     [self setProfileImageLayout];
 }
 
-// NO SPACING AFTER VIOID - PARANTHESIS AFTER LINE
-- (void) setProfileImageLayout {
-    // CONST - CAN'T CHANGE
+- (void)setProfileImageLayout
+{
     PFFileObject *const imageFile = self.user[@"profilePhoto"];
     NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
     _profilePhotoView.image = nil;
