@@ -14,6 +14,7 @@
 
 @interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ownerUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -47,6 +48,7 @@
     [self setMap];
     [self fetchGoingUsers];
     [self fetchInvitedUsers];
+    [self configEditButton];
 }
 
 - (IBAction)didTapClose:(id)sender {
@@ -110,7 +112,7 @@
                 [strongSelf.goingCollectionView reloadData];
             }
         } else {
-            NSLog(@"Error getting events: %@", error.localizedDescription);
+            NSLog(@"Error getting accepted userXEvents: %@", error.localizedDescription);
         }
     }];
 }
@@ -131,7 +133,32 @@
                 [strongSelf.invitedCollectionView reloadData];
             }
         } else {
-            NSLog(@"Error getting events: %@", error.localizedDescription);
+            NSLog(@"Error getting invited userXEvents: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)configEditButton {
+    PFQuery *ownedUserXEventQuery = [UserXEvent query];
+    [ownedUserXEventQuery whereKey:@"event" equalTo:_event];
+    [ownedUserXEventQuery whereKey:@"type" equalTo:@"owned"];
+    [ownedUserXEventQuery includeKey:@"user"];
+    
+    __weak typeof(self) weakSelf = self;
+    [ownedUserXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects) {
+            __strong typeof(weakSelf) strongSelf = self;
+            if(strongSelf) {
+                UserXEvent *userxevent = [objects objectAtIndex:0];
+                NSString *currentUserId = [[PFUser currentUser] objectId];
+                if([userxevent.user.objectId isEqualToString:currentUserId]) {
+                    [strongSelf.editButton setEnabled:(YES)];
+                } else {
+                    [strongSelf.editButton setEnabled:(NO)];
+                }
+            }
+        } else {
+            NSLog(@"Error getting owned userXEvents: %@", error.localizedDescription);
         }
     }];
 }
