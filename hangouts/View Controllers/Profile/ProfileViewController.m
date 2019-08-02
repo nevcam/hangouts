@@ -17,7 +17,14 @@
 @import Parse;
 
 @interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, FriendViewCellDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
+@property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bioLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @end
 
 @implementation ProfileViewController {
@@ -34,7 +41,6 @@
     _user = [PFUser currentUser];
     _usernameLabel.text = _user[@"username"];
     _fullnameLabel.text = _user[@"fullname"];
-    _emailLabel.text = _user[@"email"];
     _bioLabel.text = _user[@"bio"];
     PFFileObject *imageFile = _user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
