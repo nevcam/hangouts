@@ -95,7 +95,6 @@
                        lng:_location_lng
                       name:_location_name
                    address:_location_address
-             users_invited:_invitedFriends
                      photo:_eventPhoto.image
                   duration:newEventDuration
             withCompletion:^(Event *event, NSError *error)

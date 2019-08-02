@@ -18,7 +18,6 @@
 @dynamic location_lng;
 @dynamic location_name;
 @dynamic location_address;
-@dynamic usersInvited;
 @dynamic eventPhoto;
 @dynamic duration;
 
@@ -34,7 +33,6 @@
                 lng:(NSNumber *)lng
                name:(NSString *)locName
             address:(NSString *)locAddress
-      users_invited:(NSMutableArray *)users_invited
               photo:(UIImage * )photo
            duration:(NSString *)duration
      withCompletion:(EventCreationCompletionBlock)completion
@@ -50,7 +48,6 @@
     newEvent.location_name = locName;
     newEvent.location_lat = lat;
     newEvent.location_lng = lng;
-    newEvent.usersInvited = users_invited;
     newEvent.eventPhoto = [self getPFFileFromImage:photo];
     newEvent.duration = duration;
     
