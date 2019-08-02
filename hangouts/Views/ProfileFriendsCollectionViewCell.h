@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 @import Parse;
+@class ProfileFriendsCollectionViewCell;
 
-NS_ASSUME_NONNULL_BEGIN
+@protocol ProfileFriendViewCellDelegate <NSObject>
+- (void)tapProfile:(ProfileFriendsCollectionViewCell *)friendCell didTap: (PFUser *)user;
+@end
 
 @interface ProfileFriendsCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, weak) PFUser *user;
 
+@property (nonatomic, weak) id <ProfileFriendViewCellDelegate> delegate;
+
 @end
 
-NS_ASSUME_NONNULL_END

@@ -17,14 +17,13 @@
 #import "ProfileFriendsCollectionViewCell.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, FriendViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *friendsCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -35,20 +34,29 @@
     NSMutableArray *_friendships;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+#pragma mark - Load View Controller
 
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     
-    _tableView.rowHeight = 80;
+    [self setUserInfo];
+    [self setRefreshControl];
+    
+    [self fetchFriends];
+    [self setCollectionLayout];
+}
+
+- (void)setUserInfo
+{
     _user = [PFUser currentUser];
     _usernameLabel.text = _user[@"username"];
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
+    
     PFFileObject *imageFile = _user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     _profilePhotoView.image = nil;
@@ -56,13 +64,13 @@
     _profilePhotoView.layer.cornerRadius = _profilePhotoView.frame.size.height /2;
     _profilePhotoView.layer.masksToBounds = YES;
     _profilePhotoView.layer.borderWidth = 0;
-    
+}
+
+- (void)setRefreshControl
+{
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
-    [_tableView insertSubview:refreshControl atIndex:0];
-    
-    [self fetchFriends];
-    [self setCollectionLayout];
+    [_collectionView insertSubview:refreshControl atIndex:0];
 }
 
 - (void)beginRefresh:(UIRefreshControl *)refreshControl {
@@ -101,7 +109,6 @@
                             [strongSelf->_friendships addObjectsFromArray:friends];
                             if (strongSelf->_friendships.count == friendPointers.count) {
                                 strongSelf->_friendUsers = strongSelf->_friendships;
-                                [strongSelf.tableView reloadData];
                                 [strongSelf.collectionView reloadData];
                                 strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendships.count];
                             }
@@ -122,29 +129,6 @@
 
 - (IBAction)didTapEditProfile:(id)sender {
     [self performSegueWithIdentifier:@"profileEditSegue" sender:nil];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _friendUsers.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FriendViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendViewCell"];
-    PFUser *user = _friendUsers[indexPath.row];
-    cell.user = user;
-    PFFileObject *imageFile = user[@"profilePhoto"];
-    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-    cell.profilePhotoView.image = nil;
-    [cell.profilePhotoView setImageWithURL:profilePhotoURL];
-    cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
-    cell.profilePhotoView.layer.masksToBounds = YES;
-    cell.profilePhotoView.layer.borderWidth = 0;
-    cell.usernameLabel.text = user[@"username"];
-    cell.fullnameLabel.text = user[@"fullname"];
-    
-    cell.delegate = self;
-
-    return cell;
 }
 
 #pragma mark - Navigation
@@ -211,7 +195,7 @@
 
 #pragma mark - See Friend's Profile
 
-- (void)tapProfile:(nonnull FriendViewCell *)friendCell didTap:(nonnull PFUser *)user {
+- (void)tapProfile:(nonnull ProfileFriendsCollectionViewCell *)friendCell didTap:(nonnull PFUser *)user {
     [self performSegueWithIdentifier:@"myProfileToFriendProfileSegue" sender:user];
 }
 
@@ -236,6 +220,8 @@
     cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.height /2;
     cell.profileImageView.layer.masksToBounds = YES;
     cell.profileImageView.layer.borderWidth = 0;
+    
+    cell.delegate = self;
     
     return cell;
 }

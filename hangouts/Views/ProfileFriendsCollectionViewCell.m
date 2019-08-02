@@ -10,4 +10,18 @@
 
 @implementation ProfileFriendsCollectionViewCell
 
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+
+    // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
+    UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
+    [self.profileImageView addGestureRecognizer:profileTapGestureRecognizer];
+    [self.profileImageView setUserInteractionEnabled:YES];
+}
+
+- (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
+    [_delegate tapProfile:self didTap:self.user];
+}
+
 @end
