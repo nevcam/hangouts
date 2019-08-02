@@ -14,9 +14,10 @@
 #import "Friendship.h"
 #import "FriendViewCell.h"
 #import "PersonProfileViewController.h"
+#import "ProfileFriendsCollectionViewCell.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, FriendViewCellDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, FriendViewCellDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *friendsCount;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -37,6 +40,10 @@
 
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    
     _tableView.rowHeight = 80;
     _user = [PFUser currentUser];
     _usernameLabel.text = _user[@"username"];
@@ -55,6 +62,7 @@
     [_tableView insertSubview:refreshControl atIndex:0];
     
     [self fetchFriends];
+    [self setCollectionLayout];
 }
 
 - (void)beginRefresh:(UIRefreshControl *)refreshControl {
@@ -94,6 +102,8 @@
                             if (strongSelf->_friendships.count == friendPointers.count) {
                                 strongSelf->_friendUsers = strongSelf->_friendships;
                                 [strongSelf.tableView reloadData];
+                                [strongSelf.collectionView reloadData];
+                                strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendships.count];
                             }
                         } else {
                             NSLog(@"Error");
@@ -199,10 +209,52 @@
     }];
 }
 
-#pragma mark - see friend's profile
+#pragma mark - See Friend's Profile
 
 - (void)tapProfile:(nonnull FriendViewCell *)friendCell didTap:(nonnull PFUser *)user {
     [self performSegueWithIdentifier:@"myProfileToFriendProfileSegue" sender:user];
+}
+
+#pragma mark - see friend's profile
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _friendUsers.count;
+}
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    ProfileFriendsCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FriendProfileViewCell" forIndexPath:indexPath];
+    PFUser *user = _friendUsers[indexPath.row];
+    cell.user = user;
+    
+    PFFileObject *imageFile = user[@"profilePhoto"];
+    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    
+    cell.profileImageView.image = nil;
+    [cell.profileImageView setImageWithURL:profilePhotoURL];
+    cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.height /2;
+    cell.profileImageView.layer.masksToBounds = YES;
+    cell.profileImageView.layer.borderWidth = 0;
+    
+    return cell;
+}
+
+- (void)setCollectionLayout
+{
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
+    
+    // Sets margins between posts, view, and other posts
+    layout.minimumInteritemSpacing = 7;
+    layout.minimumLineSpacing = 7;
+    
+    // Sets amount of posters per line
+    CGFloat friendsPerColumn = 2;
+    
+    // Sets post width and height, based on previous values
+    CGFloat itemWidth = (_collectionView.frame.size.height - layout.minimumInteritemSpacing * (friendsPerColumn - 1)) / friendsPerColumn;
+    CGFloat itemHeight = itemWidth;
+    layout.itemSize = CGSizeMake (itemWidth, itemHeight);
 }
 
 

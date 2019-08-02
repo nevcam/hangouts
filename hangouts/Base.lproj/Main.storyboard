@@ -1674,7 +1674,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MEu-j8-C6d">
-                                <rect key="frame" x="0.0" y="282" width="375" height="385"/>
+                                <rect key="frame" x="0.0" y="495" width="375" height="172"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -1714,7 +1714,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBF-eP-PaI">
-                                <rect key="frame" x="25" y="208" width="85" height="22"/>
+                                <rect key="frame" x="16" y="214" width="103" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.70199083448299715" green="0.87925363385640154" blue="0.89605446251269039" alpha="0.40892551369589036" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -1733,14 +1733,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Friends:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQR-Fu-Sdh">
-                                <rect key="frame" x="16" y="258" width="62" height="21"/>
+                                <rect key="frame" x="16" y="267" width="67" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.3775645292" green="0.3775645292" blue="0.3775645292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eCJ-Fd-nRO">
-                                <rect key="frame" x="16" y="282" width="343" height="1"/>
+                                <rect key="frame" x="16" y="291" width="343" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="textColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1748,12 +1747,41 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sra-rL-CTs">
-                                <rect key="frame" x="86" y="258" width="21" height="21"/>
+                                <rect key="frame" x="86" y="267" width="21" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.3775645292" green="0.3775645292" blue="0.3775645292" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oR4-V6-qWs">
+                                <rect key="frame" x="16" y="300" width="343" height="139"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="7" minimumInteritemSpacing="7" id="zFa-Zf-Sbe">
+                                    <size key="itemSize" width="69" height="65"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FriendProfileViewCell" id="9iR-Qt-s7v" customClass="ProfileFriendsCollectionViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="69" height="65"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="69" height="65"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lQZ-Cf-ZPi">
+                                                    <rect key="frame" x="5.2035771182236203" y="5.7573934928259405" width="57.000000000000114" height="54.000000000000455"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <connections>
+                                            <outlet property="profileImageView" destination="lQZ-Cf-ZPi" id="AL8-Yd-6Km"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="0Hh-As-dvc"/>
@@ -1772,7 +1800,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bioLabel" destination="faZ-lV-xaD" id="bnx-bg-gew"/>
+                        <outlet property="collectionView" destination="oR4-V6-qWs" id="zLd-ct-UKQ"/>
                         <outlet property="editProfileButton" destination="eBF-eP-PaI" id="LtC-TN-Ab7"/>
+                        <outlet property="friendsCount" destination="Sra-rL-CTs" id="Vuv-Vf-dgx"/>
                         <outlet property="fullnameLabel" destination="6uU-jV-wlV" id="eSY-ed-dUk"/>
                         <outlet property="profilePhotoView" destination="OW9-QD-znK" id="X6D-5c-xgY"/>
                         <outlet property="tableView" destination="MEu-j8-C6d" id="V2x-wU-Rsr"/>
