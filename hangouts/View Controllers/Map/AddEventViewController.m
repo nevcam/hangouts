@@ -52,7 +52,6 @@
 {
     [super viewDidLoad];
     
-    // Layout for features
     [self setInitialPlaceholder];
     [_eventDatePicker setMinimumDate: [NSDate date]];
     [self getFriendPhotos];

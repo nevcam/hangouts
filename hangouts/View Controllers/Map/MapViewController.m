@@ -19,8 +19,6 @@
 #import "PersonDetailMapView.h"
 #import "AddEventViewController.h"
 
-
-
 @interface MapViewController () <MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -32,6 +30,7 @@
     NSMutableArray *_friendUsers;
     NSMutableArray *_friendships;
     NSMutableArray *_events;
+    
 //    UIView *_customCalloutView;
 }
 
@@ -184,7 +183,8 @@
         coordinate.longitude = longitude.floatValue;
         CustomPointAnnotation *myAnnotation = [[CustomPointAnnotation alloc] init];
         myAnnotation.coordinate = coordinate;
-        myAnnotation.title = friend[@"username"];
+        myAnnotation.title = friend[@"fullname"];
+        myAnnotation.subtitle = friend[@"username"];
         myAnnotation.friend = friend;
         [self.mapView addAnnotation:myAnnotation];
     }
@@ -226,6 +226,31 @@
             NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
             UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
             annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
+            UIImageView *leftIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+            leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
+            annotationView.leftCalloutAccessoryView = leftIconView;
+            
+            UIView *myView = [UIView new];
+//            myView.backgroundColor = [UIColor greenColor];
+            
+            [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+            [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+            
+            
+            CLLocation *startLocation = self->currentLocation;
+            NSNumber *lat = customAnnotation.friend[@"latitude"];
+            NSNumber *lon = customAnnotation.friend[@"longitude"];
+            CLLocation *endLocation = [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lon.floatValue];
+            CLLocationDistance distance = [startLocation distanceFromLocation:endLocation];
+            UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
+            distLabel.text = [NSString stringWithFormat:@"%.1f miles away",(distance/1609.344)];
+            [distLabel setTextColor:[UIColor blackColor]];
+            [distLabel setBackgroundColor:[UIColor clearColor]];
+            [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
+            [myView addSubview:distLabel];
+            
+            annotationView.detailCalloutAccessoryView = myView;
+            
         } else if ([annotation isKindOfClass:[EventPointAnnotation class]]) {
             eventAnnotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
             eventAnnotationView.canShowCallout = YES;
@@ -238,6 +263,7 @@
     annotationView.annotation = annotation;
     return annotationView;
 }
+
 
 - (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0);
@@ -282,6 +308,15 @@
     
     addEventViewController.userLocation = latLong;
     
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    
+    if ([view.annotation isKindOfClass:[EventPointAnnotation class]]) {
+
+    } else if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]) {
+
+    }
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "EventDetailsViewController.h"
+#import "AddEventViewController.h"
 #import "DateFormatterManager.h"
 #import "UserXEvent.h"
 #import "UserCell.h"
@@ -184,6 +185,17 @@
         return _goingUserXEvents.count;
     } else {
         return _invitedUserXEvents.count;
+    }
+    
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString: @"EditEventSegue"]) {
+        UINavigationController *navController = [segue destinationViewController];
+        AddEventViewController *destinationViewController = (AddEventViewController *)navController.topViewController;
+        destinationViewController.event = _event;
     }
     
 }
