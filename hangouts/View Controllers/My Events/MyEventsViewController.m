@@ -141,16 +141,21 @@
  #pragma mark - Navigation
  
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-     if ([segue.identifier  isEqual: @"eventDetailsSegue"]) {
-         UITableViewCell *tappedCell = sender;
-         NSIndexPath *indexPath = [_acceptedTableView indexPathForCell:tappedCell];
-         UserXEvent *userxevent = _acceptedUserXEvents[indexPath.row];
-         Event *event = userxevent.event;
-         EventTabBarController *tabBarViewControllers = [segue destinationViewController];
-         UINavigationController *navController = tabBarViewControllers.viewControllers[0];
-         EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
-         destinationViewController.event = event;
+     UITableViewCell *tappedCell = sender;
+     NSIndexPath *indexPath;
+     UserXEvent *userxevent;
+     if ([segue.identifier isEqualToString: @"AcceptedEventDetailsSegue"]) {
+         indexPath = [_acceptedTableView indexPathForCell:tappedCell];
+         userxevent = _acceptedUserXEvents[indexPath.row];
+     } else if ([segue.identifier isEqualToString:@"InvitedEventDetailsSegue"]) {
+         indexPath = [_invitedTableView indexPathForCell:tappedCell];
+         userxevent = _invitedUserXEvents[indexPath.row];
      }
+     Event *event = userxevent.event;
+     EventTabBarController *tabBarViewControllers = [segue destinationViewController];
+     UINavigationController *navController = tabBarViewControllers.viewControllers[0];
+     EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+     destinationViewController.event = event;
  }
 
 @end

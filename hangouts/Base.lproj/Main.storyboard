@@ -1121,6 +1121,7 @@
                                             <outlet property="locationLabel" destination="3De-yH-C6X" id="UHk-kk-VDE"/>
                                             <outlet property="nameLabel" destination="UE0-T3-gDZ" id="4Mt-xt-QoS"/>
                                             <outlet property="ownerUsernameLabel" destination="unQ-mr-VgI" id="F6v-Vg-ZUv"/>
+                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="InvitedEventDetailsSegue" id="M1v-7o-WK4"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1255,7 +1256,7 @@
                                             <outlet property="nameLabel" destination="7Vx-0I-3Bj" id="VJ3-zF-peA"/>
                                             <outlet property="ownedLabel" destination="qt3-dC-geV" id="12A-8Z-hgV"/>
                                             <outlet property="ownerUsernameLabel" destination="N1Y-Yi-nNv" id="NxI-ju-8Sc"/>
-                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="eventDetailsSegue" id="5KP-IG-gNm"/>
+                                            <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="AcceptedEventDetailsSegue" id="5KP-IG-gNm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
