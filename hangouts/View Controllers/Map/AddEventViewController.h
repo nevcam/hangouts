@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Event.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AddEventViewController : UIViewController
 
 @property (strong, nonatomic) NSString *const userLocation;
+@property (strong, nonatomic) Event *event;
 
 @end
 

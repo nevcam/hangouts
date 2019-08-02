@@ -816,7 +816,11 @@
                                 <action selector="didTapClose:" destination="YXX-rW-Jew" id="lCV-fh-Q5u"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Edit" id="pbj-z1-5of"/>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Edit" id="pbj-z1-5of">
+                            <connections>
+                                <segue destination="gbc-Dl-cRW" kind="presentation" identifier="EditEventSegue" id="UU9-zt-eRZ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateLabel" destination="oZH-Oz-tkm" id="oMx-6u-WIZ"/>
@@ -1481,7 +1485,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wE5-cC-RjU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="3180"/>
+            <point key="canvasLocation" x="57" y="3133"/>
         </scene>
         <!--Person Profile View Controller-->
         <scene sceneID="j6T-6l-aEO">
@@ -1561,7 +1565,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ma7-Ad-jTM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="5430"/>
+            <point key="canvasLocation" x="177" y="5430"/>
         </scene>
         <!--Profile Edit View Controller-->
         <scene sceneID="Ngf-I1-U63">
@@ -1641,7 +1645,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRl-iC-gnN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1508" y="3179"/>
+            <point key="canvasLocation" x="1508" y="3133"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Ees-0t-HtL">
@@ -2024,7 +2028,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ux-Oy-QVV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1151" y="3179"/>
+            <point key="canvasLocation" x="-1151" y="3133"/>
         </scene>
         <!--Locations View Controller-->
         <scene sceneID="n6O-C3-FQh">
@@ -2183,7 +2187,8 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gyE-XP-bW1"/>
+        <segue reference="UU9-zt-eRZ"/>
+        <segue reference="MnL-qw-Gyu"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>
