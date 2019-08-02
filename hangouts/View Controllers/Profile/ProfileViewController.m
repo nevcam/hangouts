@@ -13,9 +13,10 @@
 #import "ProfileEditViewController.h"
 #import "Friendship.h"
 #import "FriendViewCell.h"
+#import "PersonProfileViewController.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, FriendViewCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
@@ -124,6 +125,8 @@
     cell.profilePhotoView.layer.borderWidth = 0;
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
+    
+    cell.delegate = self;
 
     return cell;
 }
@@ -139,6 +142,10 @@
         ProfileEditViewController *profileEditViewController = [segue destinationViewController];
         profileEditViewController.user = user;
         profileEditViewController.delegate = self;
+    }
+    else if ([segue.identifier isEqual:@"myProfileToFriendProfileSegue"]) {
+            PersonProfileViewController *friendProfileController = segue.destinationViewController;
+            friendProfileController.user = sender;
     }
 }
 
@@ -185,5 +192,12 @@
         }
     }];
 }
+
+#pragma mark - see friend's profile
+
+- (void)tapProfile:(nonnull FriendViewCell *)friendCell didTap:(nonnull PFUser *)user {
+    [self performSegueWithIdentifier:@"myProfileToFriendProfileSegue" sender:user];
+}
+
 
 @end

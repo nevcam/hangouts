@@ -1561,7 +1561,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ma7-Ad-jTM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="5430"/>
+            <point key="canvasLocation" x="710" y="5621"/>
         </scene>
         <!--Profile Edit View Controller-->
         <scene sceneID="Ngf-I1-U63">
@@ -1641,7 +1641,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRl-iC-gnN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1508" y="3179"/>
+            <point key="canvasLocation" x="1508" y="3313"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Ees-0t-HtL">
@@ -1759,6 +1759,7 @@
                         <outlet property="tableView" destination="MEu-j8-C6d" id="V2x-wU-Rsr"/>
                         <outlet property="usernameLabel" destination="Osy-u2-Jph" id="oMm-AI-uih"/>
                         <segue destination="H2P-Jw-7wO" kind="presentation" identifier="profileEditSegue" id="1eD-ks-kDn"/>
+                        <segue destination="4ta-Ah-gRE" kind="show" identifier="myProfileToFriendProfileSegue" id="5ke-0h-Tl9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oif-gq-9zy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2183,7 +2184,7 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gyE-XP-bW1"/>
+        <segue reference="5ke-0h-Tl9"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>
