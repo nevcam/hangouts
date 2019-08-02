@@ -228,13 +228,11 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qpn-cV-6u8">
-                                <rect key="frame" x="250" y="82" width="109" height="36"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qpn-cV-6u8">
+                                <rect key="frame" x="294" y="95" width="50" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Add Event"/>
+                                <state key="normal" image="plus"/>
                                 <connections>
                                     <action selector="clickedAddEvent:" destination="ynw-i4-5mD" eventType="touchUpInside" id="ViZ-Ap-3RW"/>
                                 </connections>
@@ -2179,6 +2177,7 @@
         <image name="logo" width="500" height="500"/>
         <image name="party" width="512" height="473"/>
         <image name="photos-icon" width="30" height="30"/>
+        <image name="plus" width="512" height="512"/>
         <image name="profile" width="248" height="248"/>
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
