@@ -427,11 +427,13 @@
     PFQuery *eventQuery = [Event query];
     __weak typeof(self) weakSelf = self;
     [eventQuery getObjectInBackgroundWithId:_event.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
-        if(object) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if(strongSelf) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            if(object) {
                 Event *event = (Event *)object;
                 [strongSelf updateDataBaseEvent:event];
+            } else {
+                [strongSelf.delegate editUserWithStatus:NO];
             }
         }
     }];
@@ -439,9 +441,16 @@
 
 - (void)updateDataBaseEvent:(Event *)event {
     [self updateInfoOfEvent:event];
+    __weak typeof(self) weakSelf = self;
     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Error updating event: %@", error);
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            if (error) {
+                [strongSelf.delegate editUserWithStatus:NO];
+                NSLog(@"Error updating event: %@", error);
+            } else {
+                [strongSelf.delegate editUserWithStatus:YES];
+            }
         }
     }];
 }
@@ -463,7 +472,7 @@
     if(_eventPhoto.image != nil) {
         imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
     } else {
-        UIImage *pic = [UIImage imageNamed:@"profile"]; //!!
+        UIImage *pic = [UIImage imageNamed:@"dog"];
         imageData = UIImageJPEGRepresentation(pic, 1.0);
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
