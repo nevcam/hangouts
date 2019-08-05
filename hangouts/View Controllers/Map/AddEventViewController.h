@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *const userLocation;
 @property (strong, nonatomic) Event *event;
+@property (strong, nonatomic) NSMutableArray *friendsToInvite;
 
 @end
 

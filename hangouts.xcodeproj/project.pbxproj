@@ -38,6 +38,7 @@
 		D934D1DE22EF879A00B761D8 /* PersonDetailMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = D934D1DD22EF879A00B761D8 /* PersonDetailMapView.m */; };
 		D934D1E022EF886E00B761D8 /* PersonDetailMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D934D1DF22EF886E00B761D8 /* PersonDetailMapView.xib */; };
 		D93D374C22EFC3AF00B3C617 /* EventPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D93D374B22EFC3AF00B3C617 /* EventPointAnnotation.m */; };
+		D93D375222F8C9E800B3C617 /* CustomAnnotationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D93D375122F8C9E800B3C617 /* CustomAnnotationButton.m */; };
 		D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803122DF8C74003D240F /* FriendSearchViewController.m */; };
 		D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803422DF8D3A003D240F /* FriendCell.m */; };
 		D9DF803822DFE181003D240F /* Friendship.m in Sources */ = {isa = PBXBuildFile; fileRef = D9DF803722DFE181003D240F /* Friendship.m */; };
@@ -135,6 +136,8 @@
 		D934D1DF22EF886E00B761D8 /* PersonDetailMapView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PersonDetailMapView.xib; sourceTree = "<group>"; };
 		D93D374A22EFC3AF00B3C617 /* EventPointAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventPointAnnotation.h; sourceTree = "<group>"; };
 		D93D374B22EFC3AF00B3C617 /* EventPointAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventPointAnnotation.m; sourceTree = "<group>"; };
+		D93D375022F8C9E800B3C617 /* CustomAnnotationButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomAnnotationButton.h; sourceTree = "<group>"; };
+		D93D375122F8C9E800B3C617 /* CustomAnnotationButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotationButton.m; sourceTree = "<group>"; };
 		D9DF803022DF8C74003D240F /* FriendSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendSearchViewController.h; sourceTree = "<group>"; };
 		D9DF803122DF8C74003D240F /* FriendSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendSearchViewController.m; sourceTree = "<group>"; };
 		D9DF803322DF8D3A003D240F /* FriendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
@@ -247,6 +250,8 @@
 				3CE7D01E22E0D930005E5C29 /* LocationsViewController.m */,
 				3CF5DCF422E260CA00FF2128 /* FriendsInviteViewController.h */,
 				3CF5DCF522E260CA00FF2128 /* FriendsInviteViewController.m */,
+				D93D375022F8C9E800B3C617 /* CustomAnnotationButton.h */,
+				D93D375122F8C9E800B3C617 /* CustomAnnotationButton.m */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -659,6 +664,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D93D375222F8C9E800B3C617 /* CustomAnnotationButton.m in Sources */,
 				3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */,
 				D9DF804E22E6761C003D240F /* ChatViewController.m in Sources */,
 				D9DF805422E68355003D240F /* ChatCell.m in Sources */,
