@@ -138,6 +138,35 @@
     }
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger numOfSections = 1;
+    if ([_invitedUserXEvents count] > 0)
+    {
+        self.invitedTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.invitedTableView.backgroundView = nil;
+    }
+    else if ([_invitedUserXEvents count] == 0)
+    {
+        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
+        noDataLabel.text             = @"No invites!";
+        noDataLabel.textColor        = [UIColor blackColor];
+        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+        self.invitedTableView.backgroundView = noDataLabel;
+        self.invitedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    } else if ([_acceptedUserXEvents count] == 0)
+    {
+        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.acceptedTableView.bounds.size.width, self.acceptedTableView.bounds.size.height)];
+        noDataLabel.text             = @"No events!";
+        noDataLabel.textColor        = [UIColor blackColor];
+        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+        self.acceptedTableView.backgroundView = noDataLabel;
+        self.acceptedTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    return numOfSections;
+}
+
+
  #pragma mark - Navigation
  
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
