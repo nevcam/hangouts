@@ -153,14 +153,7 @@
         imageData = UIImageJPEGRepresentation(pic, 1.0);
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"profilePic.png" data:imageData];
-    [img saveInBackground];
-    
     [user setObject:img forKey:@"profilePhoto"];
-    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (error) {
-            NSLog(@"Error uploading profile pic: %@", error);
-        }
-    }];
 }
 
 #pragma mark -  keyboard methods
