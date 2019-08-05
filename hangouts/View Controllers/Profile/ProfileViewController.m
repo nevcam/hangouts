@@ -26,6 +26,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 @property (weak, nonatomic) IBOutlet UILabel *friendsCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *pastEventsCount;
+@property (weak, nonatomic) IBOutlet UILabel *nextEventsCount;
+@property (weak, nonatomic) IBOutlet UILabel *ownedEventsCount;
 
 @end
 
@@ -242,6 +246,8 @@
     CGFloat itemHeight = itemWidth;
     layout.itemSize = CGSizeMake (itemWidth, itemHeight);
 }
+
+
 
 
 @end
