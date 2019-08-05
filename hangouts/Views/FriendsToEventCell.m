@@ -55,7 +55,7 @@
 }
 
 - (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
-    [self.delegate tapProfile:self didTap:self.user];
+    [_delegate tapProfile:self didTap:self.user];
 }
 
 @end

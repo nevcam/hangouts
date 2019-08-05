@@ -13,10 +13,20 @@
 #import "ProfileEditViewController.h"
 #import "Friendship.h"
 #import "FriendViewCell.h"
+#import "PersonProfileViewController.h"
+#import "ProfileFriendsCollectionViewCell.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
+@property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bioLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
+@property (weak, nonatomic) IBOutlet UILabel *friendsCount;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
 @end
 
 @implementation ProfileViewController {
@@ -24,17 +34,29 @@
     NSMutableArray *_friendships;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+#pragma mark - Load View Controller
 
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
-    _tableView.rowHeight = 80;
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    
+    [self setUserInfo];
+    [self setRefreshControl];
+    
+    [self fetchFriends];
+    [self setCollectionLayout];
+}
+
+- (void)setUserInfo
+{
     _user = [PFUser currentUser];
     _usernameLabel.text = _user[@"username"];
     _fullnameLabel.text = _user[@"fullname"];
-    _emailLabel.text = _user[@"email"];
     _bioLabel.text = _user[@"bio"];
+    
     PFFileObject *imageFile = _user[@"profilePhoto"];
     NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
     _profilePhotoView.image = nil;
@@ -42,12 +64,13 @@
     _profilePhotoView.layer.cornerRadius = _profilePhotoView.frame.size.height /2;
     _profilePhotoView.layer.masksToBounds = YES;
     _profilePhotoView.layer.borderWidth = 0;
-    
+}
+
+- (void)setRefreshControl
+{
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
-    [_tableView insertSubview:refreshControl atIndex:0];
-    
-    [self fetchFriends];
+    [_collectionView insertSubview:refreshControl atIndex:0];
 }
 
 - (void)beginRefresh:(UIRefreshControl *)refreshControl {
@@ -86,7 +109,8 @@
                             [strongSelf->_friendships addObjectsFromArray:friends];
                             if (strongSelf->_friendships.count == friendPointers.count) {
                                 strongSelf->_friendUsers = strongSelf->_friendships;
-                                [strongSelf.tableView reloadData];
+                                [strongSelf.collectionView reloadData];
+                                strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendships.count];
                             }
                         } else {
                             NSLog(@"Error");
@@ -107,27 +131,6 @@
     [self performSegueWithIdentifier:@"profileEditSegue" sender:nil];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _friendUsers.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FriendViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendViewCell"];
-    PFUser *user = _friendUsers[indexPath.row];
-    cell.user = user;
-    PFFileObject *imageFile = user[@"profilePhoto"];
-    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
-    cell.profilePhotoView.image = nil;
-    [cell.profilePhotoView setImageWithURL:profilePhotoURL];
-    cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
-    cell.profilePhotoView.layer.masksToBounds = YES;
-    cell.profilePhotoView.layer.borderWidth = 0;
-    cell.usernameLabel.text = user[@"username"];
-    cell.fullnameLabel.text = user[@"fullname"];
-
-    return cell;
-}
-
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -139,6 +142,10 @@
         ProfileEditViewController *profileEditViewController = [segue destinationViewController];
         profileEditViewController.user = user;
         profileEditViewController.delegate = self;
+    }
+    else if ([segue.identifier isEqual:@"myProfileToFriendProfileSegue"]) {
+            PersonProfileViewController *friendProfileController = segue.destinationViewController;
+            friendProfileController.user = sender;
     }
 }
 
@@ -185,5 +192,56 @@
         }
     }];
 }
+
+#pragma mark - See Friend's Profile
+
+- (void)tapProfile:(nonnull ProfileFriendsCollectionViewCell *)friendCell didTap:(nonnull PFUser *)user {
+    [self performSegueWithIdentifier:@"myProfileToFriendProfileSegue" sender:user];
+}
+
+#pragma mark - see friend's profile
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _friendUsers.count;
+}
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    ProfileFriendsCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FriendProfileViewCell" forIndexPath:indexPath];
+    PFUser *user = _friendUsers[indexPath.row];
+    cell.user = user;
+    
+    PFFileObject *imageFile = user[@"profilePhoto"];
+    NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    
+    cell.profileImageView.image = nil;
+    [cell.profileImageView setImageWithURL:profilePhotoURL];
+    cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.height /2;
+    cell.profileImageView.layer.masksToBounds = YES;
+    cell.profileImageView.layer.borderWidth = 0;
+    
+    cell.delegate = self;
+    
+    return cell;
+}
+
+- (void)setCollectionLayout
+{
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
+    
+    // Sets margins between posts, view, and other posts
+    layout.minimumInteritemSpacing = 7;
+    layout.minimumLineSpacing = 7;
+    
+    // Sets amount of posters per line
+    CGFloat friendsPerColumn = 2;
+    
+    // Sets post width and height, based on previous values
+    CGFloat itemWidth = (_collectionView.frame.size.height - layout.minimumInteritemSpacing * (friendsPerColumn - 1)) / friendsPerColumn;
+    CGFloat itemHeight = itemWidth;
+    layout.itemSize = CGSizeMake (itemWidth, itemHeight);
+}
+
 
 @end

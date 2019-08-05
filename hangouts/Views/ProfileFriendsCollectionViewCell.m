@@ -1,28 +1,23 @@
 //
-//  FriendViewCell.m
+//  ProfileFriendsCollectionViewCell.m
 //  hangouts
 //
-//  Created by nev on 7/19/19.
+//  Created by josemurillo on 8/2/19.
 //  Copyright © 2019 nev. All rights reserved.
 //
 
-#import "FriendViewCell.h"
+#import "ProfileFriendsCollectionViewCell.h"
 
-@implementation FriendViewCell
+@implementation ProfileFriendsCollectionViewCell
+
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
+
     // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
     UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
-    [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
-    [self.profilePhotoView setUserInteractionEnabled:YES];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+    [self.profileImageView addGestureRecognizer:profileTapGestureRecognizer];
+    [self.profileImageView setUserInteractionEnabled:YES];
 }
 
 - (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
