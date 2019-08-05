@@ -470,8 +470,6 @@
     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error updating event: %@", error);
-        } else {
-            NSLog(@"Updated event");
         }
     }];
 }
