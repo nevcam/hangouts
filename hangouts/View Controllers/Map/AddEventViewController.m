@@ -204,7 +204,6 @@
 
 #pragma mark - Friends and Locations Segues
 
-// Segues to location and friends view controllers
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"locationsViewSegue"]) {
@@ -221,12 +220,10 @@
 
 #pragma mark - Validate Event Information
 
-// RUNS alerts to prevent user from inputing an event with empty fields. Boolean to exit function as soon as an error is encountered
 - (BOOL)validateFields
 {
     NSArray *fieldsStrings = [NSArray arrayWithObjects:_eventLocationField.text, _eventDescriptionField.text, _eventNameField.text, nil];
-    
-    // Loops through fields and checks if there is any empty field
+
     for (NSString *string in fieldsStrings) {
         NSString *const stringNoSpaces = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
         if([stringNoSpaces isEqualToString:@""]) {
@@ -244,7 +241,6 @@
     return NO;
 }
 
-// Sets placeholder in textView
 - (void) setInitialPlaceholder
 {
     if (_eventDescriptionField.text.length == 0) {
@@ -283,13 +279,11 @@
 
 #pragma mark - Dismiss Keyboard
 
-// For name text field
 - (IBAction)didTapReturn:(id)sender
 {
     [self.eventNameField resignFirstResponder];
 }
 
-// For description text view
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if([text isEqualToString:@"\n"]) {
@@ -350,7 +344,6 @@
 
 #pragma mark - Map
 
-// Creates a pointer im the map
 - (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
     
@@ -381,11 +374,8 @@
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 
-// Saves photo when image has been chosen
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
     UIImage *const originalImage = info[UIImagePickerControllerOriginalImage];
-    
     _eventPhoto.image = originalImage;
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -448,24 +438,6 @@
 }
 
 - (void)updateDataBaseEvent:(Event *)event {
-//    NSData *imageData;
-//    if(_eventPhoto.image != nil) {
-//        imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
-//    } else {
-//        UIImage *pic = [UIImage imageNamed:@"profile"];
-//        imageData = UIImageJPEGRepresentation(pic, 1.0);
-//    }
-//    PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPhoto.png" data:imageData];
-//    [img saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-//        [event setObject:img forKey:@"eventPhoto"];
-//        [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//            if (error) {
-//                NSLog(@"Error updating event: %@", error);
-//            } else {
-//                NSLog(@"Updated event");
-//            }
-//        }];
-//    }];
     [self updateInfoOfEvent:event];
     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
@@ -495,13 +467,7 @@
         imageData = UIImageJPEGRepresentation(pic, 1.0);
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
-    //probar asi y luego sin saveinbackground
     event.eventPhoto = img;
-//    [img saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-//        if(succeeded) {
-//
-//        }
-//    }];
 }
 
 @end
