@@ -193,43 +193,48 @@
 
 #pragma mark - Sync Calendar methods
 
-- (IBAction)didTapSync:(id)sender {
+- (IBAction)didTapAddToCalendar:(id)sender {
     EKEventStore *store = [[EKEventStore alloc] init];
     __weak typeof(self) weakSelf = self;
     [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
-            EKCalendar *cal;
-            if (![strongSelf getCalendarID] || ![store calendarWithIdentifier:[strongSelf getCalendarID]]) {
-                EKSource *icloudSource = nil;
-                for (EKSource *source in store.sources) {
-                    if (source.sourceType == EKSourceTypeCalDAV) {
-                        icloudSource = source;
-                        break;
-                    }
-                }
-                cal = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
-                cal.title = @"Hangouts";
-                cal.source = icloudSource;
-                [store saveCalendar:cal commit:YES error:nil];
-                [strongSelf saveCalendarID:cal.calendarIdentifier];
-            } else {
-                cal = [store calendarWithIdentifier:[strongSelf getCalendarID]];
+            EKCalendar *calendar = [store calendarWithIdentifier:[strongSelf getCalendarID]];
+            if (!calendar) {
+                calendar = [strongSelf createiCloudCalendarInStore:store];
             }
-            // Will only have 1 event, won't need for loop
-            /*for (Event *event in strongSelf->_eventArray) {
-                EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
-                ekEvent.calendar = cal;
-                ekEvent.title = event.name;
-                ekEvent.startDate = event.date;
-                ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
-                
-                if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
-                    NSLog(@"Could not add event.");
-                }
-            }*/
+            [strongSelf addEventToCalendar:calendar inStore:store];
         }
     }];
+}
+
+- (void)addEventToCalendar:(EKCalendar *)calendar inStore:(EKEventStore *)store {
+    EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
+    ekEvent.calendar = calendar;
+    ekEvent.title = _event.name;
+    ekEvent.startDate = _event.date;
+    ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
+    
+    if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
+        NSLog(@"Could not add event.");
+    }
+}
+
+- (EKCalendar *) createiCloudCalendarInStore:(EKEventStore *)store {
+    EKSource *icloudSource = nil;
+    for (EKSource *source in store.sources) {
+        if (source.sourceType == EKSourceTypeCalDAV) {
+            icloudSource = source;
+            break;
+        }
+    }
+    EKCalendar *calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
+    calendar.title = @"Hangouts";
+    calendar.source = icloudSource;
+    [store saveCalendar:calendar commit:YES error:nil];
+    [self saveCalendarID:calendar.calendarIdentifier];
+    
+    return calendar;
 }
 
 - (void)saveCalendarID:(NSString *) calendarID {
