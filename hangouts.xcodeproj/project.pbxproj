@@ -881,13 +881,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
+				DEVELOPMENT_TEAM = 24T36Y5XMD;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -899,13 +899,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
+				DEVELOPMENT_TEAM = 24T36Y5XMD;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

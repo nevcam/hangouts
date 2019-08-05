@@ -134,6 +134,27 @@
 
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger numOfSections = 0;
+    if ([self.filteredUsers count] > 0)
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        numOfSections                 = 1;
+        self.tableView.backgroundView = nil;
+    }
+    else
+    {
+        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+        noDataLabel.text             = @"Search for new friends!";
+        noDataLabel.textColor        = [UIColor blackColor];
+        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+        self.tableView.backgroundView = noDataLabel;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    return numOfSections;
+}
+
 - (void)fetchFilteredUsers:(NSString *)prefix {
     PFQuery *query = [PFUser query];
     [query orderByDescending:@"createdAt"];
