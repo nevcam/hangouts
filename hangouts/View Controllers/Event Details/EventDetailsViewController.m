@@ -64,8 +64,8 @@
     _nameLabel.text = _event.name;
     _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@", _event.ownerUsername];
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
-    [manager.formatter setDateFormat:@"EEEE MMMM dd, Y"];
-    _dateLabel.text = [manager.formatter stringFromDate:_event.date];
+    [manager.formatter setDateFormat:@"EEE MMM dd, Y | HH:mm"];
+    _dateLabel.text = [[manager.formatter stringFromDate:_event.date] stringByAppendingString:@" hrs"];
     _locationNameLabel.text = _event.location_name;
     _locationAddressLabel.text = _event.location_address;
     _descriptionLabel.text = _event.eventDescription;
