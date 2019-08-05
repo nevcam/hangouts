@@ -383,12 +383,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="createButton" destination="srX-HI-3pQ" id="U9o-PN-4Yy"/>
                         <outlet property="eventDatePicker" destination="Qwb-xE-h7R" id="Rtx-gE-J9F"/>
                         <outlet property="eventDescriptionField" destination="Npr-W1-HOe" id="S8S-0v-Trt"/>
                         <outlet property="eventDurationField" destination="2oP-k5-Rvt" id="UVx-si-gho"/>
-                        <outlet property="eventImageView" destination="Fo6-i6-xtS" id="sIk-dM-6fL"/>
-                        <outlet property="eventLocatinNameField" destination="56B-Fq-gPA" id="wDu-px-XAK"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>
+                        <outlet property="eventLocationNameField" destination="56B-Fq-gPA" id="agp-bp-ACR"/>
                         <outlet property="eventNameField" destination="5ad-Yo-Z5F" id="L9S-2g-Kei"/>
                         <outlet property="eventPhoto" destination="Fo6-i6-xtS" id="iun-1H-Ihb"/>
                         <outlet property="friend1View" destination="u3d-tQ-af3" id="jS1-ny-yyY"/>
@@ -1877,7 +1877,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SqB-pK-LKh">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CalendarEventCell" rowHeight="168" id="DF9-vH-Ga7" customClass="EventCell">
@@ -2010,20 +2010,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRH-VC-gMf">
-                                <rect key="frame" x="170" y="577" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Sync"/>
-                                <connections>
-                                    <action selector="didTapSync:" destination="Sc0-LB-le4" eventType="touchUpInside" id="oUA-gn-OJi"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="SqB-pK-LKh" firstAttribute="leading" secondItem="EZA-HO-605" secondAttribute="leading" id="9pr-8h-Pdc"/>
                             <constraint firstItem="SqB-pK-LKh" firstAttribute="top" secondItem="EZA-HO-605" secondAttribute="top" id="Luj-Vr-REm"/>
-                            <constraint firstAttribute="bottom" secondItem="SqB-pK-LKh" secondAttribute="bottom" constant="110" id="gVq-Sj-aO1"/>
+                            <constraint firstAttribute="bottom" secondItem="SqB-pK-LKh" secondAttribute="bottom" id="gVq-Sj-aO1"/>
                             <constraint firstAttribute="trailing" secondItem="SqB-pK-LKh" secondAttribute="trailing" id="oQ9-fp-ZiO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="blp-0U-m9C"/>
@@ -2287,7 +2279,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="UU9-zt-eRZ"/>
-        <segue reference="5ke-0h-Tl9"/>
+        <segue reference="MnL-qw-Gyu"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>
