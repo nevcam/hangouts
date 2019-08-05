@@ -18,27 +18,28 @@
 
 // Features displayed/edited in the view controller
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
-@property (weak, nonatomic) IBOutlet UILabel *eventLocatinNameField;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocationNameField;
+
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
-@property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
-@property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
-@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+
+@property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
+
 @property (weak, nonatomic) IBOutlet UIImageView *friend1View;
 @property (weak, nonatomic) IBOutlet UIImageView *friend2View;
 @property (weak, nonatomic) IBOutlet UIImageView *friend3View;
-@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
 @property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
+
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+@property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
 
 @end
 
-@implementation AddEventViewController
-
-#pragma mark - Global Variables
-
-{
+@implementation AddEventViewController {
     NSNumber *_location_lat;
     NSNumber *_location_lng;
     NSString *_location_name;
@@ -52,9 +53,17 @@
 {
     [super viewDidLoad];
     
-    [self setInitialPlaceholder];
-    [_eventDatePicker setMinimumDate: [NSDate date]];
-    [self getFriendPhotos];
+    if (!_event) {
+        [_eventDatePicker setMinimumDate: [NSDate date]];
+        [self setInitialPlaceholder];
+        [self getFriendPhotos];
+    } else {
+        [self setEventPhoto];
+        [self setEventMap];
+        [self setEventLabels];
+        [self setEventIVars];
+        _eventDatePicker.date = _event.date;
+    }
 }
 
 // Closes "Add Event" view controller when user clicks respective button
@@ -71,8 +80,6 @@
     // Uses class function to check that all fields are not empty
     if (![self validateFields]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Event Creation Error" message:@"Please fill all the fields" preferredStyle:(UIAlertControllerStyleAlert)];
-        
-        // create a try again action, notifying the user that an error occured
         UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again!" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
         }];
         [alert addAction:tryAgainAction];
@@ -81,30 +88,36 @@
         }];
         
     } else {
-        NSString *const newEventName = _eventNameField.text;
-        NSDate *const newEventDate = _eventDatePicker.date;
-        NSString *const description = _eventDescriptionField.text;
-        NSString *const newEventDuration = _eventDurationField.text;
+        if(!_event) {
+            NSString *const newEventName = _eventNameField.text;
+            NSDate *const newEventDate = _eventDatePicker.date;
+            NSString *const description = _eventDescriptionField.text;
+            NSString *const newEventDuration = _eventDurationField.text;
+            
+            // Calls function that adds objects to class
+            [Event createEvent:newEventName
+                          date:newEventDate
+                   description:description
+                           lat:_location_lat
+                           lng:_location_lng
+                          name:_location_name
+                       address:_location_address
+                         photo:_eventPhoto.image
+                      duration:newEventDuration
+                withCompletion:^(Event *event, NSError *error)
+             {
+                 if (error) {
+                     NSLog(@"Unable to create an event");
+                 } else {
+                     [self handleSuccessCreatingEventWithEvent:event];
+                     [self dismissViewControllerAnimated:YES completion:nil];
+                 }
+             }];
+        } else {
+            [self updateEvent];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
         
-        // Calls function that adds objects to class
-        [Event createEvent:newEventName
-                      date:newEventDate
-               description:description
-                       lat:_location_lat
-                       lng:_location_lng
-                      name:_location_name
-                   address:_location_address
-                     photo:_eventPhoto.image
-                  duration:newEventDuration
-            withCompletion:^(Event *event, NSError *error)
-        {
-            if (error) {
-                NSLog(@"Unable to create an event");
-            } else {
-                [self handleSuccessCreatingEventWithEvent:event];
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        }];
     }
 }
 
@@ -135,7 +148,7 @@
     }
 }
 
-#pragma mark - Load and Choose Event Location
+#pragma mark - Event Location
 
 // Triggered when user wants to choose a location
 - (IBAction)clickedChooseLocation:(id)sender
@@ -154,7 +167,7 @@
     _location_address = address;
     _location_name = name;
     
-    _eventLocatinNameField.text = name;
+    _eventLocationNameField.text = name;
     // Not all locations have an address
     if (address) {
         _eventLocationField.text = address;
@@ -335,7 +348,7 @@
     }
 }
 
-#pragma mark - Show Map in View Controller
+#pragma mark - Map
 
 // Creates a pointer im the map
 - (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
@@ -351,7 +364,7 @@
     [self.mapView addAnnotation:annotation];
 }
 
-#pragma mark - Can Edit/Add Progile
+#pragma mark - Can Edit/Add Profile
 
 - (IBAction)clickedAddPhoto:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
@@ -376,6 +389,121 @@
     _eventPhoto.image = originalImage;
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Edit Event Setup Methods
+
+- (void)setEventMap {
+    double lat = [_event.location_lat doubleValue];
+    double lng = [_event.location_lng doubleValue];
+    MKPointAnnotation *myAnnotation = [[MKPointAnnotation alloc] init];
+    myAnnotation.coordinate = CLLocationCoordinate2DMake(lat, lng);
+    if (_event.location_name) {
+        myAnnotation.title = _event.location_name;
+    }
+    
+    [_mapView addAnnotation:myAnnotation];
+    MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:MKCoordinateRegionMakeWithDistance(myAnnotation.coordinate, 500, 500)];
+    [_mapView setRegion:adjustedRegion animated:YES];
+    [_mapView setUserInteractionEnabled:NO];
+}
+
+- (void)setEventPhoto {
+    PFFileObject *const imageFile = _event.eventPhoto;
+    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+    _eventPhoto.image = nil;
+    [_eventPhoto setImageWithURL:profilePhotoURL];
+    _eventDurationField.text = _event.duration;
+}
+
+- (void)setEventLabels {
+    _eventLocationField.text = _event.location_address;
+    _eventLocationNameField.text = _event.location_name;
+    _eventNameField.text = _event.name;
+    _eventDescriptionField.text = _event.eventDescription;
+    [_locationButton setTitle:@"Change" forState:UIControlStateNormal];
+    [_createButton setTitle:@"Save"];
+}
+
+- (void)setEventIVars {
+    _location_lat = _event.location_lat;
+    _location_lng = _event.location_lng;
+    _location_name = _event.location_name;
+    _location_address = _event.location_address;
+    // _invitedFriends (??)
+}
+
+- (void)updateEvent {
+    PFQuery *eventQuery = [Event query];
+    __weak typeof(self) weakSelf = self;
+    [eventQuery getObjectInBackgroundWithId:_event.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if(object) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if(strongSelf) {
+                Event *event = (Event *)object;
+                [strongSelf updateDataBaseEvent:event];
+            }
+        }
+    }];
+}
+
+- (void)updateDataBaseEvent:(Event *)event {
+//    NSData *imageData;
+//    if(_eventPhoto.image != nil) {
+//        imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
+//    } else {
+//        UIImage *pic = [UIImage imageNamed:@"profile"];
+//        imageData = UIImageJPEGRepresentation(pic, 1.0);
+//    }
+//    PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPhoto.png" data:imageData];
+//    [img saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+//        [event setObject:img forKey:@"eventPhoto"];
+//        [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//            if (error) {
+//                NSLog(@"Error updating event: %@", error);
+//            } else {
+//                NSLog(@"Updated event");
+//            }
+//        }];
+//    }];
+    [self updateInfoOfEvent:event];
+    [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error updating event: %@", error);
+        } else {
+            NSLog(@"Updated event");
+        }
+    }];
+}
+
+- (void)updateInfoOfEvent:(Event *)event {
+    [self assignImageToEvent:event];
+    event.name = _eventNameField.text;
+    event.date = _eventDatePicker.date;
+    event.eventDescription = _eventDescriptionField.text;
+    event.location_name = _eventLocationNameField.text;
+    event.location_address = _eventLocationField.text;
+    event.location_lat = _location_lat;
+    event.location_lng = _location_lng;
+    event.duration = _eventDurationField.text;
+}
+
+- (void)assignImageToEvent: (Event *)event {
+    NSData *imageData;
+    if(_eventPhoto.image != nil) {
+        imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
+    } else {
+        UIImage *pic = [UIImage imageNamed:@"profile"]; //!!
+        imageData = UIImageJPEGRepresentation(pic, 1.0);
+    }
+    PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
+    //probar asi y luego sin saveinbackground
+    event.eventPhoto = img;
+//    [img saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+//        if(succeeded) {
+//
+//        }
+//    }];
 }
 
 @end

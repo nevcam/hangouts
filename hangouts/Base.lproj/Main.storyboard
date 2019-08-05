@@ -383,12 +383,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="createButton" destination="srX-HI-3pQ" id="U9o-PN-4Yy"/>
                         <outlet property="eventDatePicker" destination="Qwb-xE-h7R" id="Rtx-gE-J9F"/>
                         <outlet property="eventDescriptionField" destination="Npr-W1-HOe" id="S8S-0v-Trt"/>
                         <outlet property="eventDurationField" destination="2oP-k5-Rvt" id="UVx-si-gho"/>
-                        <outlet property="eventImageView" destination="Fo6-i6-xtS" id="sIk-dM-6fL"/>
-                        <outlet property="eventLocatinNameField" destination="56B-Fq-gPA" id="wDu-px-XAK"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>
+                        <outlet property="eventLocationNameField" destination="56B-Fq-gPA" id="agp-bp-ACR"/>
                         <outlet property="eventNameField" destination="5ad-Yo-Z5F" id="L9S-2g-Kei"/>
                         <outlet property="eventPhoto" destination="Fo6-i6-xtS" id="iun-1H-Ihb"/>
                         <outlet property="friend1View" destination="u3d-tQ-af3" id="jS1-ny-yyY"/>
@@ -2187,7 +2187,7 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UU9-zt-eRZ"/>
+        <segue reference="bna-kp-jZo"/>
         <segue reference="MnL-qw-Gyu"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>

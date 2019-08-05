@@ -62,13 +62,10 @@
 }
 
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
-    
     if (!image) {
         return nil;
     }
-    
     NSData *imageData = UIImagePNGRepresentation(image);
-    // get image data and check if that is not nil
     if (!imageData) {
         return nil;
     }
