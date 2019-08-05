@@ -12,6 +12,8 @@
 #import "UserXEvent.h"
 #import "UserCell.h"
 #import <MapKit/MapKit.h>
+@import EventKit;
+@import EventKitUI;
 
 @interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -62,8 +64,8 @@
     _nameLabel.text = _event.name;
     _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@", _event.ownerUsername];
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
-    [manager.formatter setDateFormat:@"EEEE MMMM dd, Y"];
-    _dateLabel.text = [manager.formatter stringFromDate:_event.date];
+    [manager.formatter setDateFormat:@"EEE MMM dd, Y | HH:mm"];
+    _dateLabel.text = [[manager.formatter stringFromDate:_event.date] stringByAppendingString:@" hrs"];
     _locationNameLabel.text = _event.location_name;
     _locationAddressLabel.text = _event.location_address;
     _descriptionLabel.text = _event.eventDescription;
@@ -187,6 +189,79 @@
         return _invitedUserXEvents.count;
     }
     
+}
+
+#pragma mark - Sync Calendar methods
+
+- (IBAction)didTapAddToCalendar:(id)sender {
+    EKEventStore *store = [[EKEventStore alloc] init];
+    __weak typeof(self) weakSelf = self;
+    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError * _Nullable error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf) {
+            EKCalendar *calendar = [store calendarWithIdentifier:[strongSelf getCalendarID]];
+            if (!calendar) {
+                calendar = [strongSelf createiCloudCalendarInStore:store];
+            }
+            [strongSelf addEventToCalendar:calendar inStore:store];
+        }
+    }];
+}
+
+- (void)addEventToCalendar:(EKCalendar *)calendar inStore:(EKEventStore *)store {
+    EKEvent *ekEvent = [EKEvent eventWithEventStore:store];
+    ekEvent.calendar = calendar;
+    ekEvent.title = _event.name;
+    ekEvent.startDate = _event.date;
+    ekEvent.endDate = [ekEvent.startDate dateByAddingTimeInterval:(60*60)];;
+    
+    if(![store saveEvent:ekEvent span:EKSpanThisEvent commit:YES error:nil]) {
+        NSLog(@"Could not add event.");
+    }
+}
+
+- (EKCalendar *) createiCloudCalendarInStore:(EKEventStore *)store {
+    EKSource *icloudSource = nil;
+    for (EKSource *source in store.sources) {
+        if (source.sourceType == EKSourceTypeCalDAV) {
+            icloudSource = source;
+            break;
+        }
+    }
+    EKCalendar *calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:store];
+    calendar.title = @"Hangouts";
+    calendar.source = icloudSource;
+    [store saveCalendar:calendar commit:YES error:nil];
+    [self saveCalendarID:calendar.calendarIdentifier];
+    
+    return calendar;
+}
+
+- (void)saveCalendarID:(NSString *) calendarID {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"data.plist"];
+    
+    NSDictionary *plistDict = [[NSDictionary alloc] initWithObjects: [NSArray arrayWithObject: calendarID] forKeys:[NSArray arrayWithObject: @"Calendar ID"]];
+    NSError *error = nil;
+    NSData *plistData = [NSPropertyListSerialization dataWithPropertyList:plistDict format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
+    
+    if(plistData) {
+        [plistData writeToFile:plistPath atomically:YES];
+    }
+}
+
+- (NSString *)getCalendarID {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *path = [documentsPath stringByAppendingPathComponent:@"data.plist"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"];
+    }
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:path];
+    return [dict objectForKey:@"Calendar ID"];
 }
 
 #pragma mark - Navigation

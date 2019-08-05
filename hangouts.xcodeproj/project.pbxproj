@@ -13,6 +13,7 @@
 		3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3D22EF67DF002732DB /* PhotoCell.m */; };
 		3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */; };
 		3C313D4722EFC324002732DB /* PersonProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4622EFC324002732DB /* PersonProfileViewController.m */; };
+		3C43385522F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */; };
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
@@ -87,6 +88,8 @@
 		3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailsViewController.m; sourceTree = "<group>"; };
 		3C313D4522EFC324002732DB /* PersonProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonProfileViewController.h; sourceTree = "<group>"; };
 		3C313D4622EFC324002732DB /* PersonProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonProfileViewController.m; sourceTree = "<group>"; };
+		3C43385322F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFriendsCollectionViewCell.h; sourceTree = "<group>"; };
+		3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFriendsCollectionViewCell.m; sourceTree = "<group>"; };
 		3CE7D01122DF9681005E5C29 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3CE7D01222DF9681005E5C29 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddEventViewController.h; sourceTree = "<group>"; };
@@ -325,6 +328,8 @@
 				3C313D3D22EF67DF002732DB /* PhotoCell.m */,
 				7BCCFB3E22F390CB00DB0D8D /* UserCell.h */,
 				7BCCFB3F22F390CB00DB0D8D /* UserCell.m */,
+				3C43385322F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.h */,
+				3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -676,6 +681,7 @@
 				D9DF803E22E0E12E003D240F /* FriendRequestCell.m in Sources */,
 				3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */,
 				D9DF803B22DFF116003D240F /* FriendRequestsViewController.m in Sources */,
+				3C43385522F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m in Sources */,
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
@@ -875,13 +881,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -893,13 +899,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 24T36Y5XMD;
+				DEVELOPMENT_TEAM = 6DS64ZKFJ4;
 				INFOPLIST_FILE = hangouts/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nev.hangouts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sroman98.hangouts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
