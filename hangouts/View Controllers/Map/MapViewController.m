@@ -18,6 +18,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "PersonDetailMapView.h"
 #import "AddEventViewController.h"
+#import "DateFormatterManager.h"
+#import "CustomAnnotationButton.h"
 
 @interface MapViewController () <MKMapViewDelegate>
 
@@ -30,6 +32,7 @@
     NSMutableArray *_friendUsers;
     NSMutableArray *_friendships;
     NSMutableArray *_events;
+    NSMutableArray *_selectedFriends;
     
 //    UIView *_customCalloutView;
 }
@@ -37,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.mapView.delegate = self;
-    
+    _selectedFriends = [NSMutableArray new];
     self->locationManager = [[CLLocationManager alloc] init];
     self->locationManager.delegate = self;
     self->locationManager.distanceFilter = kCLDistanceFilterNone;
@@ -54,7 +57,6 @@
     }
     [self fetchEventPointers];
     [self fetchFriendsLocations];
-
 }
 
 #pragma mark - Updating current user location
@@ -186,6 +188,7 @@
         myAnnotation.title = friend[@"fullname"];
         myAnnotation.subtitle = friend[@"username"];
         myAnnotation.friend = friend;
+        [myAnnotation setCheckBoxSelected:NO];
         [self.mapView addAnnotation:myAnnotation];
     }
     [self.mapView showAnnotations:self.mapView.annotations animated:YES];
@@ -209,11 +212,12 @@
 
 #pragma mark - Annotation customization
 
-- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id <MKAnnotation>)annotation {
+- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id<MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
     
+    // friend annotations
     if ([annotation isKindOfClass:[CustomPointAnnotation class]]) {
         CustomPointAnnotation *customAnnotation = (CustomPointAnnotation *)annotation;
         static NSString *AnnotationViewID = @"annotationView";
@@ -224,18 +228,24 @@
         } else {
             annotationView.annotation = annotation;
         }
+        
+        
+        // add profile photo to annotation
         PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
         NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
         UIImage *imageForAnnotation = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
-        annotationView.image = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
+        UIImage *circleImage = [self circularScaleAndCropImage:imageForAnnotation frame:CGRectMake(0, 0, 40, 40)];
+        UIImageView *photoView = [[UIImageView alloc] initWithImage:circleImage];
+        [annotationView addSubview:photoView];
+        annotationView.frame = photoView.frame;
         UIImageView *leftIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
         leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
         annotationView.leftCalloutAccessoryView = leftIconView;
-
+        
+        // add custom view to callout
         UIView *myView = [UIView new];
         [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
         [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
-
         CLLocation *startLocation = self->currentLocation;
         NSNumber *lat = customAnnotation.friend[@"latitude"];
         NSNumber *lon = customAnnotation.friend[@"longitude"];
@@ -248,6 +258,26 @@
         [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
         [myView addSubview:distLabel];
         annotationView.detailCalloutAccessoryView = myView;
+
+        // right button to add friend
+        CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeContactAdd];
+        if (customAnnotation.checkBoxSelected) {
+            rightButton.tag = 1;
+        } else {
+            rightButton.tag = 0;
+        }
+        rightButton.friendUser = customAnnotation.friend;
+        [rightButton addTarget:self action:@selector(didClickDetailDisclosure:) forControlEvents:UIControlEventTouchUpInside];
+        if ([rightButton isSelected]) {
+            [customAnnotation setCheckBoxSelected:YES];
+        } else {
+            [customAnnotation setCheckBoxSelected:NO];
+        }
+        annotationView.rightCalloutAccessoryView = rightButton;
+        
+        // go to user profile
+        
+        
         return annotationView;
     } else {
         EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
@@ -260,7 +290,42 @@
         } else {
             eventAnnotationView.annotation = annotation;
         }
+        
+        UIView *myView = [UIView new];
+        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+        
+        UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
+        DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+        [manager.formatter setDateFormat:@"EEE MMM dd"];
+        dateLabel.text = [manager.formatter stringFromDate:eventAnnotation.event.date];
+        [dateLabel setTextColor:[UIColor blackColor]];
+        [dateLabel setBackgroundColor:[UIColor clearColor]];
+        [dateLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
+        [myView addSubview:dateLabel];
+        eventAnnotationView.detailCalloutAccessoryView = myView;
+        
+        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [rightButton addTarget:self action:@selector(didClickEventDetail:) forControlEvents:UIControlEventTouchUpInside];
+        
         return eventAnnotationView;
+    }
+}
+
+- (void)didClickDetailDisclosure: (id) sender {
+    CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
+    if ([button isSelected]) {
+        [button setSelected:NO];
+        button.tag = 0;
+        if ([_selectedFriends containsObject:button.friendUser]) {
+            [_selectedFriends removeObject:button.friendUser];
+        }
+    } else {
+        [button setSelected:YES];
+        button.tag = 1;
+        if (![_selectedFriends containsObject:button.friendUser]) {
+            [_selectedFriends addObject:button.friendUser];
+        }
     }
 }
 
@@ -307,7 +372,7 @@
     NSString *latLong = [NSString stringWithFormat:@"%@,%@", lat, lon];
     
     addEventViewController.userLocation = latLong;
-    
+    addEventViewController.friendsToInvite = _selectedFriends;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
