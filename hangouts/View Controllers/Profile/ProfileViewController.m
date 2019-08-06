@@ -162,7 +162,7 @@
         PersonProfileViewController *friendProfileController = segue.destinationViewController;
         friendProfileController.user = sender;
     }
-    else if ([segue.identifier isEqualToString:@"eventFromProfileSegue"]) {
+    else if ([segue.identifier isEqualToString:@"profileToEventSegue"]) {
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [_tableView indexPathForCell:tappedCell];
         Event *event = _todayEvents[indexPath.row];

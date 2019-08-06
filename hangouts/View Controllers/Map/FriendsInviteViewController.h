@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SaveFriendsListDelegate <NSObject>
 - (void)saveFriendsList:(NSMutableArray *)friendsList;
-- (void)getFriendPhotos;
 @end
 
 @interface FriendsInviteViewController : UIViewController
