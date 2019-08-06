@@ -472,7 +472,7 @@
     if(_eventPhoto.image != nil) {
         imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
     } else {
-        UIImage *pic = [UIImage imageNamed:@"dog"];
+        UIImage *pic = [UIImage imageNamed:@"party"];
         imageData = UIImageJPEGRepresentation(pic, 1.0);
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
