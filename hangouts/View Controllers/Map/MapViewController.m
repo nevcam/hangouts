@@ -20,6 +20,8 @@
 #import "AddEventViewController.h"
 #import "DateFormatterManager.h"
 #import "CustomAnnotationButton.h"
+#import "EventTabBarController.h"
+#import "EventDetailsViewController.h"
 
 @interface MapViewController () <MKMapViewDelegate>
 
@@ -305,9 +307,10 @@
         [myView addSubview:dateLabel];
         eventAnnotationView.detailCalloutAccessoryView = myView;
         
-        UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeDetailDisclosure];
+        rightButton.event = eventAnnotation.event;
         [rightButton addTarget:self action:@selector(didClickEventDetail:) forControlEvents:UIControlEventTouchUpInside];
-        
+        eventAnnotationView.rightCalloutAccessoryView = rightButton;
         return eventAnnotationView;
     }
 }
@@ -329,6 +332,17 @@
     }
 }
 
+- (void)didClickEventDetail: (id) sender {
+    CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
+//    Event *event = button.event;
+//    EventTabBarController *tabBarViewController = [[EventTabBarController alloc] init];
+//    UIStoryboardSegue *segue = [[UIStoryboardSegue alloc] initWithIdentifier:@"maptoEventSegue" source:self destination:tabBarViewController];
+//    tabBarViewController = [segue destinationViewController];
+//    UINavigationController *navController = tabBarViewController.viewControllers[0];
+//    EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+//    destinationViewController.event = event;
+//    [self performSegueWithIdentifier:@"mapToEventSegue" sender:self];
+}
 
 - (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0);

@@ -15,9 +15,12 @@
 #import "FriendViewCell.h"
 #import "PersonProfileViewController.h"
 #import "ProfileFriendsCollectionViewCell.h"
+#import "DateFormatterManager.h"
+#import "UserXEvent.h"
+#import "myDayTableViewCell.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -36,6 +39,8 @@
 @implementation ProfileViewController {
     NSMutableArray *_friendUsers;
     NSMutableArray *_friendships;
+    NSMutableArray *_userXEventOrderedArray;
+    NSMutableArray *_todayEvents;
 }
 
 #pragma mark - Load View Controller
@@ -46,18 +51,23 @@
     
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 60.0;
     
     [self setUserInfo];
     [self setRefreshControl];
     
     [self fetchFriends];
     [self setCollectionLayout];
+    
+    [self eventsUserInfo];
 }
 
 - (void)setUserInfo
 {
     _user = [PFUser currentUser];
-    _usernameLabel.text = _user[@"username"];
+    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     
@@ -248,6 +258,103 @@
 }
 
 
+# pragma mark - My Events Section
 
+- (void)eventsUserInfo
+{
+    PFQuery *userXEventQuery = [UserXEvent query];
+    [userXEventQuery whereKey:@"user" equalTo:[PFUser currentUser]];
+    [userXEventQuery whereKey:@"type" containedIn:[NSArray arrayWithObjects: @"accepted", @"owned", nil]];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event",@"type",nil]];
+
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
+        if (userXEvents) {
+            [self getEventStats:userXEvents];
+        } else {
+            NSLog(@"Error getting events: %@", error.localizedDescription);
+        }
+    }];
+}
+
+// Method populates events statistics on user profile page
+-(void)getEventStats:(NSArray *)myEvents
+{
+    int pastEvents = 0;
+    int nextEvents = 0;
+    int ownedEvents = 0;
+    NSDate *today = [NSDate date];
+    
+    for (UserXEvent *myEvent in myEvents) {
+        if ([myEvent.type isEqualToString:@"owned"]) {
+            ownedEvents++;
+        }
+        Event *event = myEvent.event;
+        NSDate *date = event.date;
+        
+        NSComparisonResult result = [date compare:today];
+        if(result == NSOrderedDescending) {
+            pastEvents++;
+        } else {
+            nextEvents++;
+        }
+        
+        // Get today's events for My Day
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateWithoutTime = [formatter stringFromDate:date];
+        NSString *todayWithoutTime = [formatter stringFromDate:today];
+        if ([dateWithoutTime isEqualToString:todayWithoutTime]) {
+            if (!_todayEvents) {
+                _todayEvents = [NSMutableArray array];
+            }
+            [_todayEvents addObject:event];
+        }
+    }
+    
+    _pastEventsCount.text = [NSString stringWithFormat:@"%d",pastEvents];
+    _nextEventsCount.text = [NSString stringWithFormat:@"%d",nextEvents];
+    _ownedEventsCount.text = [NSString stringWithFormat:@"%d",ownedEvents];
+    
+    [self getTodayEvents];
+}
+
+-(void)getTodayEvents
+{
+    if (_todayEvents) {
+        [_tableView reloadData];
+    } else {
+        NSLog(@"No events today!");
+    }
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    myDayTableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"myDayTableViewCell"];
+    Event *event = _todayEvents[indexPath.row];
+    cell.eventNameLabel.text = event.name;
+    cell.eventTImeLabel.text = [self getEventTime:event.date];
+    cell.eventLocationLabel.text = event.location_name;
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _todayEvents.count;
+}
+
+// Helper function that gets time for an event
+-(NSString *)getEventTime:(NSDate *)date
+{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    
+    NSString *hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
+    NSString *minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
+    NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
+    return eventTime;
+    
+}
+- (IBAction)clickedCalendar:(id)sender {
+    [self performSegueWithIdentifier:@"calendarSegue" sender:nil];
+}
 
 @end
