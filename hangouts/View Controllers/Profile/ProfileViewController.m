@@ -328,7 +328,6 @@
     }
 }
 
-
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     myDayTableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"myDayTableViewCell"];
@@ -353,6 +352,9 @@
     NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
     return eventTime;
     
+}
+- (IBAction)clickedCalendar:(id)sender {
+    [self performSegueWithIdentifier:@"calendarSegue" sender:nil];
 }
 
 @end

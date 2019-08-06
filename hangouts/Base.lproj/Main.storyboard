@@ -1864,6 +1864,9 @@
                                 <rect key="frame" x="16" y="482" width="76" height="79"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="calendarProfile"/>
+                                <connections>
+                                    <action selector="clickedCalendar:" destination="cSb-Hr-SRc" eventType="touchUpInside" id="Bdr-YN-CO4"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m14-yN-GlN">
                                 <rect key="frame" x="272" y="138" width="7" height="15"/>
@@ -1882,11 +1885,6 @@
                                 <action selector="didTapLogout:" destination="cSb-Hr-SRc" id="cXL-qr-R4B"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="calendar" id="YfM-JW-BLW">
-                            <connections>
-                                <segue destination="Sc0-LB-le4" kind="show" id="KCE-gp-lHC"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
@@ -1903,6 +1901,7 @@
                         <outlet property="usernameLabel" destination="Osy-u2-Jph" id="oMm-AI-uih"/>
                         <segue destination="H2P-Jw-7wO" kind="presentation" identifier="profileEditSegue" id="1eD-ks-kDn"/>
                         <segue destination="4ta-Ah-gRE" kind="show" identifier="myProfileToFriendProfileSegue" id="5ke-0h-Tl9"/>
+                        <segue destination="Sc0-LB-le4" kind="show" identifier="calendarSegue" id="Fgy-xL-rgr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oif-gq-9zy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2304,7 +2303,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="calendar" width="33.333332061767578" height="33.666667938232422"/>
         <image name="calendarProfile" width="256" height="256"/>
         <image name="chat-icon" width="33.333332061767578" height="30.666666030883789"/>
         <image name="close-icon" width="26" height="24"/>
@@ -2321,9 +2319,6 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bna-kp-jZo"/>
-        <segue reference="MnL-qw-Gyu"/>
-        <segue reference="ofK-qi-QIO"/>
         <segue reference="UU9-zt-eRZ"/>
         <segue reference="5ke-0h-Tl9"/>
         <segue reference="M1v-7o-WK4"/>
