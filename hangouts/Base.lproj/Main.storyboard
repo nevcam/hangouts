@@ -246,6 +246,7 @@
                         <outlet property="mapView" destination="xtg-vI-YWu" id="jnE-tl-2UF"/>
                         <segue destination="gbc-Dl-cRW" kind="presentation" identifier="addEventSegue" id="bna-kp-jZo"/>
                         <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="mapToEventSegue" id="ofK-qi-QIO"/>
+                        <segue destination="4ta-Ah-gRE" kind="show" identifier="mapToUserProfileSegue" id="ajq-DT-aFk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywC-YQ-0Q4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2351,8 +2352,8 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UU9-zt-eRZ"/>
-        <segue reference="5ke-0h-Tl9"/>
-        <segue reference="M1v-7o-WK4"/>
+        <segue reference="bna-kp-jZo"/>
+        <segue reference="ajq-DT-aFk"/>
+        <segue reference="ofK-qi-QIO"/>
     </inferredMetricsTieBreakers>
 </document>

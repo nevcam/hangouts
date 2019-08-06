@@ -22,6 +22,8 @@
 #import "CustomAnnotationButton.h"
 #import "EventTabBarController.h"
 #import "EventDetailsViewController.h"
+#import "CustomTapGestureRecognizer.h"
+#import "PersonProfileViewController.h"
 
 @interface MapViewController () <MKMapViewDelegate>
 
@@ -96,7 +98,6 @@
          }
      }];
 }
-
 
 #pragma mark - Location authorization
 
@@ -243,6 +244,12 @@
         leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
         annotationView.leftCalloutAccessoryView = leftIconView;
         
+        CustomTapGestureRecognizer *singleTap = [[CustomTapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUserProfilePhoto:)];
+        singleTap.friendUser = customAnnotation.friend;
+        singleTap.numberOfTapsRequired = 1;
+        [annotationView.leftCalloutAccessoryView setUserInteractionEnabled:YES];
+        [annotationView.leftCalloutAccessoryView addGestureRecognizer:singleTap];
+        
         // add custom view to callout
         UIView *myView = [UIView new];
         [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
@@ -332,6 +339,10 @@
     [self performSegueWithIdentifier:@"mapToEventSegue" sender:sender];
 }
 
+-(void)tapUserProfilePhoto: (id) sender{
+    [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:sender];
+}
+
 - (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -376,6 +387,11 @@
         UINavigationController *navController = tabBarViewControllers.viewControllers[0];
         EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
         destinationViewController.event = event;
+    } else if ([segue.identifier isEqualToString:@"mapToUserProfileSegue"]) {
+        CustomTapGestureRecognizer *tapGesture = (CustomTapGestureRecognizer *)sender;
+        PFUser *user = tapGesture.friendUser;
+        PersonProfileViewController *userViewController = [segue destinationViewController];
+        userViewController.user = user;
     } else {
         AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
 
@@ -397,8 +413,8 @@
 //    }
 //}
 //
-//- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-//
-//}
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:self];
+}
 
 @end
