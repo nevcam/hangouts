@@ -296,6 +296,7 @@
     int ownedEvents = 0;
     NSDate *today = [NSDate date];
     
+    NSMutableArray *userTodayEventsArray;
     for (UserXEvent *myEvent in myEvents) {
         if ([myEvent.type isEqualToString:@"owned"]) {
             ownedEvents++;
@@ -316,18 +317,26 @@
         NSString *dateWithoutTime = [formatter stringFromDate:date];
         NSString *todayWithoutTime = [formatter stringFromDate:today];
         if ([dateWithoutTime isEqualToString:todayWithoutTime]) {
-            if (!_todayEvents) {
-                _todayEvents = [NSMutableArray array];
+            if (!userTodayEventsArray) {
+                userTodayEventsArray = [NSMutableArray array];
             }
-            [_todayEvents addObject:event];
+            [userTodayEventsArray addObject:event];
         }
+        
     }
     
     _pastEventsCount.text = [NSString stringWithFormat:@"%d",pastEvents];
     _nextEventsCount.text = [NSString stringWithFormat:@"%d",nextEvents];
     _ownedEventsCount.text = [NSString stringWithFormat:@"%d",ownedEvents];
     
-    [self getTodayEvents];
+    // Sort array by dates and show them
+    if (userTodayEventsArray){
+        NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]];
+        NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
+        _todayEvents = [[NSMutableArray alloc] initWithArray:sortedArray];
+        
+        [self getTodayEvents];
+    }
 }
 
 -(void)getTodayEvents
