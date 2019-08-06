@@ -142,19 +142,11 @@
     if (!remove) {
         [_invitedFriends addObject:friend];
     } else {
-        // [_invitedFriends removeObject:friend];
-        int count = 0;
-        int indexToRemove = -1;
-        
         for (PFUser *invitedFriend in _invitedFriends) {
             if ([friend.objectId isEqualToString:invitedFriend.objectId]) {
-                count = indexToRemove;
+                [_invitedFriends removeObject:invitedFriend];
+                break;
             }
-            count++;
-        }
-        
-        if (indexToRemove > 0) {
-            [_invitedFriends removeObjectAtIndex:indexToRemove];
         }
     }
 }
@@ -162,7 +154,6 @@
 // Sends list of invtied friends to AddEvent view controller
 - (IBAction)saveList:(id)sender {
     [_delegate saveFriendsList:_invitedFriends];
-    [_delegate getFriendPhotos];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

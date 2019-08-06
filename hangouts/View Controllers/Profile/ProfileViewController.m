@@ -18,6 +18,8 @@
 #import "DateFormatterManager.h"
 #import "UserXEvent.h"
 #import "myDayTableViewCell.h"
+#import "EventDetailsViewController.h"
+#import "EventTabBarController.h"
 @import Parse;
 
 @interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -35,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *ownedEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *noEventsLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -58,12 +61,20 @@
     _tableView.estimatedRowHeight = 60.0;
     
     [self setUserInfo];
-    [self setRefreshControl];
     
     [self fetchFriends];
     [self setCollectionLayout];
     
     [self eventsUserInfo];
+    
+    [self addRefreshCntrl];
+}
+
+- (void)addRefreshCntrl
+{
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(eventsUserInfo) forControlEvents: UIControlEventValueChanged];
+    [_tableView insertSubview:_refreshControl atIndex:0];
 }
 
 - (void)setUserInfo
@@ -80,18 +91,6 @@
     _profilePhotoView.layer.cornerRadius = _profilePhotoView.frame.size.height /2;
     _profilePhotoView.layer.masksToBounds = YES;
     _profilePhotoView.layer.borderWidth = 0;
-}
-
-- (void)setRefreshControl
-{
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(beginRefresh:) forControlEvents:UIControlEventValueChanged];
-    [_collectionView insertSubview:refreshControl atIndex:0];
-}
-
-- (void)beginRefresh:(UIRefreshControl *)refreshControl {
-    [self fetchFriends];
-    [refreshControl endRefreshing];
 }
 
 - (void)fetchFriends {
@@ -160,8 +159,18 @@
         profileEditViewController.delegate = self;
     }
     else if ([segue.identifier isEqual:@"myProfileToFriendProfileSegue"]) {
-            PersonProfileViewController *friendProfileController = segue.destinationViewController;
-            friendProfileController.user = sender;
+        PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.user = sender;
+    }
+    else if ([segue.identifier isEqualToString:@"eventFromProfileSegue"]) {
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [_tableView indexPathForCell:tappedCell];
+        Event *event = _todayEvents[indexPath.row];
+        
+        EventTabBarController *tabBarViewControllers = [segue destinationViewController];
+        UINavigationController *navController = tabBarViewControllers.viewControllers[0];
+        EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+        destinationViewController.event = event;
     }
 }
 
@@ -325,6 +334,7 @@
 {
     if (_todayEvents) {
         [_tableView reloadData];
+        [_refreshControl endRefreshing];
         _noEventsLabel.hidden = YES;
         _noDataImage.hidden = YES;
     } else {
@@ -349,7 +359,7 @@
 // Helper function that gets time for an event
 -(NSString *)getEventTime:(NSDate *)date
 {
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
     
     NSString *hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
     NSString *minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
