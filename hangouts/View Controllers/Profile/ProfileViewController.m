@@ -337,8 +337,11 @@
         [_refreshControl endRefreshing];
         _noEventsLabel.hidden = YES;
         _noDataImage.hidden = YES;
+        _tableView.hidden = NO;
     } else {
         _tableView.hidden = YES;
+        _noEventsLabel.hidden = NO;
+        _noDataImage.hidden = NO;
     }
 }
 
@@ -361,14 +364,31 @@
 {
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
     
-    NSString *hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
-    NSString *minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
+    NSString *hour = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.hour]];
+    NSString *minute = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.minute]];
     NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
     return eventTime;
     
 }
+
+-(NSString *)addZeroToTime:(NSString *)time
+{
+    if (time.length == 1) {
+        return [NSString stringWithFormat:@"0%@", time];
+    }
+    return time;
+}
+
+#pragma mark - Calendar
+
 - (IBAction)clickedCalendar:(id)sender {
     [self performSegueWithIdentifier:@"calendarSegue" sender:nil];
+}
+
+#pragma mark - Refresh Page
+
+- (IBAction)refreshView:(id)sender {
+    [self viewDidLoad];
 }
 
 @end
