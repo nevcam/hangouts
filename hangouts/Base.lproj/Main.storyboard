@@ -1118,11 +1118,11 @@
                                                         <constraint firstAttribute="width" constant="17" id="PRs-3c-Ju7"/>
                                                     </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssl-cl-mir">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssl-cl-mir">
                                                     <rect key="frame" x="78" y="83" width="60" height="30"/>
                                                     <color key="backgroundColor" red="0.63788631799999995" green="1" blue="0.61044928990000002" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="yq9-nX-iwP"/>
+                                                        <constraint firstAttribute="width" constant="60" id="yq9-nX-iwP"/>
                                                     </constraints>
                                                     <state key="normal" title="Accept">
                                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1164,6 +1164,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="NTB-Lt-94b" secondAttribute="trailing" constant="10" id="5pX-RR-ogD"/>
                                                 <constraint firstItem="NqK-La-hjY" firstAttribute="leading" secondItem="W2f-2h-ejQ" secondAttribute="leading" constant="10" id="Dv4-Su-0xc"/>
+                                                <constraint firstItem="OOA-8v-fTN" firstAttribute="top" secondItem="NqK-La-hjY" secondAttribute="bottom" constant="4.5" id="EOz-Iz-36Y"/>
                                                 <constraint firstAttribute="trailing" secondItem="unQ-mr-VgI" secondAttribute="trailing" constant="10" id="F12-6i-ZQn"/>
                                                 <constraint firstItem="unQ-mr-VgI" firstAttribute="leading" secondItem="W2f-2h-ejQ" secondAttribute="leading" constant="10" id="FwM-Qb-bYw"/>
                                                 <constraint firstItem="unQ-mr-VgI" firstAttribute="top" secondItem="UE0-T3-gDZ" secondAttribute="bottom" constant="3" id="PAq-qs-6C4"/>
@@ -1171,6 +1172,7 @@
                                                 <constraint firstItem="UE0-T3-gDZ" firstAttribute="top" secondItem="W2f-2h-ejQ" secondAttribute="top" constant="10" id="V9r-5H-Cw7"/>
                                                 <constraint firstItem="NTB-Lt-94b" firstAttribute="top" secondItem="W2f-2h-ejQ" secondAttribute="top" constant="10" id="Wm9-zz-4Iy"/>
                                                 <constraint firstItem="NqK-La-hjY" firstAttribute="top" secondItem="unQ-mr-VgI" secondAttribute="bottom" constant="5" id="blJ-AI-bMf"/>
+                                                <constraint firstItem="ssl-cl-mir" firstAttribute="centerY" secondItem="OOA-8v-fTN" secondAttribute="centerY" id="fC3-wL-MsS"/>
                                                 <constraint firstAttribute="bottom" secondItem="OOA-8v-fTN" secondAttribute="bottom" constant="7.5" id="jU5-dX-4rx"/>
                                                 <constraint firstItem="OOA-8v-fTN" firstAttribute="leading" secondItem="W2f-2h-ejQ" secondAttribute="leading" constant="10" id="ktZ-as-QuG"/>
                                                 <constraint firstAttribute="trailing" secondItem="UE0-T3-gDZ" secondAttribute="trailing" constant="10" id="neR-kZ-1dB"/>
