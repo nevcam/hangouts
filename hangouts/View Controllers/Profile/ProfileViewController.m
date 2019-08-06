@@ -352,6 +352,8 @@
     cell.eventNameLabel.text = event.name;
     cell.eventTImeLabel.text = [self getEventTime:event.date];
     cell.eventLocationLabel.text = event.location_name;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
