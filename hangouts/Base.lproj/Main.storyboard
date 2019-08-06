@@ -1915,6 +1915,7 @@
                         <segue destination="H2P-Jw-7wO" kind="presentation" identifier="profileEditSegue" id="1eD-ks-kDn"/>
                         <segue destination="4ta-Ah-gRE" kind="show" identifier="myProfileToFriendProfileSegue" id="5ke-0h-Tl9"/>
                         <segue destination="Sc0-LB-le4" kind="show" identifier="calendarSegue" id="Fgy-xL-rgr"/>
+                        <segue destination="sQ8-MJ-lQ4" kind="show" identifier="eventFromProfileSegue" id="s8m-5u-rXe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oif-gq-9zy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2335,6 +2336,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="UU9-zt-eRZ"/>
         <segue reference="5ke-0h-Tl9"/>
-        <segue reference="M1v-7o-WK4"/>
+        <segue reference="s8m-5u-rXe"/>
     </inferredMetricsTieBreakers>
 </document>
