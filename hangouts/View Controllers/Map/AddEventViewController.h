@@ -11,7 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol EditEventControllerDelegate
+
+- (void)editUserWithStatus:(BOOL)successful;
+
+@end
+
 @interface AddEventViewController : UIViewController
+
+@property (nonatomic, weak) id<EditEventControllerDelegate> delegate;
 
 @property (strong, nonatomic) NSString *const userLocation;
 @property (strong, nonatomic) Event *event;
