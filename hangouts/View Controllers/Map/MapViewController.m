@@ -244,11 +244,11 @@
         leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
         annotationView.leftCalloutAccessoryView = leftIconView;
         
-        CustomTapGestureRecognizer *singleTap = [[CustomTapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUserProfilePhoto:)];
-        singleTap.friendUser = customAnnotation.friend;
-        singleTap.numberOfTapsRequired = 1;
+        CustomTapGestureRecognizer *doubleTap = [[CustomTapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUserProfilePhoto:)];
+        doubleTap.friendUser = customAnnotation.friend;
+        doubleTap.numberOfTapsRequired = 2;
         [annotationView.leftCalloutAccessoryView setUserInteractionEnabled:YES];
-        [annotationView.leftCalloutAccessoryView addGestureRecognizer:singleTap];
+        [annotationView.leftCalloutAccessoryView addGestureRecognizer:doubleTap];
         
         // add custom view to callout
         UIView *myView = [UIView new];
@@ -387,12 +387,14 @@
         UINavigationController *navController = tabBarViewControllers.viewControllers[0];
         EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
         destinationViewController.event = event;
-    } else if ([segue.identifier isEqualToString:@"mapToUserProfileSegue"]) {
+    }
+    else if ([segue.identifier isEqualToString:@"mapToUserProfileSegue"]) {
         CustomTapGestureRecognizer *tapGesture = (CustomTapGestureRecognizer *)sender;
         PFUser *user = tapGesture.friendUser;
         PersonProfileViewController *userViewController = [segue destinationViewController];
         userViewController.user = user;
-    } else {
+    }
+    else {
         AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
 
         NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
@@ -413,8 +415,8 @@
 //    }
 //}
 //
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-    [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:self];
-}
+//- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+//    [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:self];
+//}
 
 @end
