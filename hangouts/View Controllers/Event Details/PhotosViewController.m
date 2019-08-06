@@ -190,4 +190,8 @@
     layout.itemSize = CGSizeMake (itemWidth, itemHeight);
 }
 
+- (IBAction)didTapClose:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
 @end

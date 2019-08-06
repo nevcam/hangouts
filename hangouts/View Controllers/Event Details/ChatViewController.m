@@ -192,4 +192,8 @@
     [self.chatMessageField resignFirstResponder];
 }
 
+- (IBAction)didTapClose:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
 @end
