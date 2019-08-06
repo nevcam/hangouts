@@ -13,10 +13,10 @@
 #import "FriendsInviteViewController.h"
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
+#import "UserCell.h"
 
-@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 
-// Features displayed/edited in the view controller
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationNameField;
 
@@ -25,9 +25,6 @@
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 
-@property (weak, nonatomic) IBOutlet UIImageView *friend1View;
-@property (weak, nonatomic) IBOutlet UIImageView *friend2View;
-@property (weak, nonatomic) IBOutlet UIImageView *friend3View;
 @property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
@@ -36,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
 
 @end
 
@@ -53,11 +52,13 @@
 {
     [super viewDidLoad];
     
+    _invitedCollectionView.delegate = self;
+    _invitedCollectionView.dataSource = self;
+    
     if (!_event) {
         _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
         [_eventDatePicker setMinimumDate: [NSDate date]];
         [self setInitialPlaceholder];
-        [self getFriendPhotos];
     } else {
         [self setEventPhoto];
         [self setEventMap];
@@ -196,7 +197,7 @@
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList
 {
     _invitedFriends = friendsList;
-    [self getFriendPhotos];
+    [_invitedCollectionView reloadData];
     if(_invitedFriends && _invitedFriends.count > 0) {
         [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
     }
@@ -293,55 +294,6 @@
     return YES;
 }
 
-#pragma mark - Show Friend Profile Pictures
-
-- (void) getFriendPhotos {
-    if (_invitedFriends) {
-        if (_invitedFriends.count > 2)
-        {
-            PFFileObject *const imageFile = _invitedFriends[2][@"profilePhoto"];
-            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
-            _friend3View.image = nil;
-            [_friend3View setImageWithURL:profilePhotoURL];
-            _friend3View.layer.cornerRadius = _friend3View.frame.size.height /2;
-            _friend3View.layer.masksToBounds = YES;
-            _friend3View.layer.borderWidth = 0;
-        }
-        else
-        {
-            _friend3View.image = [UIImage imageNamed:@"profile"];
-        }
-        if (_invitedFriends.count > 1)
-        {
-            PFFileObject *const imageFile = _invitedFriends[1][@"profilePhoto"];
-            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
-            _friend2View.image = nil;
-            [_friend2View setImageWithURL:profilePhotoURL];
-            _friend2View.layer.cornerRadius = _friend2View.frame.size.height /2;
-            _friend2View.layer.masksToBounds = YES;
-            _friend2View.layer.borderWidth = 0;
-        }
-        else
-        {
-            _friend2View.image = [UIImage imageNamed:@"profile"];
-        }
-        if (_invitedFriends.count > 0)
-        {
-            PFFileObject *const imageFile = _invitedFriends[0][@"profilePhoto"];
-            NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
-            _friend1View.image = nil;
-            [_friend1View setImageWithURL:profilePhotoURL];
-            _friend1View.layer.cornerRadius = _friend1View.frame.size.height /2;
-            _friend1View.layer.masksToBounds = YES;
-            _friend1View.layer.borderWidth = 0;
-        }
-        else
-        {
-            _friend1View.image = [UIImage imageNamed:@"profile"];
-        }
-    }
-}
-
 #pragma mark - Map
 
 - (void)getLocationPoint:(NSNumber *)latitude longitude:(NSNumber *)longitude {
@@ -403,7 +355,7 @@
     NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
     _eventPhoto.image = nil;
     [_eventPhoto setImageWithURL:profilePhotoURL];
-    _eventDurationField.text = _event.duration;
+    
 }
 
 - (void)setEventLabels {
@@ -411,6 +363,7 @@
     _eventLocationNameField.text = _event.location_name;
     _eventNameField.text = _event.name;
     _eventDescriptionField.text = _event.eventDescription;
+    _eventDurationField.text = _event.duration;
     [_locationButton setTitle:@"Change" forState:UIControlStateNormal];
     [_createButton setTitle:@"Save"];
 }
@@ -422,6 +375,8 @@
     _location_address = _event.location_address;
     // _invitedFriends (??)
 }
+
+#pragma mark - Update methods
 
 - (void)updateEvent {
     PFQuery *eventQuery = [Event query];
@@ -478,6 +433,19 @@
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
     event.eventPhoto = img;
+}
+
+#pragma mark - Collection View Protocol Methods
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"InvitedUserCell" forIndexPath:indexPath];
+    PFUser *user = _invitedFriends[indexPath.item];
+    [cell configureCell:user];
+    return cell;
+}
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _invitedFriends.count;
 }
 
 @end
