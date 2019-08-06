@@ -15,6 +15,7 @@
 @import EventKit;
 @import EventKitUI;
 
+
 @interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource, EditEventControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
@@ -33,6 +34,7 @@
 @implementation EventDetailsViewController {
     NSArray *_goingUserXEvents;
     NSArray *_invitedUserXEvents;
+    BOOL _updated;
 }
 
 - (void)viewDidLoad {
@@ -44,6 +46,8 @@
     _invitedCollectionView.delegate = self;
     _invitedCollectionView.dataSource = self;
     
+    _updated = NO;
+    
     [self setLabels];
     [self setMap];
     [self fetchGoingUsers];
@@ -52,6 +56,9 @@
 }
 
 - (IBAction)didTapClose:(id)sender {
+    if (_updated) {
+        [_delegate didEditEvent:_event];
+    }
     [self dismissViewControllerAnimated:true completion:nil];
 }
 
@@ -277,6 +284,7 @@
         [self setMap];
         [self fetchGoingUsers];
         [self fetchInvitedUsers];
+        _updated = YES;
     }
 }
 

@@ -13,7 +13,7 @@
 #import "EventTabBarController.h"
 @import Parse;
 
-@interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate>
+@interface MyEventsViewController () <UITableViewDataSource, UITableViewDelegate, EventCellDelegate, EditEventControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
@@ -166,6 +166,12 @@
     return numOfSections;
 }
 
+#pragma mark - Edit Event Controller Delegate Methods
+
+- (void)didEditEvent:(Event *)event {
+    [self fetchInvitedEvents];
+    [self fetchAcceptedEvents];
+}
 
  #pragma mark - Navigation
  
@@ -185,6 +191,7 @@
      UINavigationController *navController = tabBarViewControllers.viewControllers[0];
      EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
      destinationViewController.event = event;
+     destinationViewController.delegate = self;
  }
 
 @end
