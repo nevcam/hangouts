@@ -14,6 +14,7 @@
 		3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4022EF8CD2002732DB /* PhotoDetailsViewController.m */; };
 		3C313D4722EFC324002732DB /* PersonProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D4622EFC324002732DB /* PersonProfileViewController.m */; };
 		3C43385522F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */; };
+		3C43385822F8D723004EEB55 /* myDayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C43385722F8D723004EEB55 /* myDayTableViewCell.m */; };
 		3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01222DF9681005E5C29 /* MapViewController.m */; };
 		3CE7D01922DF97F2005E5C29 /* AddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */; };
 		3CE7D01C22DFA214005E5C29 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE7D01B22DFA214005E5C29 /* Event.m */; };
@@ -90,6 +91,8 @@
 		3C313D4622EFC324002732DB /* PersonProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonProfileViewController.m; sourceTree = "<group>"; };
 		3C43385322F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFriendsCollectionViewCell.h; sourceTree = "<group>"; };
 		3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFriendsCollectionViewCell.m; sourceTree = "<group>"; };
+		3C43385622F8D723004EEB55 /* myDayTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = myDayTableViewCell.h; sourceTree = "<group>"; };
+		3C43385722F8D723004EEB55 /* myDayTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myDayTableViewCell.m; sourceTree = "<group>"; };
 		3CE7D01122DF9681005E5C29 /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3CE7D01222DF9681005E5C29 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddEventViewController.h; sourceTree = "<group>"; };
@@ -330,6 +333,8 @@
 				7BCCFB3F22F390CB00DB0D8D /* UserCell.m */,
 				3C43385322F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.h */,
 				3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */,
+				3C43385622F8D723004EEB55 /* myDayTableViewCell.h */,
+				3C43385722F8D723004EEB55 /* myDayTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -684,6 +689,7 @@
 				3C43385522F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m in Sources */,
 				D9DF803222DF8C74003D240F /* FriendSearchViewController.m in Sources */,
 				D9DF803522DF8D3A003D240F /* FriendCell.m in Sources */,
+				3C43385822F8D723004EEB55 /* myDayTableViewCell.m in Sources */,
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
 				3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */,
 				7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */,
