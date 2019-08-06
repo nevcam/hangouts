@@ -271,15 +271,12 @@
 
 - (void)didEditEvent:(Event *)event{
     if(event) {
-        NSLog(@"Successful edit!");
         _event = event;
         [self updateTabBarEvent];
         [self setLabels];
         [self setMap];
         [self fetchGoingUsers];
         [self fetchInvitedUsers];
-    } else {
-        NSLog(@"Nil event");
     }
 }
 
