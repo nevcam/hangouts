@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *pastEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *nextEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *ownedEventsCount;
+@property (weak, nonatomic) IBOutlet UILabel *noEventsLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 
 @end
 
@@ -323,8 +325,10 @@
 {
     if (_todayEvents) {
         [_tableView reloadData];
+        _noEventsLabel.hidden = YES;
+        _noDataImage.hidden = YES;
     } else {
-        NSLog(@"No events today!");
+        _tableView.hidden = YES;
     }
 }
 
