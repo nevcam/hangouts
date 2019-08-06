@@ -116,7 +116,6 @@
              }];
         } else {
             [self updateEvent];
-            [self dismissViewControllerAnimated:YES completion:nil];
         }
         
     }
@@ -434,7 +433,7 @@
                 Event *event = (Event *)object;
                 [strongSelf updateDataBaseEvent:event];
             } else {
-                [strongSelf.delegate editUserWithStatus:NO];
+                [strongSelf.delegate didEditEvent:nil];
             }
         }
     }];
@@ -447,11 +446,12 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if(strongSelf) {
             if (error) {
-                [strongSelf.delegate editUserWithStatus:NO];
+                [strongSelf.delegate didEditEvent:nil];
                 NSLog(@"Error updating event: %@", error);
             } else {
-                [strongSelf.delegate editUserWithStatus:YES];
+                [strongSelf.delegate didEditEvent:event];
             }
+            [strongSelf dismissViewControllerAnimated:YES completion:nil];
         }
     }];
 }

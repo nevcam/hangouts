@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EventTabBarController : UITabBarController
-@property (weak, nonatomic) Event *event;
+@property (strong, nonatomic) Event *event;
 @end
 
 NS_ASSUME_NONNULL_END
