@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ChatViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *chatMessageField;
-@property (weak, nonatomic) Event *event;
+@property (strong, nonatomic) Event *event;
 @end
 
 NS_ASSUME_NONNULL_END

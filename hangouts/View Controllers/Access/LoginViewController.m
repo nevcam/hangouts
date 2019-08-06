@@ -22,19 +22,6 @@
 
 @implementation LoginViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
-#pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([[segue identifier] isEqualToString:@"registerSegue"]) {
-        UINavigationController *navigationController = [segue destinationViewController];
-        SignUpViewController *signupController = (SignUpViewController*)navigationController.topViewController;
-        signupController.delegate = self;
-    }
-}
-
 #pragma mark -  class methods
 
 // This method dismisses the keyboard when you hit return
@@ -85,6 +72,16 @@
         _errorLabel.text = @"Account registered successfully!";
         _errorLabel.backgroundColor = [UIColor greenColor];
         [_errorLabel setHidden:NO];
+    }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([[segue identifier] isEqualToString:@"registerSegue"]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        SignUpViewController *signupController = (SignUpViewController*)navigationController.topViewController;
+        signupController.delegate = self;
     }
 }
 

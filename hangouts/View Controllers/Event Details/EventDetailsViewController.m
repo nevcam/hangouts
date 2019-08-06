@@ -15,7 +15,7 @@
 @import EventKit;
 @import EventKitUI;
 
-@interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource, EditEventControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -37,10 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    UINavigationController *navController = (UINavigationController *) self.parentViewController;
-    EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
-    tabBar.event = _event;
+    [self updateTabBarEvent];
     
     _goingCollectionView.delegate = self;
     _goingCollectionView.dataSource = self;
@@ -59,6 +56,12 @@
 }
 
 #pragma mark - Labels Methods
+
+- (void)updateTabBarEvent {
+    UINavigationController *navController = (UINavigationController *) self.parentViewController;
+    EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
+    tabBar.event = _event;
+}
 
 - (void)setLabels {
     _nameLabel.text = _event.name;
@@ -264,6 +267,22 @@
     return [dict objectForKey:@"Calendar ID"];
 }
 
+#pragma mark - EditEventControllerDelegate Protocol Methods
+
+- (void)didEditEvent:(Event *)event{
+    if(event) {
+        NSLog(@"Successful edit!");
+        _event = event;
+        [self updateTabBarEvent];
+        [self setLabels];
+        [self setMap];
+        [self fetchGoingUsers];
+        [self fetchInvitedUsers];
+    } else {
+        NSLog(@"Nil event");
+    }
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -271,8 +290,8 @@
         UINavigationController *navController = [segue destinationViewController];
         AddEventViewController *destinationViewController = (AddEventViewController *)navController.topViewController;
         destinationViewController.event = _event;
+        destinationViewController.delegate = self;
     }
-    
 }
 
 @end

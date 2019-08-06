@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol EditEventControllerDelegate
 
-- (void)editUserWithStatus:(BOOL)successful;
+- (void)didEditEvent:(Event * _Nullable)event;
 
 @end
 
