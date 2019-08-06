@@ -230,8 +230,7 @@
         } else {
             annotationView.annotation = annotation;
         }
-        
-        
+   
         // add profile photo to annotation
         PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
         NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
@@ -276,10 +275,7 @@
             [customAnnotation setCheckBoxSelected:NO];
         }
         annotationView.rightCalloutAccessoryView = rightButton;
-        
-        // go to user profile
-        
-        
+ 
         return annotationView;
     } else {
         EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
@@ -333,15 +329,7 @@
 }
 
 - (void)didClickEventDetail: (id) sender {
-    CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
-//    Event *event = button.event;
-//    EventTabBarController *tabBarViewController = [[EventTabBarController alloc] init];
-//    UIStoryboardSegue *segue = [[UIStoryboardSegue alloc] initWithIdentifier:@"maptoEventSegue" source:self destination:tabBarViewController];
-//    tabBarViewController = [segue destinationViewController];
-//    UINavigationController *navController = tabBarViewController.viewControllers[0];
-//    EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
-//    destinationViewController.event = event;
-//    [self performSegueWithIdentifier:@"mapToEventSegue" sender:self];
+    [self performSegueWithIdentifier:@"mapToEventSegue" sender:sender];
 }
 
 - (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
@@ -376,30 +364,41 @@
     [self performSegueWithIdentifier:@"addEventSegue" sender:nil];
 }
 
+#pragma mark - Segue
+
 // Segue to present modally "Add Event" view controller
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
-    
-    NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
-    NSString *lon = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.longitude];
-    NSString *latLong = [NSString stringWithFormat:@"%@,%@", lat, lon];
-    
-    addEventViewController.userLocation = latLong;
-    addEventViewController.friendsToInvite = _selectedFriends;
-}
+    if ([segue.identifier isEqualToString:@"mapToEventSegue"]) {
+        CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
+        Event *event = button.event;
+        EventTabBarController *tabBarViewControllers = [segue destinationViewController];
+        UINavigationController *navController = tabBarViewControllers.viewControllers[0];
+        EventDetailsViewController *destinationViewController = (EventDetailsViewController *)navController.topViewController;
+        destinationViewController.event = event;
+    } else {
+        AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    
-    if ([view.annotation isKindOfClass:[EventPointAnnotation class]]) {
+        NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
+        NSString *lon = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.longitude];
+        NSString *latLong = [NSString stringWithFormat:@"%@,%@", lat, lon];
 
-    } else if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]) {
-
+        addEventViewController.userLocation = latLong;
+        addEventViewController.friendsToInvite = _selectedFriends;
     }
 }
 
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-    
-}
+//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+//
+//    if ([view.annotation isKindOfClass:[EventPointAnnotation class]]) {
+//
+//    } else if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]) {
+//
+//    }
+//}
+//
+//- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+//
+//}
 
 @end
