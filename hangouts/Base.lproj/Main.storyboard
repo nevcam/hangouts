@@ -245,11 +245,12 @@
                     <connections>
                         <outlet property="mapView" destination="xtg-vI-YWu" id="jnE-tl-2UF"/>
                         <segue destination="gbc-Dl-cRW" kind="presentation" identifier="addEventSegue" id="bna-kp-jZo"/>
+                        <segue destination="sQ8-MJ-lQ4" kind="presentation" identifier="mapToEventSegue" id="ofK-qi-QIO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywC-YQ-0Q4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1151.2" y="2399.5502248875564"/>
+            <point key="canvasLocation" x="-1151" y="2400"/>
         </scene>
         <!--Add Event-->
         <scene sceneID="wEh-xh-9YR">
@@ -599,7 +600,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Cgp-Pz-LQE"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Chat" id="igR-SY-1b0"/>
+                    <navigationItem key="navigationItem" title="Chat" id="igR-SY-1b0">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="close-icon" id="a9e-oH-dEt">
+                            <connections>
+                                <action selector="didTapClose:" destination="3kX-i2-kpK" id="CfU-Ab-ELG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="chatMessageField" destination="1ov-5t-TS4" id="S3P-IK-RmN"/>
                         <outlet property="tableView" destination="gBL-5i-ko7" id="4Ng-eQ-iYi"/>
@@ -926,7 +933,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="kEb-Ya-jqX"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Photos" id="yaI-Ag-d8C"/>
+                    <navigationItem key="navigationItem" title="Photos" id="yaI-Ag-d8C">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="close-icon" id="fNh-Up-SVz">
+                            <connections>
+                                <action selector="didTapClose:" destination="q3X-Ki-4NZ" id="uaX-jY-GZv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="0pg-ef-WPF" id="WeU-DM-qLF"/>
                         <segue destination="jJR-qW-3DO" kind="show" identifier="photoDetailsSegue" id="5Lj-0a-CR9"/>
@@ -2264,8 +2277,8 @@
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UU9-zt-eRZ"/>
+        <segue reference="bna-kp-jZo"/>
         <segue reference="MnL-qw-Gyu"/>
-        <segue reference="5KP-IG-gNm"/>
+        <segue reference="ofK-qi-QIO"/>
     </inferredMetricsTieBreakers>
 </document>
