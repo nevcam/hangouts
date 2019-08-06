@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *pastEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *nextEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *ownedEventsCount;
+@property (weak, nonatomic) IBOutlet UILabel *noEventsLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 
 @end
 
@@ -53,6 +55,7 @@
     _collectionView.delegate = self;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 60.0;
     
     [self setUserInfo];
     [self setRefreshControl];
@@ -66,7 +69,7 @@
 - (void)setUserInfo
 {
     _user = [PFUser currentUser];
-    _usernameLabel.text = _user[@"username"];
+    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     
@@ -322,11 +325,12 @@
 {
     if (_todayEvents) {
         [_tableView reloadData];
+        _noEventsLabel.hidden = YES;
+        _noDataImage.hidden = YES;
     } else {
-        NSLog(@"No events today!");
+        _tableView.hidden = YES;
     }
 }
-
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
@@ -352,6 +356,9 @@
     NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
     return eventTime;
     
+}
+- (IBAction)clickedCalendar:(id)sender {
+    [self performSegueWithIdentifier:@"calendarSegue" sender:nil];
 }
 
 @end
