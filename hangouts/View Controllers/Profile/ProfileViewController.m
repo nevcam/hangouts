@@ -333,11 +333,25 @@
     myDayTableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"myDayTableViewCell"];
     Event *event = _todayEvents[indexPath.row];
     cell.eventNameLabel.text = event.name;
+    cell.eventTImeLabel.text = [self getEventTime:event.date];
+    cell.eventLocationLabel.text = event.location_name;
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _todayEvents.count;
+}
+
+// Helper function that gets time for an event
+-(NSString *)getEventTime:(NSDate *)date
+{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    
+    NSString *hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
+    NSString *minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
+    NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
+    return eventTime;
+    
 }
 
 @end

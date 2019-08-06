@@ -54,6 +54,7 @@
     [super viewDidLoad];
     
     if (!_event) {
+        _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
         [_eventDatePicker setMinimumDate: [NSDate date]];
         [self setInitialPlaceholder];
         [self getFriendPhotos];

@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface myDayTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *eventNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *eventTImeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *eventLocationLabel;
 
 @end
 
