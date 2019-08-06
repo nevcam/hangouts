@@ -53,6 +53,7 @@
     _collectionView.delegate = self;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 60.0;
     
     [self setUserInfo];
     [self setRefreshControl];
@@ -66,7 +67,7 @@
 - (void)setUserInfo
 {
     _user = [PFUser currentUser];
-    _usernameLabel.text = _user[@"username"];
+    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     
