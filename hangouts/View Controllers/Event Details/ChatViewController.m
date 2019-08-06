@@ -12,6 +12,7 @@
 #import "UIImageView+AFNetworking.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 //@property (nonatomic, strong) NSMutableArray *messages;
 @end
@@ -156,6 +157,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     return YES;
 }
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+}
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
@@ -164,28 +168,19 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    __weak typeof(self) weakSelf = self;
-    [UIView animateWithDuration:0.2 animations:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if(strongSelf) {
-            CGRect frame = strongSelf.view.frame;
-            frame.origin.y = -keyboardSize.height + 55;
-            strongSelf.view.frame = frame;
-        }
-    }];
+    NSDictionary *keyInfo = [notification userInfo];
+    CGRect keyboardFrame = [[keyInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.frame.size.height - (keyboardFrame.size.height-self.chatMessageField.frame.size.height-self.bottomConstraint.constant));
+    self.bottomConstraint.constant =  keyboardFrame.size.height-self.chatMessageField.frame.size.height;
+}
+
+-(void)keyboardDidShow:(NSNotification *)notification {
+    NSIndexPath* indexPath = [NSIndexPath indexPathForRow: _messages.count-1 inSection: 0];
+    [self.tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification {
-    __weak typeof(self) weakSelf = self;
-    [UIView animateWithDuration:0.2 animations:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if(strongSelf) {
-            CGRect frame = strongSelf.view.frame;
-            frame.origin.y = 0;
-            strongSelf.view.frame = frame;
-        }
-    }];
+    self.bottomConstraint.constant = 8;
 }
 
 - (IBAction)didTapReturn:(id)sender {

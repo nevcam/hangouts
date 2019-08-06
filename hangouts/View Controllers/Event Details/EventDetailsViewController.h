@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Event.h"
 #import "EventTabBarController.h"
+#import "AddEventViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EventDetailsViewController : UIViewController
+
 @property (strong, nonatomic) Event *event;
+@property (nonatomic, weak) id<EditEventControllerDelegate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END
