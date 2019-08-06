@@ -169,7 +169,6 @@
 #pragma mark - Edit Event Controller Delegate Methods
 
 - (void)didEditEvent:(Event *)event {
-    [self fetchInvitedEvents];
     [self fetchAcceptedEvents];
 }
 
