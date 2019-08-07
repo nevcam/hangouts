@@ -25,7 +25,7 @@
 #import "CustomTapGestureRecognizer.h"
 #import "PersonProfileViewController.h"
 
-@interface MapViewController () <MKMapViewDelegate>
+@interface MapViewController () <MKMapViewDelegate, CreateEventControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 //@property (strong, nonatomic) PersonDetailMapView *customCalloutView;
@@ -244,11 +244,11 @@
         leftIconView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:profilePhotoURL]];
         annotationView.leftCalloutAccessoryView = leftIconView;
         
-        CustomTapGestureRecognizer *doubleTap = [[CustomTapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUserProfilePhoto:)];
-        doubleTap.friendUser = customAnnotation.friend;
-        doubleTap.numberOfTapsRequired = 2;
+        CustomTapGestureRecognizer *singleTap = [[CustomTapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUserProfilePhoto:)];
+        singleTap.friendUser = customAnnotation.friend;
+        singleTap.numberOfTapsRequired = 2;
         [annotationView.leftCalloutAccessoryView setUserInteractionEnabled:YES];
-        [annotationView.leftCalloutAccessoryView addGestureRecognizer:doubleTap];
+        [annotationView.leftCalloutAccessoryView addGestureRecognizer:singleTap];
         
         // add custom view to callout
         UIView *myView = [UIView new];
@@ -282,7 +282,6 @@
             [customAnnotation setCheckBoxSelected:NO];
         }
         annotationView.rightCalloutAccessoryView = rightButton;
- 
         return annotationView;
     } else {
         EventPointAnnotation *eventAnnotation = (EventPointAnnotation *)annotation;
@@ -296,6 +295,7 @@
             eventAnnotationView.annotation = annotation;
         }
         
+        // callout subview
         UIView *myView = [UIView new];
         [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
         [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
@@ -317,6 +317,32 @@
         return eventAnnotationView;
     }
 }
+
+- (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGFloat imageWidth = image.size.width;
+    CGFloat imageHeight = image.size.height;
+    CGFloat rectWidth = frame.size.width;
+    CGFloat rectHeight = frame.size.height;
+    CGFloat scaleFactorX = rectWidth/imageWidth;
+    CGFloat scaleFactorY = rectHeight/imageHeight;
+    CGFloat imageCentreX = rectWidth/2;
+    CGFloat imageCentreY = rectHeight/2;
+    CGFloat radius = rectWidth/2;
+    CGContextBeginPath (context);
+    CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
+    CGContextClosePath (context);
+    CGContextClip (context);
+    CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
+    CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
+    [image drawInRect:myRect];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+#pragma mark - Annotation Interactions
 
 - (void)didClickDetailDisclosure: (id) sender {
     CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
@@ -343,34 +369,15 @@
     [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:sender];
 }
 
-- (UIImage*)circularScaleAndCropImage:(UIImage*)image frame:(CGRect)frame {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGFloat imageWidth = image.size.width;
-    CGFloat imageHeight = image.size.height;
-    CGFloat rectWidth = frame.size.width;
-    CGFloat rectHeight = frame.size.height;
-    CGFloat scaleFactorX = rectWidth/imageWidth;
-    CGFloat scaleFactorY = rectHeight/imageHeight;
-    CGFloat imageCentreX = rectWidth/2;
-    CGFloat imageCentreY = rectHeight/2;
-    CGFloat radius = rectWidth/2;
-    CGContextBeginPath (context);
-    CGContextAddArc (context, imageCentreX, imageCentreY, radius, 0, 2*M_PI, 0);
-    CGContextClosePath (context);
-    CGContextClip (context);
 
-    CGContextScaleCTM (context, scaleFactorX, scaleFactorY);
-    CGRect myRect = CGRectMake(0, 0, imageWidth, imageHeight);
-    [image drawInRect:myRect];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
+- (void) refreshAnnotations {
+    for (id<MKAnnotation> annotation in _mapView.annotations)
+    {
+        [_mapView removeAnnotation:annotation];
+        [_mapView addAnnotation:annotation];
+    }
 }
 
-// Allows user to create an event
 - (IBAction)clickedAddEvent:(id)sender {
     [self performSegueWithIdentifier:@"addEventSegue" sender:nil];
 }
@@ -396,7 +403,7 @@
     }
     else {
         AddEventViewController *addEventViewController = (AddEventViewController *)[(UINavigationController*)segue.destinationViewController topViewController];
-
+        addEventViewController.eventDelegate = self;
         NSString *lat = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.latitude];
         NSString *lon = [NSString stringWithFormat:@"%f", self->currentLocation.coordinate.longitude];
         NSString *latLong = [NSString stringWithFormat:@"%@,%@", lat, lon];
@@ -406,17 +413,13 @@
     }
 }
 
-//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-//
-//    if ([view.annotation isKindOfClass:[EventPointAnnotation class]]) {
-//
-//    } else if ([view.annotation isKindOfClass:[CustomPointAnnotation class]]) {
-//
-//    }
-//}
-//
-//- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-//    [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:self];
-//}
+
+- (void)didCreateEvent:(Event * _Nullable)event {
+    //set delegate
+    _selectedFriends = [NSMutableArray new];
+    [self fetchEventPointers];
+
+}
+
 
 @end
