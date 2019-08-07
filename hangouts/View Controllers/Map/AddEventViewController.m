@@ -512,4 +512,24 @@
     return _invitedFriends.count;
 }
 
+- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    
+    float cellCount =_invitedFriends.count;
+    float cellSpacing = flowLayout.minimumLineSpacing;
+    float cellWidth = flowLayout.itemSize.width;
+    
+    float totalCellWidth = cellWidth * cellCount;
+    float totalSpacingWidth = cellSpacing * (cellCount - 1);
+    
+    UIEdgeInsets inset = flowLayout.sectionInset;
+    if(collectionView.frame.size.width > (totalCellWidth + totalSpacingWidth)) {
+        inset.left = (collectionView.frame.size.width - (totalCellWidth + totalSpacingWidth)) / 2;
+        inset.right = inset.left;
+    }
+    [flowLayout setSectionInset:inset];
+    
+    return (UICollectionViewTransitionLayout *)flowLayout;
+}
+
 @end
