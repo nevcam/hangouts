@@ -43,8 +43,6 @@
 
 @implementation ProfileViewController {
     NSMutableArray *_friendUsers;
-    NSMutableArray *_friendships;
-    NSMutableArray *_userXEventOrderedArray;
     NSMutableArray *_todayEvents;
 }
 
@@ -118,15 +116,11 @@
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if(strongSelf) {
-                        if (!strongSelf->_friendships) {
-                            strongSelf->_friendships = [NSMutableArray new];
+                        if (!strongSelf->_friendUsers) {
                             strongSelf->_friendUsers = [NSMutableArray new];
-                            [strongSelf->_friendships addObjectsFromArray:friends];
-                            if (strongSelf->_friendships.count == friendPointers.count) {
-                                strongSelf->_friendUsers = strongSelf->_friendships;
-                                [strongSelf.collectionView reloadData];
-                                strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendships.count];
-                            }
+                            [strongSelf->_friendUsers addObjectsFromArray:friends];
+                            [strongSelf.collectionView reloadData];
+                            strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendUsers.count];
                         } else {
                             NSLog(@"Error");
                         }
