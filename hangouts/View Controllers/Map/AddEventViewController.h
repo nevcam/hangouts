@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<CreateEventControllerDelegate> eventDelegate;
 @property (strong, nonatomic) NSString *const userLocation;
 @property (strong, nonatomic) Event *event;
+@property (strong, nonatomic) NSMutableArray *invitedFriends;
+@property (strong, nonatomic) NSMutableArray *pendingFriends;
+@property (strong, nonatomic) NSMutableArray *goingFriends;
 @property (strong, nonatomic) NSMutableArray *friendsToInvite;
 
 @end

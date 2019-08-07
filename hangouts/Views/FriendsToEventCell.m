@@ -18,14 +18,14 @@
     
     // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
     UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
-    [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
-    [self.profilePhotoView setUserInteractionEnabled:YES];
+    [_profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
+    [_profilePhotoView setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-    if (self.invited) {
+    if (_invited) {
         [self changeButtonLayout:YES];
     } else {
         [self changeButtonLayout:NO];
@@ -35,22 +35,22 @@
 - (IBAction)clickedInvite:(id)sender {
     if ([[sender currentTitle] isEqualToString:@"Invite"]) {
         [self changeButtonLayout:YES];
-        [self.delegate addFriendToEvent:self.user remove:NO];
+        [_delegate addFriendToEvent:_user remove:NO];
     }
     else {
         [self changeButtonLayout:NO];
-        [self.delegate addFriendToEvent:self.user remove:YES];
+        [self.delegate addFriendToEvent:_user remove:YES];
     }
 }
 
 // Sets layout for invite button
 - (void)changeButtonLayout:(BOOL)invited {
     if (invited) {
-        [self.addFriendButton setTitle:@"Uninvite" forState:UIControlStateNormal];
-        self.addFriendButton.backgroundColor = [UIColor colorWithRed:0.87 green:0.88 blue:0.86 alpha:1.0];
+        [_addFriendButton setTitle:@"Uninvite" forState:UIControlStateNormal];
+        _addFriendButton.backgroundColor = [UIColor colorWithRed:0.87 green:0.88 blue:0.86 alpha:1.0];
     } else {
-        [self.addFriendButton setTitle:@"Invite" forState:UIControlStateNormal];
-        self.addFriendButton.backgroundColor = [UIColor colorWithRed:0.69 green:0.93 blue:0.57 alpha:1.0];
+        [_addFriendButton setTitle:@"Invite" forState:UIControlStateNormal];
+        _addFriendButton.backgroundColor = [UIColor colorWithRed:0.69 green:0.93 blue:0.57 alpha:1.0];
     }
 }
 

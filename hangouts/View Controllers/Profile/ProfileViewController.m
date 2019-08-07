@@ -22,7 +22,7 @@
 #import "EventTabBarController.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate, SaveCurrentUserFriendsProtocol>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -43,8 +43,6 @@
 
 @implementation ProfileViewController {
     NSMutableArray *_friendUsers;
-    NSMutableArray *_friendships;
-    NSMutableArray *_userXEventOrderedArray;
     NSMutableArray *_todayEvents;
 }
 
@@ -93,7 +91,8 @@
     _profilePhotoView.layer.borderWidth = 0;
 }
 
-- (void)fetchFriends {
+- (void)fetchFriends
+{
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
@@ -118,15 +117,11 @@
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if(strongSelf) {
-                        if (!strongSelf->_friendships) {
-                            strongSelf->_friendships = [NSMutableArray new];
+                        if (!strongSelf->_friendUsers) {
                             strongSelf->_friendUsers = [NSMutableArray new];
-                            [strongSelf->_friendships addObjectsFromArray:friends];
-                            if (strongSelf->_friendships.count == friendPointers.count) {
-                                strongSelf->_friendUsers = strongSelf->_friendships;
-                                [strongSelf.collectionView reloadData];
-                                strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendships.count];
-                            }
+                            [strongSelf->_friendUsers addObjectsFromArray:friends];
+                            [strongSelf.collectionView reloadData];
+                            strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendUsers.count];
                         } else {
                             NSLog(@"Error");
                         }
@@ -160,9 +155,10 @@
     }
     else if ([segue.identifier isEqual:@"myProfileToFriendProfileSegue"]) {
         PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.delegate = self;
         friendProfileController.user = sender;
     }
-    else if ([segue.identifier isEqualToString:@"eventFromProfileSegue"]) {
+    else if ([segue.identifier isEqualToString:@"profileToEventSegue"]) {
         UITableViewCell *tappedCell = sender;
         NSIndexPath *indexPath = [_tableView indexPathForCell:tappedCell];
         Event *event = _todayEvents[indexPath.row];
@@ -174,6 +170,11 @@
     }
 }
 
+- (NSMutableArray *)saveFriendsList
+{
+    return _friendUsers;
+    
+}
 
 #pragma mark -  logout functions
 - (IBAction)didTapLogout:(id)sender {
@@ -296,6 +297,7 @@
     int ownedEvents = 0;
     NSDate *today = [NSDate date];
     
+    NSMutableArray *userTodayEventsArray;
     for (UserXEvent *myEvent in myEvents) {
         if ([myEvent.type isEqualToString:@"owned"]) {
             ownedEvents++;
@@ -316,18 +318,26 @@
         NSString *dateWithoutTime = [formatter stringFromDate:date];
         NSString *todayWithoutTime = [formatter stringFromDate:today];
         if ([dateWithoutTime isEqualToString:todayWithoutTime]) {
-            if (!_todayEvents) {
-                _todayEvents = [NSMutableArray array];
+            if (!userTodayEventsArray) {
+                userTodayEventsArray = [NSMutableArray array];
             }
-            [_todayEvents addObject:event];
+            [userTodayEventsArray addObject:event];
         }
+        
     }
     
     _pastEventsCount.text = [NSString stringWithFormat:@"%d",pastEvents];
     _nextEventsCount.text = [NSString stringWithFormat:@"%d",nextEvents];
     _ownedEventsCount.text = [NSString stringWithFormat:@"%d",ownedEvents];
     
-    [self getTodayEvents];
+    // Sort array by dates and show them
+    if (userTodayEventsArray){
+        NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]];
+        NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
+        _todayEvents = [[NSMutableArray alloc] initWithArray:sortedArray];
+        
+        [self getTodayEvents];
+    }
 }
 
 -(void)getTodayEvents
@@ -337,8 +347,11 @@
         [_refreshControl endRefreshing];
         _noEventsLabel.hidden = YES;
         _noDataImage.hidden = YES;
+        _tableView.hidden = NO;
     } else {
         _tableView.hidden = YES;
+        _noEventsLabel.hidden = NO;
+        _noDataImage.hidden = NO;
     }
 }
 
@@ -349,6 +362,8 @@
     cell.eventNameLabel.text = event.name;
     cell.eventTImeLabel.text = [self getEventTime:event.date];
     cell.eventLocationLabel.text = event.location_name;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
@@ -361,14 +376,31 @@
 {
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
     
-    NSString *hour = [NSString stringWithFormat:@"%ld", (long)components.hour];
-    NSString *minute = [NSString stringWithFormat:@"%ld", (long)components.minute];
+    NSString *hour = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.hour]];
+    NSString *minute = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.minute]];
     NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
     return eventTime;
     
 }
+
+-(NSString *)addZeroToTime:(NSString *)time
+{
+    if (time.length == 1) {
+        return [NSString stringWithFormat:@"0%@", time];
+    }
+    return time;
+}
+
+#pragma mark - Calendar
+
 - (IBAction)clickedCalendar:(id)sender {
     [self performSegueWithIdentifier:@"calendarSegue" sender:nil];
+}
+
+#pragma mark - Refresh Page
+
+- (IBAction)refreshView:(id)sender {
+    [self viewDidLoad];
 }
 
 @end

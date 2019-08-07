@@ -37,7 +37,6 @@
         [query getObjectInBackgroundWithId:request.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
             if (object) {
                 PFUser *user = (PFUser *)object;
-                NSLog(@"user: %@", user);
                 if(!self->_requests){
                     self->_requests = [[NSMutableArray alloc] init];
                 }
@@ -59,7 +58,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FriendRequestCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendRequestCell"];
     PFUser *user = self->_requests[indexPath.row];
-    NSLog(@"user cell: %@", user);
     cell.user = user;
     cell.delegate = self;
     cell.indexPath = indexPath;
@@ -76,7 +74,6 @@
     cell.usernameLabel.text = user[@"username"];
     cell.fullnameLabel.text = user[@"fullname"];
     cell.currentUserFriendship = self.currentUserFriendship;
-    NSLog(@"user: %@", user);
     return cell;
 }
 

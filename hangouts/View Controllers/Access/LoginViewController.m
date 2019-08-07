@@ -46,10 +46,9 @@
                     [alert addAction:okAction];
                     [strongSelf presentViewController:alert animated:YES completion:nil];
                 } else {
-                    strongSelf.errorLabel.text = @"Incorrect user/password";
+                    strongSelf.errorLabel.text = @"Invalid username/password";
                     strongSelf.errorLabel.backgroundColor = [UIColor redColor];
                     [strongSelf.errorLabel setHidden:NO];
-                    NSLog(@"User log in failed: %@", error.localizedDescription);
                 }
             } else {
                 [strongSelf.errorLabel setHidden:YES];

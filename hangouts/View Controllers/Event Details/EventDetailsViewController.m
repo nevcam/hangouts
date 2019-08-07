@@ -295,8 +295,27 @@
         UINavigationController *navController = [segue destinationViewController];
         AddEventViewController *destinationViewController = (AddEventViewController *)navController.topViewController;
         destinationViewController.event = _event;
+        destinationViewController.pendingFriends = [self getFriendsDictionary][@"pending"];
+        destinationViewController.goingFriends = [self getFriendsDictionary][@"going"];
+        destinationViewController.invitedFriends = [self getFriendsDictionary][@"invited"];
         destinationViewController.delegate = self;
     }
+}
+
+#pragma mark - Array Methods
+
+- (NSDictionary *)getFriendsDictionary {
+    NSMutableArray *pendingUsers = [NSMutableArray new];
+    NSMutableArray *goingUsers = [NSMutableArray new];
+    for (UserXEvent *userXEvent in _goingUserXEvents) {
+        [goingUsers addObject:userXEvent.user];
+    }
+    for (UserXEvent *userXEvent in _invitedUserXEvents) {
+        [pendingUsers addObject:userXEvent.user];
+    }
+    NSMutableArray *invitedUsers = [[NSMutableArray alloc] initWithArray:goingUsers];
+    [invitedUsers addObjectsFromArray:pendingUsers];
+    return [NSDictionary dictionaryWithObjectsAndKeys:goingUsers, @"going", pendingUsers, @"pending", invitedUsers, @"invited", nil];
 }
 
 @end
