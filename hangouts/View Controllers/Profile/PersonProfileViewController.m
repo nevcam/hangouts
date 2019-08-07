@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *nextEventsCount;
 @property (weak, nonatomic) IBOutlet UILabel *friendsCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIButton *friendsButton;
+@property (weak, nonatomic) IBOutlet UIButton *commonFriendsButton;
 
 @end
 
@@ -46,6 +48,7 @@
     [self setProfileFeatures];
     
     [self fetchFriends];
+    [self setButtonColors:YES];
 }
 
 - (void)setProfileFeatures
@@ -100,7 +103,6 @@
                             [strongSelf->_friendUsers addObjectsFromArray:friends];
                             [strongSelf->_filteredUsers addObjectsFromArray:friends];
                             [strongSelf.collectionView reloadData];
-                            strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendUsers.count];
                         } else {
                             NSLog(@"Error");
                         }
@@ -118,6 +120,7 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    _friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)_filteredUsers.count];
     return _filteredUsers.count;
 }
 
@@ -178,6 +181,7 @@
 {
     _filteredUsers = _friendUsers;
     [_collectionView reloadData];
+    [self setButtonColors:YES];
 }
 
 - (IBAction)clickedCommonFriends:(id)sender
@@ -193,11 +197,27 @@
     }
     
     [_collectionView reloadData];
+    [self setButtonColors:NO];
 }
 
 - (NSMutableArray *)getCurrentUserFriends
 {
     return [_delegate saveFriendsList];
+}
+
+- (void)setButtonColors:(bool)defaultColors
+{
+    UIColor *selected = [UIColor colorWithRed:0.70 green:0.64 blue:0.91 alpha:1.0];
+    UIColor *notSelected = [UIColor colorWithRed:0.82 green:0.82 blue:0.85 alpha:1.0];
+    
+    if (defaultColors) {
+        _friendsButton.backgroundColor = selected;
+        _commonFriendsButton.backgroundColor = notSelected;
+    }
+    else {
+        _friendsButton.backgroundColor = notSelected;
+        _commonFriendsButton.backgroundColor = selected;
+    }
 }
 
 @end
