@@ -180,11 +180,16 @@
 //    newProfile.user = user;
 //    [self presentViewController:newProfile animated:YES completion:nil];
     
-    _user = user;
-    _friendUsers = nil;
-    _filteredUsers = nil;
-    _userSchedule = nil;
-    [self viewDidLoad];
+    if (![user.objectId isEqualToString:[PFUser currentUser].objectId]) {
+        _user = user;
+        _friendUsers = nil;
+        _filteredUsers = nil;
+        _userSchedule = nil;
+        [self viewDidLoad];
+    }
+    else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Filtering Friends
