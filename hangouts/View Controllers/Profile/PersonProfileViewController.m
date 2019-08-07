@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "ProfileFriendsCollectionViewCell.h"
 
-@interface PersonProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface PersonProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -128,6 +128,8 @@
     cell.profileImageView.layer.masksToBounds = YES;
     cell.profileImageView.layer.borderWidth = 0;
     
+    cell.delegate = self;
+    
     return cell;
 }
 
@@ -146,6 +148,18 @@
     CGFloat itemWidth = (_collectionView.frame.size.height - layout.minimumInteritemSpacing * (friendsPerColumn - 1)) / friendsPerColumn;
     CGFloat itemHeight = itemWidth;
     layout.itemSize = CGSizeMake (itemWidth, itemHeight);
+}
+
+
+- (void)tapProfile:(ProfileFriendsCollectionViewCell *)friendCell didTap:(PFUser *)user {
+//    PersonProfileViewController *newProfile = [[ PersonProfileViewController alloc] init];
+//    newProfile = self;
+//    newProfile.user = user;
+//    [self presentViewController:newProfile animated:YES completion:nil];
+    
+    _user = user;
+    _friendUsers = nil;
+    [self viewDidLoad];
 }
 
 

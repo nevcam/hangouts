@@ -1662,6 +1662,7 @@
                         <outlet property="pastEventsCount" destination="JvZ-39-ZNI" id="aV6-hp-ypN"/>
                         <outlet property="profilePhotoView" destination="AOa-kX-sKh" id="Zc2-Ud-Zc5"/>
                         <outlet property="usernameLabel" destination="frJ-gL-YYi" id="XLa-RX-Ij4"/>
+                        <outlet property="view" destination="eMf-JQ-XwY" id="7Bp-7Q-ehV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ma7-Ad-jTM" userLabel="First Responder" sceneMemberID="firstResponder"/>
