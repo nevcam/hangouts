@@ -53,16 +53,13 @@
 - (void)fetchFriendships
 {
     PFQuery *query = [Friendship query];
-    [query orderByDescending:@"createdAt"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
-    [query includeKey:@"user"];
     query.limit = 1;
     
     __weak typeof(self) weakSelf = self;
     [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
         if (friendships) {
-            // Saves usernames of current user friends
-            NSMutableArray *friendPointers = (NSMutableArray *)friendships[0][@"friends"];
+            NSArray *friendPointers = friendships[0][@"friends"];
             NSMutableArray *friendIds = [NSMutableArray new];
             
             for (PFUser *friendPointer in friendPointers) {
@@ -70,22 +67,19 @@
             }
             
             PFQuery *query = [PFUser query];
-            [query orderByDescending:@"createdAt"];
+            [query orderByAscending:@"fullname"];
             [query whereKey:@"objectId" containedIn:friendIds];
         
             [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
                 if (friends) {
                     __strong typeof(self) strongSelf = weakSelf;
-                    
                     if (strongSelf) {
-                        [strongSelf->_friendships addObjectsFromArray:(NSMutableArray *)friends];
+                        [strongSelf->_friendships addObjectsFromArray:friends];
 
                         if (strongSelf->_friendships.count == friendPointers.count) {
                             strongSelf->_results = strongSelf->_friendships;
                             [strongSelf.tableView reloadData];
                         }
-                    } else {
-                        NSLog(@"Error: View Controller has been closed.");
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -104,7 +98,6 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    
     FriendsToEventCell *cell =  [tableView dequeueReusableCellWithIdentifier:@"friendsToEventCell"];
     PFUser *const user = _results[indexPath.row];
     cell.user = user;
