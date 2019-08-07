@@ -11,6 +11,7 @@
 #import "Friendship.h"
 #import "AppDelegate.h"
 #import "ProfileFriendsCollectionViewCell.h"
+#import "ProfileViewController.h"
 
 @interface PersonProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
 
@@ -25,8 +26,11 @@
 
 @end
 
-@implementation PersonProfileViewController {
+@implementation PersonProfileViewController
+{
     NSMutableArray *_friendUsers;
+    NSMutableArray *_currentUserFriends;
+    NSMutableArray *_filteredUsers;
 }
 
 #pragma mark - Set Profile Basic Features
@@ -35,6 +39,9 @@
     
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
+    
+    _currentUserFriends = [[NSMutableArray alloc] initWithArray:[self getCurrentUserFriends]];
+    _filteredUsers = [[NSMutableArray alloc] init];
     
     [self setProfileFeatures];
     
@@ -91,6 +98,7 @@
                         if (!strongSelf->_friendUsers) {
                             strongSelf->_friendUsers = [NSMutableArray new];
                             [strongSelf->_friendUsers addObjectsFromArray:friends];
+                            [strongSelf->_filteredUsers addObjectsFromArray:friends];
                             [strongSelf.collectionView reloadData];
                             strongSelf->_friendsCount.text = [NSString stringWithFormat:@"%lu", (unsigned long)self->_friendUsers.count];
                         } else {
@@ -110,13 +118,13 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return _friendUsers.count;
+    return _filteredUsers.count;
 }
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     ProfileFriendsCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FriendProfileViewCell" forIndexPath:indexPath];
-    PFUser *user = _friendUsers[indexPath.row];
+    PFUser *user = _filteredUsers[indexPath.row];
     cell.user = user;
     
     PFFileObject *imageFile = user[@"profilePhoto"];
@@ -151,7 +159,8 @@
 }
 
 
-- (void)tapProfile:(ProfileFriendsCollectionViewCell *)friendCell didTap:(PFUser *)user {
+- (void)tapProfile:(ProfileFriendsCollectionViewCell *)friendCell didTap:(PFUser *)user
+{
 //    PersonProfileViewController *newProfile = [[ PersonProfileViewController alloc] init];
 //    newProfile = self;
 //    newProfile.user = user;
@@ -159,8 +168,36 @@
     
     _user = user;
     _friendUsers = nil;
+    _filteredUsers = nil;
     [self viewDidLoad];
 }
 
+#pragma mark - Filtering Friends
+
+- (IBAction)clickedFriends:(id)sender
+{
+    _filteredUsers = _friendUsers;
+    [_collectionView reloadData];
+}
+
+- (IBAction)clickedCommonFriends:(id)sender
+{
+    _filteredUsers = [NSMutableArray new];
+    for (PFUser *friendUser in _friendUsers) {
+        for (PFUser *currentUserFriend in _currentUserFriends) {
+            if ([friendUser.objectId isEqualToString:currentUserFriend.objectId]) {
+                [_filteredUsers addObject:friendUser];
+                break;
+            }
+        }
+    }
+    
+    [_collectionView reloadData];
+}
+
+- (NSMutableArray *)getCurrentUserFriends
+{
+    return [_delegate saveFriendsList];
+}
 
 @end

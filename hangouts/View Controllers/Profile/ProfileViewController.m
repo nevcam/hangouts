@@ -22,7 +22,7 @@
 #import "EventTabBarController.h"
 @import Parse;
 
-@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ProfileViewController () <ProfileEditViewControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate, UITableViewDataSource, UITableViewDelegate, SaveCurrentUserFriendsProtocol>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *fullnameLabel;
@@ -155,6 +155,7 @@
     }
     else if ([segue.identifier isEqual:@"myProfileToFriendProfileSegue"]) {
         PersonProfileViewController *friendProfileController = segue.destinationViewController;
+        friendProfileController.delegate = self;
         friendProfileController.user = sender;
     }
     else if ([segue.identifier isEqualToString:@"profileToEventSegue"]) {
@@ -169,6 +170,11 @@
     }
 }
 
+- (NSMutableArray *)saveFriendsList
+{
+    return _friendUsers;
+    
+}
 
 #pragma mark -  logout functions
 - (IBAction)didTapLogout:(id)sender {

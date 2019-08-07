@@ -7,14 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Parse/Parse.h" 
+#import "Parse/Parse.h"
+@class PersonProfileViewController;
 
-NS_ASSUME_NONNULL_BEGIN
+@protocol SaveCurrentUserFriendsProtocol <NSObject>
+- (NSMutableArray *)saveFriendsList;
+@end
 
 @interface PersonProfileViewController : UIViewController
 
 @property (nonatomic, weak) PFUser *user;
+@property (nonatomic, weak) id <SaveCurrentUserFriendsProtocol> delegate;
 
 @end
 
-NS_ASSUME_NONNULL_END
