@@ -53,7 +53,6 @@
     [self.currentUserFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!error) {
-            NSLog(@"success");
             strongSelf.acceptButton.enabled = NO;
             strongSelf.denyButton.enabled = NO;
         } else {

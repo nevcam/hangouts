@@ -17,10 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@protocol CreateEventControllerDelegate
+
+- (void)didCreateEvent:(Event * _Nullable)event;
+
+@end
+
 @interface AddEventViewController : UIViewController
 
 @property (nonatomic, weak) id<EditEventControllerDelegate> delegate;
-
+@property (nonatomic, weak) id<CreateEventControllerDelegate> eventDelegate;
 @property (strong, nonatomic) NSString *const userLocation;
 @property (strong, nonatomic) Event *event;
 @property (strong, nonatomic) NSMutableArray *invitedFriends;
