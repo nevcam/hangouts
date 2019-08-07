@@ -1655,6 +1655,7 @@
                     </view>
                     <connections>
                         <outlet property="bioLabel" destination="DZn-sp-Hqb" id="F7M-lB-P19"/>
+                        <outlet property="collectionView" destination="nPH-cB-gdm" id="xMp-Bg-k6g"/>
                         <outlet property="friendsCount" destination="tpD-Xp-UfG" id="kHQ-xE-wk4"/>
                         <outlet property="fullnameLabel" destination="UVp-E0-5fr" id="BXQ-Dk-v2E"/>
                         <outlet property="nextEventsCount" destination="JcO-hW-637" id="G6X-c5-Psq"/>

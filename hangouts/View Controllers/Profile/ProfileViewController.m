@@ -91,7 +91,8 @@
     _profilePhotoView.layer.borderWidth = 0;
 }
 
-- (void)fetchFriends {
+- (void)fetchFriends
+{
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     [query whereKey:@"user" equalTo:[PFUser currentUser]];
