@@ -264,7 +264,6 @@
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" Event Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5ad-Yo-Z5F">
                                 <rect key="frame" x="145" y="84" width="214" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.87600871550490433" green="0.89220235161363093" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -272,17 +271,15 @@
                                     <action selector="didTapReturn:" destination="qRP-5W-y9A" eventType="editingDidEndOnExit" id="WcI-ot-Wrs"/>
                                 </connections>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Npr-W1-HOe">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" text="Event description." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Npr-W1-HOe">
                                 <rect key="frame" x="145" y="122" width="214" height="97"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.8436153252824079" green="0.87439133902752675" blue="0.94176316624568523" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Duration (hours)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2oP-k5-Rvt">
                                 <rect key="frame" x="145" y="227" width="214" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.84361532530000005" green="0.87439133899999999" blue="0.9417631662" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -290,18 +287,6 @@
                                     <action selector="didTapReturn:" destination="qRP-5W-y9A" eventType="editingDidEnd" id="NHH-Qm-TeH"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dHk-UB-uZM">
-                                <rect key="frame" x="32" y="204" width="81" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.51833810739999997" green="0.52112927689999999" blue="0.81083079499999999" alpha="0.63136772259999996" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <state key="normal" title="Change">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="clickedAddPhoto:" destination="qRP-5W-y9A" eventType="touchUpInside" id="Xjz-zq-aBm"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6k-Es-DE5">
                                 <rect key="frame" x="191" y="389" width="168" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -325,10 +310,13 @@
                                 <rect key="frame" x="174" y="452" width="185" height="178"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="party" translatesAutoresizingMaskIntoConstraints="NO" id="Fo6-i6-xtS">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="img-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Fo6-i6-xtS">
                                 <rect key="frame" x="16" y="84" width="112" height="112"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.84361532530000005" green="0.87439133899999999" blue="0.9417631662" alpha="0.70339255136986301" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="WIX-Y9-jhG" appends="YES" id="dFn-i9-QcX"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QgO-ZU-Fum">
                                 <rect key="frame" x="16" y="516" width="143" height="23"/>
@@ -437,6 +425,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xtG-Fj-bMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="WIX-Y9-jhG">
+                    <connections>
+                        <action selector="didTapPhoto:" destination="qRP-5W-y9A" id="GRj-Qj-iMx"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1151.2" y="3890.1049475262371"/>
         </scene>
@@ -2527,9 +2520,9 @@
         <image name="event-icon" width="33.333332061767578" height="33.333332061767578"/>
         <image name="friends-icon2" width="33.333332061767578" height="33.333332061767578"/>
         <image name="home-icon2" width="26.666666030883789" height="26.666666030883789"/>
+        <image name="img-placeholder" width="200" height="200"/>
         <image name="logo" width="500" height="500"/>
         <image name="noData" width="512" height="512"/>
-        <image name="party" width="256" height="236.5"/>
         <image name="photos-icon" width="30" height="30"/>
         <image name="pin" width="235.5" height="358.5"/>
         <image name="plus" width="512" height="512"/>
