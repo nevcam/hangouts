@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UITableView *acceptedTableView;
 
+
 @end
 
 @implementation MyEventsViewController {
@@ -36,6 +37,9 @@
     
     _acceptedTableView.dataSource = self;
     _acceptedTableView.delegate = self;
+    
+    [_invitedTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_acceptedTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [self fetchInvitedEvents];
     [self fetchAcceptedEvents];
@@ -127,6 +131,15 @@
     [cell configureCell:event withType:userXEvent.type];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.delegate = self;
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        cell.preservesSuperviewLayoutMargins = NO;
+    }
+    cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, cell.bounds.size.width);
+    if([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        cell.layoutMargins = UIEdgeInsetsZero;
+    }    
+    cell.cellView.layer.cornerRadius = 5;
+    cell.cellView.layer.masksToBounds = true;
     return cell;
 }
 

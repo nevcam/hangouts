@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *declineButton;
 @property (weak, nonatomic) IBOutlet UIButton *acceptButton;
 @property (weak, nonatomic) IBOutlet UILabel *ownedLabel;
+@property (weak, nonatomic) IBOutlet UIView *cellView;
 
 - (void)configureCell:(Event *)event;
 
