@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *friendsButton;
 @property (weak, nonatomic) IBOutlet UIButton *commonFriendsButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
+@property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 
 @end
 
@@ -64,6 +66,7 @@
     _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
+    _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
     [self setProfileImageLayout];
 }
 
@@ -290,16 +293,21 @@
         NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]];
         NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
         _userSchedule = [[NSMutableArray alloc] initWithArray:sortedArray];
-        
-        [self getTodayEvents];
     }
+    [self getTodayEvents];
 }
 
 -(void)getTodayEvents
 {
     if (_userSchedule) {
         [_tableView reloadData];
+        _noDataLabel.hidden = YES;
+        _noDataImage.hidden = YES;
+        _tableView.hidden = NO;
     } else {
+        _tableView.hidden = YES;
+        _noDataLabel.hidden = NO;
+        _noDataImage.hidden = NO;
     }
 }
 
