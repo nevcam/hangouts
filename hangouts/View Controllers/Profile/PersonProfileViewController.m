@@ -12,8 +12,10 @@
 #import "AppDelegate.h"
 #import "ProfileFriendsCollectionViewCell.h"
 #import "ProfileViewController.h"
+#import "FriendAvailabilityViewCell.h"
+#import "UserXEvent.h"
 
-@interface PersonProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate, ProfileFriendViewCellDelegate>
+@interface PersonProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate, ProfileFriendViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhotoView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -25,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *friendsButton;
 @property (weak, nonatomic) IBOutlet UIButton *commonFriendsButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -33,6 +36,7 @@
     NSMutableArray *_friendUsers;
     NSMutableArray *_currentUserFriends;
     NSMutableArray *_filteredUsers;
+    NSMutableArray *_userSchedule;
 }
 
 #pragma mark - Set Profile Basic Features
@@ -41,11 +45,15 @@
     
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
     
     _currentUserFriends = [[NSMutableArray alloc] initWithArray:[self getCurrentUserFriends]];
     _filteredUsers = [[NSMutableArray alloc] init];
     
     [self setProfileFeatures];
+    
+    [self eventsUserInfo];
     
     [self fetchFriends];
     [self setButtonColors:YES];
@@ -172,6 +180,7 @@
     _user = user;
     _friendUsers = nil;
     _filteredUsers = nil;
+    _userSchedule = nil;
     [self viewDidLoad];
 }
 
@@ -218,6 +227,114 @@
         _friendsButton.backgroundColor = notSelected;
         _commonFriendsButton.backgroundColor = selected;
     }
+}
+
+#pragma mark - Availability TableView
+
+- (void)eventsUserInfo
+{
+    PFQuery *userXEventQuery = [UserXEvent query];
+    [userXEventQuery whereKey:@"user" equalTo:_user];
+    [userXEventQuery whereKey:@"type" containedIn:[NSArray arrayWithObjects: @"accepted", @"owned", nil]];
+    [userXEventQuery includeKey:@"event"];
+    [userXEventQuery selectKeys:[NSArray arrayWithObjects:@"event",@"type",nil]];
+    
+    [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable userXEvents, NSError * _Nullable error) {
+        if (userXEvents) {
+            [self getEventStats:userXEvents];
+        } else {
+            NSLog(@"Error getting events: %@", error.localizedDescription);
+        }
+    }];
+}
+
+// Method populates events statistics on user profile page
+-(void)getEventStats:(NSArray *)myEvents
+{
+    int pastEvents = 0;
+    int nextEvents = 0;
+    NSDate *today = [NSDate date];
+    
+    NSMutableArray *userTodayEventsArray;
+    for (UserXEvent *myEvent in myEvents) {
+        
+        Event *event = myEvent.event;
+        NSDate *date = event.date;
+        
+        NSComparisonResult result = [date compare:today];
+        if(result == NSOrderedDescending) {
+            pastEvents++;
+        } else {
+            nextEvents++;
+        }
+        
+        // Get today's events for My Day
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateWithoutTime = [formatter stringFromDate:date];
+        NSString *todayWithoutTime = [formatter stringFromDate:today];
+        if ([dateWithoutTime isEqualToString:todayWithoutTime]) {
+            if (!userTodayEventsArray) {
+                userTodayEventsArray = [NSMutableArray array];
+            }
+            [userTodayEventsArray addObject:event];
+        }
+        
+    }
+    
+    _pastEventsCount.text = [NSString stringWithFormat:@"%d",pastEvents];
+    _nextEventsCount.text = [NSString stringWithFormat:@"%d",nextEvents];
+    
+    // Sort array by dates and show them
+    if (userTodayEventsArray){
+        NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]];
+        NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
+        _userSchedule = [[NSMutableArray alloc] initWithArray:sortedArray];
+        
+        [self getTodayEvents];
+    }
+}
+
+-(void)getTodayEvents
+{
+    if (_userSchedule) {
+        [_tableView reloadData];
+    } else {
+    }
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    FriendAvailabilityViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:@"availabilityCell"];
+    Event *event = _userSchedule[indexPath.row];
+    cell.timeLabel.text = [self getEventTime:event.date];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _userSchedule.count;
+}
+
+// Helper function that gets time for an event
+-(NSString *)getEventTime:(NSDate *)date
+{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
+    
+    NSString *hour = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.hour]];
+    NSString *minute = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.minute]];
+    NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
+    return eventTime;
+    
+}
+
+-(NSString *)addZeroToTime:(NSString *)time
+{
+    if (time.length == 1) {
+        return [NSString stringWithFormat:@"0%@", time];
+    }
+    return time;
 }
 
 @end

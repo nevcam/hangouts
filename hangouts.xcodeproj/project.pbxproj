@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		085490B2733063EE7EAEE147 /* Pods_hangoutsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */; };
+		3C1CFF4D22FA7DE600E89FAE /* FriendAvailabilityViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1CFF4C22FA7DE600E89FAE /* FriendAvailabilityViewCell.m */; };
 		3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3722EB8ACC002732DB /* PhotosViewController.m */; };
 		3C313D3B22EBAE9B002732DB /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3A22EBAE9B002732DB /* Photo.m */; };
 		3C313D3E22EF67DF002732DB /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C313D3D22EF67DF002732DB /* PhotoCell.m */; };
@@ -80,6 +81,8 @@
 
 /* Begin PBXFileReference section */
 		288D06504D85A570B810BCB6 /* Pods_hangoutsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hangoutsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C1CFF4B22FA7DE600E89FAE /* FriendAvailabilityViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendAvailabilityViewCell.h; sourceTree = "<group>"; };
+		3C1CFF4C22FA7DE600E89FAE /* FriendAvailabilityViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendAvailabilityViewCell.m; sourceTree = "<group>"; };
 		3C313D3622EB8ACC002732DB /* PhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
 		3C313D3722EB8ACC002732DB /* PhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
 		3C313D3922EBAE9B002732DB /* Photo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 				3C43385422F4E5FE004EEB55 /* ProfileFriendsCollectionViewCell.m */,
 				3C43385622F8D723004EEB55 /* myDayTableViewCell.h */,
 				3C43385722F8D723004EEB55 /* myDayTableViewCell.m */,
+				3C1CFF4B22FA7DE600E89FAE /* FriendAvailabilityViewCell.h */,
+				3C1CFF4C22FA7DE600E89FAE /* FriendAvailabilityViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -698,6 +703,7 @@
 				3CF5DCF022E23A7B00FF2128 /* FriendsToEventCell.m in Sources */,
 				3C313D3822EB8ACC002732DB /* PhotosViewController.m in Sources */,
 				7BEBF5A622E7CD450008E648 /* DateFormatterManager.m in Sources */,
+				3C1CFF4D22FA7DE600E89FAE /* FriendAvailabilityViewCell.m in Sources */,
 				D9DF805722E685C4003D240F /* Chat_Message.m in Sources */,
 				7B61D4F522DF9EDE00007250 /* SignUpViewController.m in Sources */,
 				3C313D4122EF8CD2002732DB /* PhotoDetailsViewController.m in Sources */,
