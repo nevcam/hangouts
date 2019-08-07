@@ -310,7 +310,7 @@
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="clickedInviteFriends:" destination="qRP-5W-y9A" eventType="touchUpInside" id="Ohz-az-WsU"/>
+                                    <segue destination="cH3-Za-d6o" kind="show" identifier="eventFriendsSegue" id="opV-w8-hKZ"/>
                                 </connections>
                             </button>
                             <datePicker clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qwb-xE-h7R">
@@ -433,7 +433,6 @@
                         <outlet property="locationButton" destination="wbV-Ly-lhU" id="xB1-qX-LWS"/>
                         <outlet property="mapView" destination="aae-Lp-C4u" id="qhz-Fb-Lua"/>
                         <segue destination="yQA-RW-acZ" kind="show" identifier="locationsViewSegue" id="yVn-Ib-jb3"/>
-                        <segue destination="cH3-Za-d6o" kind="show" identifier="eventFriendsSegue" id="6CW-bZ-mP9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xtG-Fj-bMn" userLabel="First Responder" sceneMemberID="firstResponder"/>

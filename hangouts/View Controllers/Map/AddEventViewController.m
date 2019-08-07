@@ -43,7 +43,6 @@
     NSNumber *_location_lng;
     NSString *_location_name;
     NSString *_location_address;
-    NSMutableArray *_invitedFriends;
 }
 
 #pragma mark - Loading and Popping Controller
@@ -117,12 +116,12 @@
              }];
         } else {
             [self updateEvent];
+            [self updateInvites];
         }
         
     }
 }
 
-// If event is created successfully, we add owner and friends to UserXEvent Class
 - (void) handleSuccessCreatingEventWithEvent:(Event *)event
 {
     [UserXEvent createUserXEventForUser:[PFUser currentUser]
@@ -188,19 +187,14 @@
 
 #pragma mark - Load and Invite Friends
 
-// Triggered when user wants to see the list of friends that are invited to the event
-- (IBAction)clickedInviteFriends:(id)sender
-{
-    [self performSegueWithIdentifier:@"eventFriendsSegue" sender:nil];
-}
 // Follows protocol to save friends list from list view controller
-- (void)saveFriendsList:(nonnull NSMutableArray *)friendsList
-{
+- (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
     _invitedFriends = friendsList;
     [_invitedCollectionView reloadData];
     if(_invitedFriends && _invitedFriends.count > 0) {
         [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
     }
+
 }
 
 #pragma mark - Friends and Locations Segues
@@ -223,7 +217,7 @@
 
 - (BOOL)validateFields
 {
-    NSArray *fieldsStrings = [NSArray arrayWithObjects:_eventLocationField.text, _eventDescriptionField.text, _eventNameField.text, nil];
+    NSArray *fieldsStrings = [NSArray arrayWithObjects:_eventLocationNameField.text, _eventDescriptionField.text, _eventNameField.text, nil];
 
     for (NSString *string in fieldsStrings) {
         NSString *const stringNoSpaces = [string stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -373,10 +367,9 @@
     _location_lng = _event.location_lng;
     _location_name = _event.location_name;
     _location_address = _event.location_address;
-    // _invitedFriends (??)
 }
 
-#pragma mark - Update methods
+#pragma mark - Update queries
 
 - (void)updateEvent {
     PFQuery *eventQuery = [Event query];
@@ -411,6 +404,38 @@
     }];
 }
 
+- (void) inviteFriends:(NSArray *)newInvites {
+    if(newInvites) {
+        for (PFUser *friend in newInvites) {
+            [UserXEvent createUserXEventForUser:friend event:_event type:@"invited" withCompletion:^(BOOL succeeded, NSError *error) {
+                 if (error) {
+                     NSLog(@"Failed to add user to UserXEvent class");
+                 }
+             }];
+        }
+    }
+}
+
+- (void) uninviteFriends:(NSArray *)removedInvites {
+    if(removedInvites) {
+        PFQuery *userXEventQuery = [UserXEvent query];
+        [userXEventQuery whereKey:@"event" equalTo:_event];
+        [userXEventQuery whereKey:@"user" containedIn:removedInvites];
+        
+        [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            if(objects && !error) {
+                [UserXEvent deleteAllInBackground:objects block:^(BOOL succeeded, NSError * _Nullable error) {
+                    if(error) {
+                        NSLog(@"Could not delete uninvited UserXEvents");
+                    }
+                }];
+            }
+        }];
+    }
+}
+
+#pragma mark - Update methods
+
 - (void)updateInfoOfEvent:(Event *)event {
     [self assignImageToEvent:event];
     event.name = _eventNameField.text;
@@ -433,6 +458,29 @@
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
     event.eventPhoto = img;
+}
+
+- (void) updateInvites {
+    NSMutableArray *newInvites = [NSMutableArray new];
+    for (PFUser *user in _invitedFriends) {
+        if ([_goingFriends containsObject:user]) {
+            [_goingFriends removeObject:user];
+        } else if ([_pendingFriends containsObject:user]) {
+            [_pendingFriends removeObject:user];
+        } else {
+            [newInvites addObject:user];
+        }
+    }
+    [self inviteFriends:newInvites];
+    
+    NSMutableArray *removedInvites = [NSMutableArray new];
+    for (PFUser *user in _goingFriends) {
+        [removedInvites addObject:user];
+    }
+    for (PFUser *user in _pendingFriends) {
+        [removedInvites addObject:user];
+    }
+    [self uninviteFriends:removedInvites];
 }
 
 #pragma mark - Collection View Protocol Methods
