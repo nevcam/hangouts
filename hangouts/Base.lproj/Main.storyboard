@@ -1735,7 +1735,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="bio" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZn-sp-Hqb">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="bio" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZn-sp-Hqb">
                                 <rect key="frame" x="138" y="161" width="221" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1764,7 +1764,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AOa-kX-sKh">
-                                <rect key="frame" x="16" y="80" width="103" height="102"/>
+                                <rect key="frame" x="16" y="72" width="103" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfV-eU-tLf">
@@ -1902,7 +1902,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h37-r8-Oo2">
-                                <rect key="frame" x="16" y="190" width="103" height="23"/>
+                                <rect key="frame" x="16" y="182" width="103" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.96028356969999995" green="1" blue="0.88597238649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
@@ -1914,6 +1914,20 @@
                                     <action selector="didTapFriendStatus:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="yKa-he-UDD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6P-gT-4IR">
+                                <rect key="frame" x="16" y="206" width="103" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.9333303007" green="0.79162854890000001" blue="0.8223025316" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <state key="normal" title="Decline">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedFriends:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="6fo-2f-wlx"/>
+                                    <action selector="didDeclineFriend:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="G3q-KC-XTL"/>
+                                    <action selector="didTapFriendStatus:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="7mG-u0-9vY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="4ih-eV-SHG"/>
@@ -1923,6 +1937,7 @@
                         <outlet property="bioLabel" destination="DZn-sp-Hqb" id="F7M-lB-P19"/>
                         <outlet property="collectionView" destination="nPH-cB-gdm" id="xMp-Bg-k6g"/>
                         <outlet property="commonFriendsButton" destination="omh-on-BdL" id="lfQ-fq-Wq8"/>
+                        <outlet property="declineFriendButton" destination="N6P-gT-4IR" id="fXT-H3-9r7"/>
                         <outlet property="friendsButton" destination="TwW-FP-i7C" id="c6S-G8-AV4"/>
                         <outlet property="friendsCount" destination="tpD-Xp-UfG" id="kHQ-xE-wk4"/>
                         <outlet property="fullnameLabel" destination="UVp-E0-5fr" id="BXQ-Dk-v2E"/>
@@ -2188,7 +2203,7 @@
                                 <color key="textColor" red="0.2590284034" green="0.26159304109999998" blue="0.26159304109999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="bio" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faZ-lV-xaD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="bio" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faZ-lV-xaD">
                                 <rect key="frame" x="137" y="161" width="221" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2723,5 +2738,7 @@
         <segue reference="bna-kp-jZo"/>
         <segue reference="MnL-qw-Gyu"/>
         <segue reference="M1v-7o-WK4"/>
+        <segue reference="5ke-0h-Tl9"/>
+        <segue reference="oTR-i4-50P"/>
     </inferredMetricsTieBreakers>
 </document>

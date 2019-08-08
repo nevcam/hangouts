@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 @property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+@property (weak, nonatomic) IBOutlet UIButton *declineFriendButton;
+
 
 @end
 
@@ -58,6 +60,8 @@
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
+    _declineFriendButton.hidden = YES;
+    _addFriendButton.hidden = YES;
     [self setProfileImageLayout];
 }
 
@@ -69,7 +73,7 @@
     _tableView.delegate = self;
     
     [self getCurrentUserFriends];
-    _filteredUsers = [[NSMutableArray alloc] init];
+    _filteredUsers = [NSMutableArray new];
     [self getCurrentUserFriendship];
     
     [self setProfileFeatures];
@@ -120,14 +124,12 @@
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if(strongSelf) {
-                        if (!strongSelf->_friendUsers) {
-                            strongSelf->_friendUsers = [NSMutableArray new];
-                            [strongSelf->_friendUsers addObjectsFromArray:friends];
-                            [strongSelf->_filteredUsers addObjectsFromArray:friends];
-                            [strongSelf.collectionView reloadData];
-                        } else {
-                            NSLog(@"Error");
-                        }
+                        strongSelf->_friendUsers = [NSMutableArray new];
+                        [strongSelf->_friendUsers addObjectsFromArray:friends];
+                        strongSelf->_filteredUsers = [NSMutableArray new];
+
+                        [strongSelf->_filteredUsers addObjectsFromArray:friends];
+                        [strongSelf.collectionView reloadData];
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -468,6 +470,7 @@
 {
     for (PFUser *requestedFriend in _currentUserIncomingRequests) {
         if ([requestedFriend.objectId isEqualToString:_user.objectId]) {
+            _declineFriendButton.hidden = NO;
             return YES;
         }
     }
@@ -475,6 +478,8 @@
 }
 
 - (void)changeFriendButtonLayout {
+    
+    _addFriendButton.hidden = NO;
     
     UIColor *alreadyFriends = [UIColor colorWithRed:0.96 green:0.61 blue:0.58 alpha:1.0];
     UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
@@ -502,6 +507,10 @@
 
 // Functionality for friendship status button
 - (IBAction)didTapFriendStatus:(id)sender {
+    // We hide the button, while dealing with latency
+    _addFriendButton.hidden = YES;
+    _declineFriendButton.hidden = YES;
+    
     if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Add"]) {
         
         [_userFriendship addObject:_user forKey:@"outgoingRequests"];
@@ -525,6 +534,7 @@
     }
     else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Accept"]) {
         
+        // Deletes request from user incoming requests
         NSMutableArray *friendRequests = (NSMutableArray *)_userFriendship.incomingRequests;
         for (PFUser *requestFriend in friendRequests) {
             if ([requestFriend.objectId isEqualToString:_user.objectId]) {
@@ -532,11 +542,14 @@
                 break;
             }
         }
+        _userFriendship.incomingRequests = (NSPointerArray *)friendRequests;
+        
+        // Adds friend to user friends list
         NSMutableArray *currentUserFriends = (NSMutableArray *)_userFriendship.friends;
         [currentUserFriends addObject:_user];
         _userFriendship.friends = currentUserFriends;
-        _userFriendship.incomingRequests = (NSPointerArray *)friendRequests;
-
+        
+        // Saves data for user
         [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if (!error) {
             } else {
@@ -544,10 +557,39 @@
             }
         }];
         
+        // Deletes request from friend outgoing requests
         [self updateFriendFriendshipObject:@"Accept"];
         
     }
 }
+
+- (IBAction)didDeclineFriend:(id)sender
+{
+    // We hide the button, while dealing with latency
+    _declineFriendButton.hidden = YES;
+    
+    // Deletes request from user incoming requests
+    NSMutableArray *friendRequests = (NSMutableArray *)_userFriendship.incomingRequests;
+    for (PFUser *requestFriend in friendRequests) {
+        if ([requestFriend.objectId isEqualToString:_user.objectId]) {
+            [friendRequests removeObject:requestFriend];
+            break;
+        }
+    }
+    _userFriendship.incomingRequests = (NSPointerArray *)friendRequests;
+    
+    // Saves data for user
+    [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (!error) {
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    
+    // Deletes request from friend outgoing requests
+    [self updateFriendFriendshipObject:@"Decline"];
+}
+
 
 - (void)updateFriendFriendshipObject:(NSString *)change
 {
@@ -569,7 +611,8 @@
                     [userRequests addObject:[PFUser currentUser]];
                     friendship.incomingRequests = (NSPointerArray *)userRequests;
                 }
-                if ([change isEqualToString:@"Accept"]) {
+                if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
+                {
                     NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
                     for (PFUser *requestFriend in friendRequests) {
                         if ([requestFriend.objectId isEqualToString:[PFUser currentUser].objectId]) {
@@ -579,14 +622,16 @@
                     }
                     friendship.outgoingRequests = (NSPointerArray *)friendRequests;
                     
-                    NSMutableArray *currentUserFriends = (NSMutableArray *)friendship.friends;
-                    [currentUserFriends addObject:[PFUser currentUser]];
-                    friendship.friends = currentUserFriends;
+                    if ([change isEqualToString:@"Accept"]) {
+                        NSMutableArray *currentUserFriends = (NSMutableArray *)friendship.friends;
+                        [currentUserFriends addObject:[PFUser currentUser]];
+                        friendship.friends = currentUserFriends;
+                    }
                 }
-                
                 [friendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (!error) {
                         // Updates layout of friendship status
+                        
                         [strongSelf executeMainFunctions];
                     }
                     else {
