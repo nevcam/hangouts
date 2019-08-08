@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 @property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 
 @end
 
@@ -39,6 +40,8 @@
     NSMutableArray *_currentUserFriends;
     NSMutableArray *_filteredUsers;
     NSMutableArray *_userSchedule;
+    NSPointerArray *_currentUserIncomingRequests;
+    NSPointerArray *_currentUserOutgoingRequests;
 }
 
 #pragma mark - Set Profile Basic Features
@@ -50,8 +53,9 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     
-    _currentUserFriends = [[NSMutableArray alloc] initWithArray:[self getCurrentUserFriends]];
+    [self getCurrentUserFriends];
     _filteredUsers = [[NSMutableArray alloc] init];
+    [self getCurrentUserFriendships];
     
     [self setProfileFeatures];
     
@@ -217,9 +221,59 @@
     [self setButtonColors:NO];
 }
 
-- (NSMutableArray *)getCurrentUserFriends
+- (void)getCurrentUserFriends
 {
-    return [_delegate saveFriendsList];
+    if ([_delegate saveFriendsList]) {
+        _currentUserFriends = [[NSMutableArray alloc] initWithArray:[_delegate saveFriendsList]];
+    }
+    // If currentUserFriends has not been provided by a delegate method, query is carried out to get them.
+    else {
+        [self fetchFriendsQuery];
+    }
+}
+
+// Method only called when friends have not been provided through delegate method
+- (void)fetchFriendsQuery
+{
+    PFQuery *query = [Friendship query];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    query.limit = 1;
+    
+    __weak typeof(self) weakSelf = self;
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
+        if (friendships) {
+            NSArray *friendPointers = friendships[0][@"friends"];
+            NSMutableArray *friendIds = [NSMutableArray new];
+            
+            for (PFUser *friendPointer in friendPointers) {
+                [friendIds addObject:friendPointer.objectId];
+            }
+            
+            PFQuery *query = [PFUser query];
+            [query orderByAscending:@"fullname"];
+            [query whereKey:@"objectId" containedIn:friendIds];
+            
+            [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable friends, NSError * _Nullable error) {
+                if (friends) {
+                    
+                    __strong typeof(self) strongSelf = weakSelf;
+                    if (strongSelf) {
+                        strongSelf->_currentUserFriends = [[NSMutableArray alloc] init];
+                        [strongSelf->_currentUserFriends addObjectsFromArray:friends];
+                        
+                        // Updates features of view controller
+                        [strongSelf.collectionView reloadData];
+                        [strongSelf changeFriendButtonLayout];
+                    }
+                } else {
+                    NSLog(@"Error: %@", error.localizedDescription);
+                }
+            }];
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+
 }
 
 - (void)setButtonColors:(bool)defaultColors
@@ -350,4 +404,93 @@
     return time;
 }
 
+#pragma mark - Check If Friends
+
+- (void)getCurrentUserFriendships {
+    
+    PFQuery *query = [Friendship query];
+    [query orderByDescending:@"createdAt"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    query.limit = 1;
+    
+    __weak typeof(self) weakSelf = self;
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
+        if (friendships) {
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if (strongSelf) {
+                Friendship *friendship = friendships[0];
+                
+                strongSelf->_currentUserIncomingRequests = [[NSPointerArray alloc] init];
+                strongSelf->_currentUserOutgoingRequests = [[NSPointerArray alloc] init];
+                strongSelf->_currentUserIncomingRequests = (NSPointerArray *)friendship.incomingRequests;
+                strongSelf->_currentUserOutgoingRequests = (NSPointerArray *)friendship.outgoingRequests;
+                
+                // Sets friendship status accordingly
+                [strongSelf changeFriendButtonLayout];
+            }
+            else {
+                NSLog(@"Error: View Controller has been exited");
+            }
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (bool)checkIfFriend
+{
+    for (PFUser *friendUser in _currentUserFriends) {
+        if ([friendUser.objectId isEqualToString:_user.objectId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (bool)checkIfRequestedFriend
+{
+    for (PFUser *requestedFriend in _currentUserOutgoingRequests) {
+        if ([requestedFriend.objectId isEqualToString:_user.objectId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (bool)checkIfAskedFriend
+{
+    for (PFUser *requestedFriend in _currentUserIncomingRequests) {
+        if ([requestedFriend.objectId isEqualToString:_user.objectId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)changeFriendButtonLayout {
+    
+    UIColor *alreadyFriends = [UIColor colorWithRed:0.96 green:0.61 blue:0.58 alpha:1.0];
+    UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
+     UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
+    UIColor *acceptFriends = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
+    
+    if ([self checkIfFriend]) {
+        [self changeFriendButtonHelperWithTitle:@"Remove" buttonColor:alreadyFriends];
+    }
+    else if ([self checkIfRequestedFriend]) {
+         [self changeFriendButtonHelperWithTitle:@"Requested" buttonColor:requestedFriends];
+    }
+    else if ([self checkIfAskedFriend]){
+        [self changeFriendButtonHelperWithTitle:@"Accept" buttonColor:acceptFriends];
+    }
+    else {
+        [self changeFriendButtonHelperWithTitle:@"Add" buttonColor:notFriends];
+    }
+}
+
+- (void)changeFriendButtonHelperWithTitle:(NSString *)title buttonColor:(UIColor *)color {
+    _addFriendButton.backgroundColor = color;
+    [_addFriendButton setTitle:title forState:UIControlStateNormal];
+}
 @end

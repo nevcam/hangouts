@@ -335,9 +335,9 @@
         NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES]];
         NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
         _todayEvents = [[NSMutableArray alloc] initWithArray:sortedArray];
-        
-        [self getTodayEvents];
     }
+    
+    [self getTodayEvents];
 }
 
 -(void)getTodayEvents
