@@ -28,7 +28,7 @@
     [manager.formatter setDateFormat:@"EEE MMM dd"];
     _dateLabel.text = [manager.formatter stringFromDate:event.date];
     _locationLabel.text = event.location_name;
-    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@",event.ownerUsername];
+    _ownerUsernameLabel.text = [NSString stringWithFormat:@"%@'s event",event.ownerUsername];
     _descriptionLabel.text = event.eventDescription;
 }
 
