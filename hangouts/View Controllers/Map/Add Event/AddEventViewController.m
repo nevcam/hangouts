@@ -487,7 +487,6 @@
 
 - (void)changedStartDateTo:(NSDate *)startDate {
     _startDate = startDate;
-    NSLog(@"start date is: %@",_startDate);
 }
 
 #pragma mark - Collection View Protocol Methods
