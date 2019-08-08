@@ -45,6 +45,7 @@
     NSPointerArray *_currentUserIncomingRequests;
     NSPointerArray *_currentUserOutgoingRequests;
     Friendship *_userFriendship;
+    bool friendsListChanged;
 }
 
 #pragma mark - Set Profile Basic Features
@@ -227,7 +228,7 @@
 
 - (void)getCurrentUserFriends
 {
-    if ([_delegate saveFriendsList]) {
+    if ([_delegate saveFriendsList] && !friendsListChanged) {
         _currentUserFriends = [[NSMutableArray alloc] initWithArray:[_delegate saveFriendsList]];
     }
     // If currentUserFriends has not been provided by a delegate method, query is carried out to get them.
@@ -559,7 +560,28 @@
         
         // Deletes request from friend outgoing requests
         [self updateFriendFriendshipObject:@"Accept"];
+    }
+    else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Unfriend"])
+    {
+        NSMutableArray *friends = (NSMutableArray *)_userFriendship.friends;
+        for (PFUser *friend in friends) {
+            if ([friend.objectId isEqualToString:_user.objectId]) {
+                [friends removeObject:friend];
+                break;
+            }
+        }
+        _userFriendship.friends = friends;
         
+        // Saves data for user
+        [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error) {
+            } else {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        
+        // Deletes request from friend outgoing requests
+        [self updateFriendFriendshipObject:@"Unfriend"];
     }
 }
 
@@ -610,8 +632,9 @@
                     NSMutableArray *userRequests = (NSMutableArray *)friendship.incomingRequests;
                     [userRequests addObject:[PFUser currentUser]];
                     friendship.incomingRequests = (NSPointerArray *)userRequests;
+                    strongSelf->friendsListChanged = YES;
                 }
-                if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
+                else if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
                 {
                     NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
                     for (PFUser *requestFriend in friendRequests) {
@@ -628,10 +651,31 @@
                         friendship.friends = currentUserFriends;
                     }
                 }
+                else if ([change isEqualToString:@"Unfriend"]) {
+                    NSMutableArray *friends = (NSMutableArray *)friendship.friends;
+                    for (PFUser *friend in friends) {
+                        if ([friend.objectId isEqualToString:[PFUser currentUser].objectId]) {
+                            [friends removeObject:friend];
+                            strongSelf->friendsListChanged = YES;
+                            break;
+                        }
+                    }
+                    
+                    friendship.friends = friends;
+                }
+                
+                // Saves changes in database
                 [friendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (!error) {
-                        // Updates layout of friendship status
                         
+                        // Set friends nil in case user only had one friend
+                        strongSelf->_friendUsers = nil;
+                        strongSelf->_filteredUsers = nil;
+                        strongSelf->_currentUserFriends = nil;
+                        strongSelf->_currentUserIncomingRequests = nil;
+                        strongSelf->_currentUserOutgoingRequests = nil;
+                        
+                        // Updates layout of friendship status
                         [strongSelf executeMainFunctions];
                     }
                     else {
