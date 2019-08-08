@@ -31,6 +31,7 @@
 		7B61D4FB22E0F77400007250 /* MyEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FA22E0F77400007250 /* MyEventsViewController.m */; };
 		7B61D4FF22E0F84A00007250 /* EventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D4FE22E0F84A00007250 /* EventCell.m */; };
 		7B61D50322E1147300007250 /* UserXEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B61D50222E1147300007250 /* UserXEvent.m */; };
+		7B7C09E522FC9CB800366064 /* DateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B7C09E422FC9CB800366064 /* DateTableViewController.m */; };
 		7B94621D22EBA8050035E9A3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B6322DE7E080003F9CE /* main.m */; };
 		7B94621E22EBA8050035E9A3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9F09B5522DE7E060003F9CE /* AppDelegate.m */; };
 		7BCCFB4022F390CB00DB0D8D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BCCFB3F22F390CB00DB0D8D /* UserCell.m */; };
@@ -126,6 +127,8 @@
 		7B61D4FE22E0F84A00007250 /* EventCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventCell.m; sourceTree = "<group>"; };
 		7B61D50122E1147300007250 /* UserXEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserXEvent.h; sourceTree = "<group>"; };
 		7B61D50222E1147300007250 /* UserXEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserXEvent.m; sourceTree = "<group>"; };
+		7B7C09E322FC9CB800366064 /* DateTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateTableViewController.h; sourceTree = "<group>"; };
+		7B7C09E422FC9CB800366064 /* DateTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DateTableViewController.m; sourceTree = "<group>"; };
 		7BCCFB3622EF883100DB0D8D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		7BCCFB3822EF886C00DB0D8D /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		7BCCFB3E22F390CB00DB0D8D /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
@@ -247,6 +250,7 @@
 		3CF5DCDE22E123C500FF2128 /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				7B7C09E222FC9C6A00366064 /* Add Event */,
 				D934D1DF22EF886E00B761D8 /* PersonDetailMapView.xib */,
 				3CE7D01122DF9681005E5C29 /* MapViewController.h */,
 				3CE7D01222DF9681005E5C29 /* MapViewController.m */,
@@ -256,8 +260,6 @@
 				D934D1DA22EBA2A000B761D8 /* CustomPointAnnotation.m */,
 				D93D374A22EFC3AF00B3C617 /* EventPointAnnotation.h */,
 				D93D374B22EFC3AF00B3C617 /* EventPointAnnotation.m */,
-				3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */,
-				3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */,
 				3CE7D01D22E0D930005E5C29 /* LocationsViewController.h */,
 				3CE7D01E22E0D930005E5C29 /* LocationsViewController.m */,
 				3CF5DCF422E260CA00FF2128 /* FriendsInviteViewController.h */,
@@ -364,6 +366,17 @@
 				3C313D3A22EBAE9B002732DB /* Photo.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		7B7C09E222FC9C6A00366064 /* Add Event */ = {
+			isa = PBXGroup;
+			children = (
+				3CE7D01722DF97F2005E5C29 /* AddEventViewController.h */,
+				3CE7D01822DF97F2005E5C29 /* AddEventViewController.m */,
+				7B7C09E322FC9CB800366064 /* DateTableViewController.h */,
+				7B7C09E422FC9CB800366064 /* DateTableViewController.m */,
+			);
+			path = "Add Event";
 			sourceTree = "<group>";
 		};
 		7BEBF5A322E7CCE30008E648 /* Common Helpers */ = {
@@ -725,6 +738,7 @@
 				3CE7D01322DF9681005E5C29 /* MapViewController.m in Sources */,
 				D93D374C22EFC3AF00B3C617 /* EventPointAnnotation.m in Sources */,
 				3C313D3B22EBAE9B002732DB /* Photo.m in Sources */,
+				7B7C09E522FC9CB800366064 /* DateTableViewController.m in Sources */,
 				D9DF804722E28D76003D240F /* FriendViewCell.m in Sources */,
 				3CE7D01F22E0D930005E5C29 /* LocationsViewController.m in Sources */,
 			);

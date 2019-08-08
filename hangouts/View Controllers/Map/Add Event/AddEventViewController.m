@@ -23,8 +23,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 
-@property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
-
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -54,14 +52,12 @@
     
     if (!_event) {
         _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
-        [_eventDatePicker setMinimumDate: [NSDate date]];
         [self setInitialPlaceholder];
     } else {
         [self setEventPhoto];
         [self setEventMap];
         [self setEventLabels];
         [self setEventIVars];
-        _eventDatePicker.date = _event.date;
     }
 }
 
@@ -89,12 +85,11 @@
     } else {
         if(!_event) {
             NSString *const newEventName = _eventNameField.text;
-            NSDate *const newEventDate = _eventDatePicker.date;
             NSString *const description = _eventDescriptionField.text;
             
             // Calls function that adds objects to class
             [Event createEvent:newEventName
-                          date:newEventDate
+                          date:nil
                    description:description
                            lat:_location_lat
                            lng:_location_lng
@@ -436,7 +431,6 @@
 - (void)updateInfoOfEvent:(Event *)event {
     [self assignImageToEvent:event];
     event.name = _eventNameField.text;
-    event.date = _eventDatePicker.date;
     event.eventDescription = _eventDescriptionField.text;
     event.location_name = _eventLocationNameField.text;
     event.location_address = _eventLocationField.text;

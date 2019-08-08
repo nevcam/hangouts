@@ -334,6 +334,78 @@
             </objects>
             <point key="canvasLocation" x="-1151.2" y="2399.5502248875564"/>
         </scene>
+        <!--Date Table View Controller-->
+        <scene sceneID="vku-OT-SUn">
+            <objects>
+                <tableViewController id="WfE-11-zLR" customClass="DateTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="LIC-ew-AX9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="151"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <sections>
+                            <tableViewSection id="kTc-jP-fbt">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yTr-kc-HM1">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yTr-kc-HM1" id="xg0-8d-pcb">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnE-Ow-pfl">
+                                                    <rect key="frame" x="16" y="11" width="38" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R3P-LE-4El">
+                                                    <rect key="frame" x="90" y="11" width="269" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="113" id="ceE-e7-7TX">
+                                        <rect key="frame" x="0.0" y="44" width="375" height="113"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ceE-e7-7TX" id="3iJ-Tl-wcS">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OAI-ed-oxX">
+                                                    <rect key="frame" x="0.0" y="-52" width="375" height="216"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <date key="date" timeIntervalSinceReferenceDate="586982836.19476604">
+                                                        <!--2019-08-08 18:47:16 +0000-->
+                                                    </date>
+                                                    <connections>
+                                                        <action selector="showStartDate:" destination="WfE-11-zLR" eventType="valueChanged" id="ZzE-MC-AJi"/>
+                                                    </connections>
+                                                </datePicker>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="WfE-11-zLR" id="a3U-RZ-2Id"/>
+                            <outlet property="delegate" destination="WfE-11-zLR" id="Re1-Ix-9y1"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="startDateLabel" destination="R3P-LE-4El" id="EIj-CT-1ll"/>
+                        <outlet property="startDatePicker" destination="OAI-ed-oxX" id="4jA-QS-gj3"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dXz-Jm-GHF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1151.2" y="4477.5112443778116"/>
+        </scene>
         <!--Add Event-->
         <scene sceneID="wEh-xh-9YR">
             <objects>
@@ -368,13 +440,6 @@
                                     <segue destination="cH3-Za-d6o" kind="show" identifier="eventFriendsSegue" id="opV-w8-hKZ"/>
                                 </connections>
                             </button>
-                            <datePicker clipsSubviews="YES" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qwb-xE-h7R">
-                                <rect key="frame" x="16" y="227" width="343" height="85"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <date key="date" timeIntervalSinceReferenceDate="585079643.52182901">
-                                    <!--2019-07-17 18:07:23 +0000-->
-                                </date>
-                            </datePicker>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="img-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Fo6-i6-xtS">
                                 <rect key="frame" x="16" y="84" width="110" height="110"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -477,6 +542,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kdv-hv-noa">
+                                <rect key="frame" x="0.0" y="204" width="375" height="151"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="WfE-11-zLR" kind="embed" id="Mm5-nQ-imv"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="jqC-fm-fdE"/>
@@ -495,7 +567,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="createButton" destination="srX-HI-3pQ" id="U9o-PN-4Yy"/>
-                        <outlet property="eventDatePicker" destination="Qwb-xE-h7R" id="Rtx-gE-J9F"/>
                         <outlet property="eventDescriptionField" destination="Npr-W1-HOe" id="S8S-0v-Trt"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>
                         <outlet property="eventLocationNameField" destination="56B-Fq-gPA" id="agp-bp-ACR"/>
@@ -610,7 +681,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j41-WR-7nJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-586" y="4660"/>
+            <point key="canvasLocation" x="-422" y="4658"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="NjA-vg-NWg">
@@ -2571,7 +2642,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ftJ-XV-gxu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1737" y="4661"/>
+            <point key="canvasLocation" x="-1905" y="4659"/>
         </scene>
         <!--Details-->
         <scene sceneID="kzj-4a-wYq">
@@ -2650,7 +2721,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="gyE-XP-bW1"/>
+        <segue reference="MnL-qw-Gyu"/>
         <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>
