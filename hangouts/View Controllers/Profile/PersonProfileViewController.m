@@ -611,7 +611,7 @@
                     [userRequests addObject:[PFUser currentUser]];
                     friendship.incomingRequests = (NSPointerArray *)userRequests;
                 }
-                if ([change isEqualToString:@"Accept"] )
+                if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
                 {
                     NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
                     for (PFUser *requestFriend in friendRequests) {
@@ -622,21 +622,12 @@
                     }
                     friendship.outgoingRequests = (NSPointerArray *)friendRequests;
                     
-                    NSMutableArray *currentUserFriends = (NSMutableArray *)friendship.friends;
-                    [currentUserFriends addObject:[PFUser currentUser]];
-                    friendship.friends = currentUserFriends;
-                }
-                if ([change isEqualToString:@"Decline"]) {
-                    NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
-                    for (PFUser *requestFriend in friendRequests) {
-                        if ([requestFriend.objectId isEqualToString:[PFUser currentUser].objectId]) {
-                            [friendRequests removeObject:requestFriend];
-                            break;
-                        }
+                    if ([change isEqualToString:@"Accept"]) {
+                        NSMutableArray *currentUserFriends = (NSMutableArray *)friendship.friends;
+                        [currentUserFriends addObject:[PFUser currentUser]];
+                        friendship.friends = currentUserFriends;
                     }
-                    friendship.outgoingRequests = (NSPointerArray *)friendRequests;
                 }
-                
                 [friendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (!error) {
                         // Updates layout of friendship status
