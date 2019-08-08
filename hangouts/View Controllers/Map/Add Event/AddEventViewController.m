@@ -13,9 +13,10 @@
 #import "FriendsInviteViewController.h"
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
+#include "DateTableViewController.h"
 #import "UserCell.h"
 
-@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, LocationsViewControllerDelegate, SaveFriendsListDelegate, DateTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationNameField;
@@ -39,6 +40,7 @@
     NSNumber *_location_lng;
     NSString *_location_name;
     NSString *_location_address;
+    NSDate *_startDate;
 }
 
 #pragma mark - Loading and Popping Controller
@@ -49,6 +51,7 @@
     
     _invitedCollectionView.delegate = self;
     _invitedCollectionView.dataSource = self;
+    _startDate = [NSDate date];
     
     if (!_event) {
         _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
@@ -89,7 +92,7 @@
             
             // Calls function that adds objects to class
             [Event createEvent:newEventName
-                          date:nil
+                          date:_startDate
                    description:description
                            lat:_location_lat
                            lng:_location_lng
@@ -190,6 +193,12 @@
         FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
         friendsInvitedController.delegate = self;
         friendsInvitedController.invitedFriends = _invitedFriends;
+    } else if ([segue.identifier isEqualToString:@"DatepickerEmbeddedSegue"]) {
+        DateTableViewController *dateTableViewController = [segue destinationViewController];
+        if(_event) {
+            dateTableViewController.date = _event.date;
+        }
+        dateTableViewController.delegate = self;
     }
 }
 
@@ -432,6 +441,7 @@
     [self assignImageToEvent:event];
     event.name = _eventNameField.text;
     event.eventDescription = _eventDescriptionField.text;
+    event.date = _startDate;
     event.location_name = _eventLocationNameField.text;
     event.location_address = _eventLocationField.text;
     event.location_lat = _location_lat;
@@ -471,6 +481,13 @@
         [removedInvites addObject:user];
     }
     [self uninviteFriends:removedInvites];
+}
+
+#pragma mark - Date Picker Controller Protocol Methods
+
+- (void)changedStartDateTo:(NSDate *)startDate {
+    _startDate = startDate;
+    NSLog(@"start date is: %@",_startDate);
 }
 
 #pragma mark - Collection View Protocol Methods

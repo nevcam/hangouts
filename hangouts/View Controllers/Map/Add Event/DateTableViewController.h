@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol DateTableViewControllerDelegate
+
+- (void)changedStartDateTo:(NSDate *)startDate;
+
+@end
+
 @interface DateTableViewController : UITableViewController
+
+@property (nonatomic, weak) id<DateTableViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSDate *date;
 
 @end
 

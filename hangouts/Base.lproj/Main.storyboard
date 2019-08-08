@@ -546,7 +546,7 @@
                                 <rect key="frame" x="0.0" y="204" width="375" height="151"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
-                                    <segue destination="WfE-11-zLR" kind="embed" id="Mm5-nQ-imv"/>
+                                    <segue destination="WfE-11-zLR" kind="embed" identifier="DatepickerEmbeddedSegue" id="Mm5-nQ-imv"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -2736,8 +2736,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="MnL-qw-Gyu"/>
-        <segue reference="M1v-7o-WK4"/>
         <segue reference="5ke-0h-Tl9"/>
         <segue reference="oTR-i4-50P"/>
     </inferredMetricsTieBreakers>

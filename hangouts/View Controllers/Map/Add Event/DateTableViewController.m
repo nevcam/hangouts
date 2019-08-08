@@ -22,6 +22,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _startDateVisible = NO;
+    if(_date) {
+        _startDatePicker.date = _date;
+        _startDateLabel.text = [NSDateFormatter localizedStringFromDate:_startDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];
+    }
 }
 
 - (IBAction)showStartDate:(id)sender {
@@ -30,6 +34,7 @@
 
 - (void)startDateChanged {
     _startDateLabel.text = [NSDateFormatter localizedStringFromDate:_startDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];
+    [_delegate changedStartDateTo:_startDatePicker.date];
 }
 
 - (void)toggleStartDateDatepicker {
@@ -42,12 +47,10 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSLog(@"One section");
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"Two rows");
     return 2;
 }
 
