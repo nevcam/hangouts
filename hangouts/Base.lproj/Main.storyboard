@@ -1836,6 +1836,7 @@
                                 </state>
                                 <connections>
                                     <action selector="clickedFriends:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="6fo-2f-wlx"/>
+                                    <action selector="didDeclineFriend:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="G3q-KC-XTL"/>
                                     <action selector="didTapFriendStatus:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="7mG-u0-9vY"/>
                                 </connections>
                             </button>
