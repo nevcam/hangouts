@@ -46,6 +46,7 @@
     for (PFUser *requestUser in friendRequests) {
         if ([self.user.objectId isEqual:requestUser.objectId]) {
             [friendRequests removeObject:requestUser];
+            break;
         }
     }
     self.currentUserFriendship.incomingRequests = (NSPointerArray *)friendRequests;
@@ -74,6 +75,7 @@
             for (PFUser *outgoingRequestUser in cellUserOutgoingRequests) {
                 if ([[PFUser currentUser].objectId isEqual:outgoingRequestUser.objectId]) {
                     [cellUserOutgoingRequests removeObject:outgoingRequestUser];
+                    break;
                 }
             }
             strongSelf.cellUserFriendship.outgoingRequests = (NSPointerArray *)cellUserOutgoingRequests;

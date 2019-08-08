@@ -1752,7 +1752,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="noData" translatesAutoresizingMaskIntoConstraints="NO" id="cT1-QZ-Wbv">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="noData" translatesAutoresizingMaskIntoConstraints="NO" id="cT1-QZ-Wbv">
                                 <rect key="frame" x="144" y="464" width="86" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1773,6 +1773,7 @@
                                 </state>
                                 <connections>
                                     <action selector="clickedFriends:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="L6W-PB-je4"/>
+                                    <action selector="didTapFriendStatus:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="yKa-he-UDD"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -2582,8 +2583,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="w2F-AF-ITO"/>
-        <segue reference="M1v-7o-WK4"/>
         <segue reference="gyE-XP-bW1"/>
         <segue reference="oTR-i4-50P"/>
     </inferredMetricsTieBreakers>
