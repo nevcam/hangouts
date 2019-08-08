@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 @property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+@property (weak, nonatomic) IBOutlet UIButton *declineFriendButton;
+
 
 @end
 
@@ -58,6 +60,7 @@
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
+    _declineFriendButton.hidden = YES;
     [self setProfileImageLayout];
 }
 
@@ -69,7 +72,7 @@
     _tableView.delegate = self;
     
     [self getCurrentUserFriends];
-    _filteredUsers = [[NSMutableArray alloc] init];
+    _filteredUsers = [NSMutableArray new];
     [self getCurrentUserFriendship];
     
     [self setProfileFeatures];
@@ -120,14 +123,10 @@
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if(strongSelf) {
-                        if (!strongSelf->_friendUsers) {
-                            strongSelf->_friendUsers = [NSMutableArray new];
-                            [strongSelf->_friendUsers addObjectsFromArray:friends];
-                            [strongSelf->_filteredUsers addObjectsFromArray:friends];
-                            [strongSelf.collectionView reloadData];
-                        } else {
-                            NSLog(@"Error");
-                        }
+                        strongSelf->_friendUsers = [NSMutableArray new];
+                        [strongSelf->_friendUsers addObjectsFromArray:friends];
+                        [strongSelf->_filteredUsers addObjectsFromArray:friends];
+                        [strongSelf.collectionView reloadData];
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -468,6 +467,7 @@
 {
     for (PFUser *requestedFriend in _currentUserIncomingRequests) {
         if ([requestedFriend.objectId isEqualToString:_user.objectId]) {
+            _declineFriendButton.hidden = NO;
             return YES;
         }
     }
