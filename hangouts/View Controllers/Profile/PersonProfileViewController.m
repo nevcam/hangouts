@@ -55,17 +55,6 @@
     [self executeMainFunctions];
 }
 
-- (void)setProfileFeatures
-{
-    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
-    _fullnameLabel.text = _user[@"fullname"];
-    _bioLabel.text = _user[@"bio"];
-    _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
-    _declineFriendButton.hidden = YES;
-    _addFriendButton.hidden = YES;
-    [self setProfileImageLayout];
-}
-
 - (void)executeMainFunctions
 {
     _collectionView.dataSource = self;
@@ -83,7 +72,20 @@
     
     [self fetchFriends];
     [self setButtonColors:YES];
+    
+}
 
+- (void)setProfileFeatures
+{
+    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
+    _fullnameLabel.text = _user[@"fullname"];
+    _bioLabel.text = _user[@"bio"];
+    _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
+    
+    _declineFriendButton.hidden = YES;
+    _addFriendButton.hidden = YES;
+    
+    [self setProfileImageLayout];
 }
 
 - (void)setProfileImageLayout
@@ -140,7 +142,6 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-    
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -194,7 +195,8 @@
         _friendUsers = nil;
         _filteredUsers = nil;
         _userSchedule = nil;
-        [self viewDidLoad];
+        _userFriendship = nil;
+        [self executeMainFunctions];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -671,6 +673,7 @@
                         // Set friends nil in case user only had one friend
                         strongSelf->_friendUsers = nil;
                         strongSelf->_filteredUsers = nil;
+                        strongSelf->_userFriendship = nil;
                         strongSelf->_currentUserFriends = nil;
                         strongSelf->_currentUserIncomingRequests = nil;
                         strongSelf->_currentUserOutgoingRequests = nil;
