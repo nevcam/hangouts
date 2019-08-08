@@ -25,13 +25,11 @@
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
 
-@property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
-@property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
@@ -93,7 +91,6 @@
             NSString *const newEventName = _eventNameField.text;
             NSDate *const newEventDate = _eventDatePicker.date;
             NSString *const description = _eventDescriptionField.text;
-            NSString *const newEventDuration = _eventDurationField.text;
             
             // Calls function that adds objects to class
             [Event createEvent:newEventName
@@ -104,7 +101,7 @@
                           name:_location_name
                        address:_location_address
                          photo:_eventPhoto.image
-                      duration:newEventDuration
+                      duration:nil
                 withCompletion:^(Event *event, NSError *error)
              {
                  if (error) {
@@ -150,11 +147,6 @@
 
 #pragma mark - Event Location
 
-// Triggered when user wants to choose a location
-- (IBAction)clickedChooseLocation:(id)sender
-{
-    [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
-}
 // Locally saves location if user has chosen one
 - (void)locationsViewController:(LocationsViewController *)controller
     didPickLocationWithLatitude:(NSNumber *)latitude
@@ -172,9 +164,6 @@
     if (address) {
         _eventLocationField.text = address;
     }
-    if (name) {
-        [self.locationButton setTitle:@"Change" forState:UIControlStateNormal];
-    }
     
     if (_location_lng && _location_lat) {
         [_mapView removeAnnotations:_mapView.annotations];
@@ -191,10 +180,6 @@
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
     _invitedFriends = friendsList;
     [_invitedCollectionView reloadData];
-    if(_invitedFriends && _invitedFriends.count > 0) {
-        [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
-    }
-
 }
 
 #pragma mark - Friends and Locations Segues
@@ -241,7 +226,6 @@
     if (_eventDescriptionField.text.length == 0) {
         _eventDescriptionField.text = @"Description";
         _eventDescriptionField.textColor = [UIColor lightGrayColor];
-        [_eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         _eventDescriptionField.delegate = self;
     }
 }
@@ -266,7 +250,6 @@
     if(_eventDescriptionField.text.length == 0) {
         _eventDescriptionField.textColor = [UIColor lightGrayColor];
         _eventDescriptionField.text = @"Description";
-        [_eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         [_eventDescriptionField resignFirstResponder];
     }
     return YES;
@@ -373,8 +356,6 @@
     _eventLocationNameField.text = _event.location_name;
     _eventNameField.text = _event.name;
     _eventDescriptionField.text = _event.eventDescription;
-    _eventDurationField.text = _event.duration;
-    [_locationButton setTitle:@"Change" forState:UIControlStateNormal];
     [_createButton setTitle:@"Save"];
 }
 
@@ -461,7 +442,6 @@
     event.location_address = _eventLocationField.text;
     event.location_lat = _location_lat;
     event.location_lng = _location_lng;
-    event.duration = _eventDurationField.text;
 }
 
 - (void)assignImageToEvent: (Event *)event {
@@ -510,26 +490,6 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _invitedFriends.count;
-}
-
-- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
-    
-    float cellCount =_invitedFriends.count;
-    float cellSpacing = flowLayout.minimumLineSpacing;
-    float cellWidth = flowLayout.itemSize.width;
-    
-    float totalCellWidth = cellWidth * cellCount;
-    float totalSpacingWidth = cellSpacing * (cellCount - 1);
-    
-    UIEdgeInsets inset = flowLayout.sectionInset;
-    if(collectionView.frame.size.width > (totalCellWidth + totalSpacingWidth)) {
-        inset.left = (collectionView.frame.size.width - (totalCellWidth + totalSpacingWidth)) / 2;
-        inset.right = inset.left;
-    }
-    [flowLayout setSectionInset:inset];
-    
-    return (UICollectionViewTransitionLayout *)flowLayout;
 }
 
 @end
