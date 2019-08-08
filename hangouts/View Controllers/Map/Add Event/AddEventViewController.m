@@ -13,9 +13,10 @@
 #import "FriendsInviteViewController.h"
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
+#include "DateTableViewController.h"
 #import "UserCell.h"
 
-@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, LocationsViewControllerDelegate, UITextFieldDelegate, SaveFriendsListDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, LocationsViewControllerDelegate, SaveFriendsListDelegate, DateTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationField;
 @property (weak, nonatomic) IBOutlet UILabel *eventLocationNameField;
@@ -23,15 +24,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *eventNameField;
 @property (weak, nonatomic) IBOutlet UITextView *eventDescriptionField;
 
-@property (weak, nonatomic) IBOutlet UIDatePicker *eventDatePicker;
-
-@property (weak, nonatomic) IBOutlet UITextField *eventDurationField;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
-@property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
@@ -43,6 +40,7 @@
     NSNumber *_location_lng;
     NSString *_location_name;
     NSString *_location_address;
+    NSDate *_startDate;
 }
 
 #pragma mark - Loading and Popping Controller
@@ -53,17 +51,16 @@
     
     _invitedCollectionView.delegate = self;
     _invitedCollectionView.dataSource = self;
+    _startDate = [NSDate date];
     
     if (!_event) {
         _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
-        [_eventDatePicker setMinimumDate: [NSDate date]];
         [self setInitialPlaceholder];
     } else {
         [self setEventPhoto];
         [self setEventMap];
         [self setEventLabels];
         [self setEventIVars];
-        _eventDatePicker.date = _event.date;
     }
 }
 
@@ -91,20 +88,18 @@
     } else {
         if(!_event) {
             NSString *const newEventName = _eventNameField.text;
-            NSDate *const newEventDate = _eventDatePicker.date;
             NSString *const description = _eventDescriptionField.text;
-            NSString *const newEventDuration = _eventDurationField.text;
             
             // Calls function that adds objects to class
             [Event createEvent:newEventName
-                          date:newEventDate
+                          date:_startDate
                    description:description
                            lat:_location_lat
                            lng:_location_lng
                           name:_location_name
                        address:_location_address
                          photo:_eventPhoto.image
-                      duration:newEventDuration
+                      duration:nil
                 withCompletion:^(Event *event, NSError *error)
              {
                  if (error) {
@@ -150,11 +145,6 @@
 
 #pragma mark - Event Location
 
-// Triggered when user wants to choose a location
-- (IBAction)clickedChooseLocation:(id)sender
-{
-    [self performSegueWithIdentifier:@"locationsViewSegue" sender:nil];
-}
 // Locally saves location if user has chosen one
 - (void)locationsViewController:(LocationsViewController *)controller
     didPickLocationWithLatitude:(NSNumber *)latitude
@@ -172,9 +162,6 @@
     if (address) {
         _eventLocationField.text = address;
     }
-    if (name) {
-        [self.locationButton setTitle:@"Change" forState:UIControlStateNormal];
-    }
     
     if (_location_lng && _location_lat) {
         [_mapView removeAnnotations:_mapView.annotations];
@@ -191,10 +178,6 @@
 - (void)saveFriendsList:(nonnull NSMutableArray *)friendsList {
     _invitedFriends = friendsList;
     [_invitedCollectionView reloadData];
-    if(_invitedFriends && _invitedFriends.count > 0) {
-        [_inviteFriendsButton setTitle:@"Invitees" forState:UIControlStateNormal];
-    }
-
 }
 
 #pragma mark - Friends and Locations Segues
@@ -210,6 +193,12 @@
         FriendsInviteViewController *friendsInvitedController = [segue destinationViewController];
         friendsInvitedController.delegate = self;
         friendsInvitedController.invitedFriends = _invitedFriends;
+    } else if ([segue.identifier isEqualToString:@"DatepickerEmbeddedSegue"]) {
+        DateTableViewController *dateTableViewController = [segue destinationViewController];
+        if(_event) {
+            dateTableViewController.date = _event.date;
+        }
+        dateTableViewController.delegate = self;
     }
 }
 
@@ -241,7 +230,6 @@
     if (_eventDescriptionField.text.length == 0) {
         _eventDescriptionField.text = @"Description";
         _eventDescriptionField.textColor = [UIColor lightGrayColor];
-        [_eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         _eventDescriptionField.delegate = self;
     }
 }
@@ -266,7 +254,6 @@
     if(_eventDescriptionField.text.length == 0) {
         _eventDescriptionField.textColor = [UIColor lightGrayColor];
         _eventDescriptionField.text = @"Description";
-        [_eventDescriptionField setFont:[UIFont systemFontOfSize:18]];
         [_eventDescriptionField resignFirstResponder];
     }
     return YES;
@@ -373,8 +360,6 @@
     _eventLocationNameField.text = _event.location_name;
     _eventNameField.text = _event.name;
     _eventDescriptionField.text = _event.eventDescription;
-    _eventDurationField.text = _event.duration;
-    [_locationButton setTitle:@"Change" forState:UIControlStateNormal];
     [_createButton setTitle:@"Save"];
 }
 
@@ -455,13 +440,12 @@
 - (void)updateInfoOfEvent:(Event *)event {
     [self assignImageToEvent:event];
     event.name = _eventNameField.text;
-    event.date = _eventDatePicker.date;
     event.eventDescription = _eventDescriptionField.text;
+    event.date = _startDate;
     event.location_name = _eventLocationNameField.text;
     event.location_address = _eventLocationField.text;
     event.location_lat = _location_lat;
     event.location_lng = _location_lng;
-    event.duration = _eventDurationField.text;
 }
 
 - (void)assignImageToEvent: (Event *)event {
@@ -499,6 +483,12 @@
     [self uninviteFriends:removedInvites];
 }
 
+#pragma mark - Date Picker Controller Protocol Methods
+
+- (void)changedStartDateTo:(NSDate *)startDate {
+    _startDate = startDate;
+}
+
 #pragma mark - Collection View Protocol Methods
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -510,26 +500,6 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _invitedFriends.count;
-}
-
-- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
-    
-    float cellCount =_invitedFriends.count;
-    float cellSpacing = flowLayout.minimumLineSpacing;
-    float cellWidth = flowLayout.itemSize.width;
-    
-    float totalCellWidth = cellWidth * cellCount;
-    float totalSpacingWidth = cellSpacing * (cellCount - 1);
-    
-    UIEdgeInsets inset = flowLayout.sectionInset;
-    if(collectionView.frame.size.width > (totalCellWidth + totalSpacingWidth)) {
-        inset.left = (collectionView.frame.size.width - (totalCellWidth + totalSpacingWidth)) / 2;
-        inset.right = inset.left;
-    }
-    [flowLayout setSectionInset:inset];
-    
-    return (UICollectionViewTransitionLayout *)flowLayout;
 }
 
 @end
