@@ -45,14 +45,14 @@
     [_invitedTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [self fetchInvitedEvents];
-    [self fetchAcceptedEvents];
-    [self fetchOwnedEvents];
     
     _invitedRefreshControl = [[UIRefreshControl alloc] init];
     [_invitedRefreshControl addTarget:self action:@selector(fetchInvitedEvents) forControlEvents:UIControlEventValueChanged];
     [_invitedTableView insertSubview:_invitedRefreshControl atIndex:0];
     
 }
+
+#pragma mark - Segmented Control Methods
 
 - (void)designSegmentedControl {
     _segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
@@ -86,6 +86,13 @@
             CGRect myFrame = strongSelf->_buttonBar.frame;
             myFrame.origin.x = (strongSelf->_segmentedControl.frame.size.width / self->_segmentedControl.numberOfSegments) * strongSelf->_segmentedControl.selectedSegmentIndex;
             strongSelf->_buttonBar.frame = myFrame;
+            if (strongSelf->_segmentedControl.selectedSegmentIndex==1) {
+                [self fetchAcceptedEvents];
+            } else if (strongSelf->_segmentedControl.selectedSegmentIndex==2) {
+                [self fetchOwnedEvents];
+            } else {
+                [self fetchInvitedEvents];
+            }
             [strongSelf.invitedTableView reloadData];
         }
     }];
@@ -104,9 +111,11 @@
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
+            NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
+            NSArray *sortedArray = [events sortedArrayUsingDescriptors:descriptors];
             if(strongSelf) {
                 [strongSelf->_invitedRefreshControl endRefreshing];
-                strongSelf->_invitedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+                strongSelf->_invitedUserXEvents = [[NSMutableArray alloc] initWithArray:[self removeOldEvents:sortedArray]];
                 [strongSelf.invitedTableView reloadData];
             }
         } else {
@@ -132,10 +141,13 @@
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
             __strong typeof(weakSelf) strongSelf = self;
+            NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
+            NSArray *sortedArray = [events sortedArrayUsingDescriptors:descriptors];
             if(strongSelf) {
                 [strongSelf->_acceptedRefreshControl endRefreshing];
-                strongSelf->_acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+                strongSelf->_acceptedUserXEvents = [[NSMutableArray alloc] initWithArray:[self removeOldEvents:sortedArray]];
                 [strongSelf.invitedTableView reloadData];
+                
             }
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
@@ -156,15 +168,27 @@
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
             __strong typeof(weakSelf) strongSelf = self;
+            NSArray *descriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"event.date" ascending:YES]];
+            NSArray *sortedArray = [events sortedArrayUsingDescriptors:descriptors];
             if(strongSelf) {
-//                [strongSelf->_acceptedRefreshControl endRefreshing];
-                strongSelf->_ownedUserXEvents = [[NSMutableArray alloc] initWithArray:events];
+                strongSelf->_ownedUserXEvents = [[NSMutableArray alloc] initWithArray:[self removeOldEvents:sortedArray]];
                 [strongSelf.invitedTableView reloadData];
             }
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
         }
     }];
+}
+
+- (NSMutableArray *)removeOldEvents:(NSArray *)eventArray {
+    NSMutableArray *mutableEventArray = [NSMutableArray new];
+    NSDate *today = [NSDate date];
+    for (UserXEvent *event in eventArray) {
+        if ([today compare:event[@"event"][@"date"]] == NSOrderedAscending) {
+            [mutableEventArray addObject:event];
+        }
+    }
+    return mutableEventArray;
 }
 
 #pragma mark - Even Cell protocol methods
