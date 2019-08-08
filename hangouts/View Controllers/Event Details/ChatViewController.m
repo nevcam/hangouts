@@ -14,7 +14,6 @@
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-//@property (nonatomic, strong) NSMutableArray *messages;
 @end
 
 @implementation ChatViewController
@@ -22,15 +21,17 @@
     NSMutableArray *_messages;
 }
 
+#pragma mark - Load View
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     UINavigationController *navController = (UINavigationController *) self.parentViewController;
     EventTabBarController *tabBar = (EventTabBarController *)navController.parentViewController;
-    self.event = tabBar.event;
-    self.chatMessageField.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _event = tabBar.event;
+    _chatMessageField.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self fetchMessages];
 }
 
@@ -46,9 +47,9 @@
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable messages, NSError * _Nullable error) {
         if (messages) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            self->_messages = (NSMutableArray *)messages;
+            strongSelf->_messages = (NSMutableArray *)messages;
             [strongSelf.tableView reloadData];
-            if (self->_messages.count > 0)
+            if (strongSelf->_messages.count > 0)
             {
                 [strongSelf.tableView
                  scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self->_messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
@@ -64,9 +65,9 @@
 
 - (IBAction)didTapSend:(id)sender {
     PFObject *chatMessage = [PFObject objectWithClassName:@"Chat_Message"];
-    chatMessage[@"text"] = self.chatMessageField.text;
+    chatMessage[@"text"] = _chatMessageField.text;
     chatMessage[@"user"] = [PFUser currentUser];
-    chatMessage[@"event"] = self.event;
+    chatMessage[@"event"] = _event;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_messages.count inSection:0];
     NSMutableArray *paths = [NSMutableArray new];
     [paths addObject:indexPath];
@@ -92,7 +93,7 @@
 }
 */
 
-#pragma mark - TableView
+#pragma mark - TableView Delegate Methods and Constraints
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
@@ -100,7 +101,6 @@
     [cell.contentView removeConstraint: cell.leftBubbleConstraint];
     [cell.contentView removeConstraint: cell.rightBubbleConstraint];
     [cell.contentView removeConstraint: cell.topBubbleConstraint];
-    
     NSArray* reversedArray = [[_messages reverseObjectEnumerator] allObjects];
     Chat_Message *message = reversedArray[indexPath.row];
     cell.chatMessageLabel.text = message[@"text"];
@@ -170,22 +170,24 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *keyInfo = [notification userInfo];
     CGRect keyboardFrame = [[keyInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.frame.size.height - (keyboardFrame.size.height-self.chatMessageField.frame.size.height-self.bottomConstraint.constant));
-    self.bottomConstraint.constant =  keyboardFrame.size.height-self.chatMessageField.frame.size.height;
+    _tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.frame.size.height - (keyboardFrame.size.height-self.chatMessageField.frame.size.height-self.bottomConstraint.constant));
+    _bottomConstraint.constant =  keyboardFrame.size.height-self.chatMessageField.frame.size.height;
 }
 
 -(void)keyboardDidShow:(NSNotification *)notification {
     NSIndexPath* indexPath = [NSIndexPath indexPathForRow: _messages.count-1 inSection: 0];
-    [self.tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+    [_tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification {
-    self.bottomConstraint.constant = 8;
+    _bottomConstraint.constant = 8;
 }
 
 - (IBAction)didTapReturn:(id)sender {
-    [self.chatMessageField resignFirstResponder];
+    [_chatMessageField resignFirstResponder];
 }
+
+#pragma mark - Close Event Details
 
 - (IBAction)didTapClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
