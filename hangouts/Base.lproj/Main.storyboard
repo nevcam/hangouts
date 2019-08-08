@@ -1767,15 +1767,8 @@
                                 <rect key="frame" x="16" y="72" width="103" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfV-eU-tLf">
-                                <rect key="frame" x="16" y="235" width="57" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpD-Xp-UfG">
-                                <rect key="frame" x="81" y="235" width="11" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bfV-eU-tLf">
+                                <rect key="frame" x="16" y="235" width="56.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1928,18 +1921,32 @@
                                     <action selector="didTapFriendStatus:" destination="4ta-Ah-gRE" eventType="touchUpInside" id="7mG-u0-9vY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpD-Xp-UfG">
+                                <rect key="frame" x="77.5" y="236" width="11" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="tpD-Xp-UfG" firstAttribute="top" secondItem="4ih-eV-SHG" secondAttribute="top" constant="172" id="Phf-nC-TTd"/>
+                            <constraint firstItem="tpD-Xp-UfG" firstAttribute="leading" secondItem="bfV-eU-tLf" secondAttribute="trailing" constant="5" id="ZJo-Ve-Q7Q"/>
+                            <constraint firstItem="bfV-eU-tLf" firstAttribute="top" secondItem="4ih-eV-SHG" secondAttribute="top" constant="171" id="aVF-4r-KUS"/>
+                            <constraint firstItem="bfV-eU-tLf" firstAttribute="leading" secondItem="4ih-eV-SHG" secondAttribute="leading" constant="16" id="xsJ-wo-OUW"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="4ih-eV-SHG"/>
                     </view>
                     <connections>
                         <outlet property="addFriendButton" destination="h37-r8-Oo2" id="gmN-mJ-DGV"/>
+                        <outlet property="availabilityLabel" destination="0BO-xn-qVL" id="5bF-cO-sda"/>
+                        <outlet property="availabilityLineView" destination="P09-so-ekn" id="gUn-ey-0f6"/>
                         <outlet property="bioLabel" destination="DZn-sp-Hqb" id="F7M-lB-P19"/>
                         <outlet property="collectionView" destination="nPH-cB-gdm" id="xMp-Bg-k6g"/>
                         <outlet property="commonFriendsButton" destination="omh-on-BdL" id="lfQ-fq-Wq8"/>
                         <outlet property="declineFriendButton" destination="N6P-gT-4IR" id="fXT-H3-9r7"/>
                         <outlet property="friendsButton" destination="TwW-FP-i7C" id="c6S-G8-AV4"/>
                         <outlet property="friendsCount" destination="tpD-Xp-UfG" id="kHQ-xE-wk4"/>
+                        <outlet property="friendsLabel" destination="bfV-eU-tLf" id="QVN-NQ-KQm"/>
                         <outlet property="fullnameLabel" destination="UVp-E0-5fr" id="BXQ-Dk-v2E"/>
                         <outlet property="nextEventsCount" destination="JcO-hW-637" id="G6X-c5-Psq"/>
                         <outlet property="noDataImage" destination="cT1-QZ-Wbv" id="CxC-We-8Jk"/>
