@@ -450,6 +450,8 @@
     [self fetchEventPointers];
 }
 
+#pragma mark - Collection View Methods
+
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SelectedUserCell" forIndexPath:indexPath];
     PFUser *user = _selectedFriends[indexPath.item];
