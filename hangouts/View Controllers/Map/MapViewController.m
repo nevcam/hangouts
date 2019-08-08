@@ -24,12 +24,13 @@
 #import "EventDetailsViewController.h"
 #import "CustomTapGestureRecognizer.h"
 #import "PersonProfileViewController.h"
+#import "UserCell.h"
 
-@interface MapViewController () <MKMapViewDelegate, CreateEventControllerDelegate>
-
+@interface MapViewController () <MKMapViewDelegate, CreateEventControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@property (weak, nonatomic) IBOutlet UIButton *hangoutButton;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIView *buttonBackgroundView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-//@property (strong, nonatomic) PersonDetailMapView *customCalloutView;
-
 @end
 
 @implementation MapViewController {
@@ -37,37 +38,42 @@
     NSMutableArray *_friendships;
     NSMutableArray *_events;
     NSMutableArray *_selectedFriends;
-    
-//    UIView *_customCalloutView;
 }
+
+#pragma mark - Load Initial View
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mapView.delegate = self;
+    _mapView.delegate = self;
+    _collectionView.delegate = self;
+    _collectionView.dataSource = self;
     _selectedFriends = [NSMutableArray new];
+    UIColor *buttonColor = _buttonBackgroundView.backgroundColor;
+    _buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.0f];
+    [_collectionView setHidden:YES];
+    _hangoutButton.layer.masksToBounds = YES;
+    _hangoutButton.layer.cornerRadius = _hangoutButton.frame.size.width/2;
     self->locationManager = [[CLLocationManager alloc] init];
     self->locationManager.delegate = self;
     self->locationManager.distanceFilter = kCLDistanceFilterNone;
     self->locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 &&
         [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse
-        //[CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedAlways
         ) {
-        // Will open an confirm dialog to get user's approval
         [self->locationManager requestWhenInUseAuthorization];
-//        [self->locationManager requestAlwaysAuthorization];
     } else {
-        [self->locationManager startUpdatingLocation]; //Will update location immediately
+        [self->locationManager startUpdatingLocation];
     }
     [self fetchEventPointers];
     [self fetchFriendsLocations];
+    [_collectionView reloadData];
 }
 
 #pragma mark - Updating current user location
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-//    NSLog(@"last location %@", [locations lastObject]);
-    
+
+    __weak typeof(self) weakSelf = self;
     self->currentLocation = [locations objectAtIndex:0];
     [self->locationManager stopUpdatingLocation];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init] ;
@@ -75,26 +81,28 @@
      {
          if (!(error))
          {
-             CLPlacemark *placemark = [placemarks objectAtIndex:0];
-             self->centre.latitude = self->currentLocation.coordinate.latitude;
-             self->centre.longitude = self->currentLocation.coordinate.longitude;
-             PFUser *user = [PFUser currentUser];
-             NSNumber *lat = [NSNumber numberWithDouble:placemark.location.coordinate.latitude];
-             NSNumber *lon =[NSNumber numberWithDouble:placemark.location.coordinate.longitude];
-             user[@"latitude"] = lat;
-             user[@"longitude"] = lon;
-             [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                 if (!error) {
-                 } else {
-                 }
-             }];
-             MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:MKCoordinateRegionMakeWithDistance(self->centre, 1500, 1500)];
-             [self.mapView setRegion:adjustedRegion animated:YES];
+             __strong typeof(weakSelf) strongSelf = weakSelf;
+             if(strongSelf) {
+                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                 strongSelf->centre.latitude = strongSelf->currentLocation.coordinate.latitude;
+                 strongSelf->centre.longitude = strongSelf->currentLocation.coordinate.longitude;
+                 PFUser *user = [PFUser currentUser];
+                 NSNumber *lat = [NSNumber numberWithDouble:placemark.location.coordinate.latitude];
+                 NSNumber *lon =[NSNumber numberWithDouble:placemark.location.coordinate.longitude];
+                 user[@"latitude"] = lat;
+                 user[@"longitude"] = lon;
+                 [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                     if (!error) {
+                     } else {
+                     }
+                 }];
+                 MKCoordinateRegion adjustedRegion = [strongSelf.mapView regionThatFits:MKCoordinateRegionMakeWithDistance(strongSelf->centre, 1500, 1500)];
+                 [strongSelf.mapView setRegion:adjustedRegion animated:YES];
+             }
          }
          else
          {
              NSLog(@"Geocode failed with error %@", error);
-             NSLog(@"\nCurrent Location Not Detected\n");
          }
      }];
 }
@@ -111,7 +119,7 @@
         } break;
         case kCLAuthorizationStatusAuthorizedWhenInUse:
         case kCLAuthorizationStatusAuthorizedAlways: {
-            [self->locationManager startUpdatingLocation]; //Will update location immediately
+            [self->locationManager startUpdatingLocation];
         } break;
         default:
             break;
@@ -126,10 +134,13 @@
     [userXEventQuery whereKey:@"type" containedIn:[NSArray arrayWithObjects: @"accepted", @"owned", nil]];
     [userXEventQuery includeKey:@"event"];
     [userXEventQuery selectKeys:[NSArray arrayWithObject:@"event"]];
-    
+    __weak typeof(self) weakSelf = self;
     [userXEventQuery findObjectsInBackgroundWithBlock:^(NSArray * _Nullable events, NSError * _Nullable error) {
         if (events) {
-            [self annotationEvents:events];
+            __strong typeof(self) strongSelf = weakSelf;
+            if (strongSelf) {
+                [strongSelf annotationEvents:events];
+            }
         } else {
             NSLog(@"Error getting events: %@", error.localizedDescription);
         }
@@ -156,7 +167,6 @@
             PFQuery *query = [PFUser query];
             [query orderByDescending:@"createdAt"];
             [query whereKey:@"objectId" containedIn:friendIds];
-            
             [query findObjectsInBackgroundWithBlock:^(NSArray<PFUser *> * _Nullable users, NSError * _Nullable error) {
                 if (users) {
                     __strong typeof(self) strongSelf = weakSelf;
@@ -180,7 +190,7 @@
 #pragma mark - Add Annotations
 
 - (void)annotationFriends {
-    for (PFUser *friend in self->_friendships){
+    for (PFUser *friend in _friendships){
         CLLocationCoordinate2D coordinate;
         NSNumber *latitude = friend[@"latitude"];
         NSNumber *longitude = friend[@"longitude"];
@@ -192,9 +202,9 @@
         myAnnotation.subtitle = friend[@"username"];
         myAnnotation.friend = friend;
         [myAnnotation setCheckBoxSelected:NO];
-        [self.mapView addAnnotation:myAnnotation];
+        [_mapView addAnnotation:myAnnotation];
     }
-    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
+    [_mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 - (void) annotationEvents:(NSArray *)events {
@@ -208,9 +218,9 @@
         myAnnotation.coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
         myAnnotation.title = addEvent[@"event"][@"name"];
         myAnnotation.event = addEvent[@"event"];
-        [self.mapView addAnnotation:myAnnotation];
+        [_mapView addAnnotation:myAnnotation];
     }
-    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
+    [_mapView showAnnotations:_mapView.annotations animated:YES];
 }
 
 #pragma mark - Annotation customization
@@ -219,19 +229,17 @@
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         return nil;
     }
-    
     // friend annotations
     if ([annotation isKindOfClass:[CustomPointAnnotation class]]) {
         CustomPointAnnotation *customAnnotation = (CustomPointAnnotation *)annotation;
         static NSString *AnnotationViewID = @"annotationView";
-        MKAnnotationView *annotationView = (MKAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+        MKAnnotationView *annotationView = (MKAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
         if (annotationView == nil){
             annotationView = [[MKAnnotationView alloc] initWithAnnotation:customAnnotation reuseIdentifier:AnnotationViewID];
             annotationView.canShowCallout = YES;
         } else {
             annotationView.annotation = annotation;
         }
-   
         // add profile photo to annotation
         PFFileObject *imageFile = customAnnotation.friend[@"profilePhoto"];
         NSURL *profilePhotoURL = [NSURL URLWithString:imageFile.url];
@@ -251,22 +259,7 @@
         [annotationView.leftCalloutAccessoryView addGestureRecognizer:singleTap];
         
         // add custom view to callout
-        UIView *myView = [UIView new];
-        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
-        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
-        CLLocation *startLocation = self->currentLocation;
-        NSNumber *lat = customAnnotation.friend[@"latitude"];
-        NSNumber *lon = customAnnotation.friend[@"longitude"];
-        CLLocation *endLocation = [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lon.floatValue];
-        CLLocationDistance distance = [startLocation distanceFromLocation:endLocation];
-        UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
-        distLabel.text = [NSString stringWithFormat:@"%.1f miles away",(distance/1609.344)];
-        [distLabel setTextColor:[UIColor blackColor]];
-        [distLabel setBackgroundColor:[UIColor clearColor]];
-        [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
-        [myView addSubview:distLabel];
-        annotationView.detailCalloutAccessoryView = myView;
-
+        annotationView.detailCalloutAccessoryView = [self addCustomFriendCallout:customAnnotation];
         // right button to add friend
         CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeContactAdd];
         if (customAnnotation.checkBoxSelected) {
@@ -294,21 +287,8 @@
         } else {
             eventAnnotationView.annotation = annotation;
         }
-        
-        // callout subview
-        UIView *myView = [UIView new];
-        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
-        [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
-        
-        UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
-        DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
-        [manager.formatter setDateFormat:@"EEE MMM dd"];
-        dateLabel.text = [manager.formatter stringFromDate:eventAnnotation.event.date];
-        [dateLabel setTextColor:[UIColor blackColor]];
-        [dateLabel setBackgroundColor:[UIColor clearColor]];
-        [dateLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
-        [myView addSubview:dateLabel];
-        eventAnnotationView.detailCalloutAccessoryView = myView;
+        // add custom view to callout
+        eventAnnotationView.detailCalloutAccessoryView = [self addCustomEventCallout:eventAnnotation];
         
         CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeDetailDisclosure];
         rightButton.event = eventAnnotation.event;
@@ -342,6 +322,41 @@
     return newImage;
 }
 
+#pragma mark - Callout Subview Customization Methods
+
+- (UIView*)addCustomFriendCallout:(CustomPointAnnotation *)customAnnotation {
+    UIView *myView = [UIView new];
+    [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+    [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+    CLLocation *startLocation = self->currentLocation;
+    NSNumber *lat = customAnnotation.friend[@"latitude"];
+    NSNumber *lon = customAnnotation.friend[@"longitude"];
+    CLLocation *endLocation = [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lon.floatValue];
+    CLLocationDistance distance = [startLocation distanceFromLocation:endLocation];
+    UILabel *distLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
+    distLabel.text = [NSString stringWithFormat:@"%.1f miles away",(distance/1609.344)];
+    [distLabel setTextColor:[UIColor blackColor]];
+    [distLabel setBackgroundColor:[UIColor clearColor]];
+    [distLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
+    [myView addSubview:distLabel];
+    return myView;
+}
+
+- (UIView*)addCustomEventCallout:(EventPointAnnotation *)eventAnnotation {
+    UIView *myView = [UIView new];
+    [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+    [myView addConstraint:[NSLayoutConstraint constraintWithItem:myView attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:30]];
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 200, 20)];
+    DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
+    [manager.formatter setDateFormat:@"EEE MMM dd"];
+    dateLabel.text = [manager.formatter stringFromDate:eventAnnotation.event.date];
+    [dateLabel setTextColor:[UIColor blackColor]];
+    [dateLabel setBackgroundColor:[UIColor clearColor]];
+    [dateLabel setFont:[UIFont fontWithName: @"Trebuchet MS" size: 14.0f]];
+    [myView addSubview:dateLabel];
+    return myView;
+}
+
 #pragma mark - Annotation Interactions
 
 - (void)didClickDetailDisclosure: (id) sender {
@@ -351,13 +366,31 @@
         button.tag = 0;
         if ([_selectedFriends containsObject:button.friendUser]) {
             [_selectedFriends removeObject:button.friendUser];
+            [_collectionView reloadData];
         }
     } else {
         [button setSelected:YES];
         button.tag = 1;
         if (![_selectedFriends containsObject:button.friendUser]) {
             [_selectedFriends addObject:button.friendUser];
+            [_collectionView reloadData];
         }
+    }
+    if (_selectedFriends.count > 0) {
+         __weak typeof(self) weakSelf = self;
+        [UIView transitionWithView:button duration:0.4 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if(strongSelf) {
+                    UIColor *buttonColor = strongSelf->_buttonBackgroundView.backgroundColor;
+                    strongSelf->_buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.65f];
+                    [strongSelf->_collectionView setHidden:NO];
+                }
+            
+        } completion:NULL];
+    } else {
+        UIColor *buttonColor = _buttonBackgroundView.backgroundColor;
+        _buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.0f];
+        [_collectionView setHidden:YES];
     }
 }
 
@@ -368,7 +401,6 @@
 -(void)tapUserProfilePhoto: (id) sender{
     [self performSegueWithIdentifier:@"mapToUserProfileSegue" sender:sender];
 }
-
 
 - (void) refreshAnnotations {
     for (id<MKAnnotation> annotation in _mapView.annotations)
@@ -413,13 +445,20 @@
     }
 }
 
-
 - (void)didCreateEvent:(Event * _Nullable)event {
-    //set delegate
     _selectedFriends = [NSMutableArray new];
     [self fetchEventPointers];
-
 }
 
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    UserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SelectedUserCell" forIndexPath:indexPath];
+    PFUser *user = _selectedFriends[indexPath.item];
+    [cell configureCell:user];
+    return cell;
+}
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _selectedFriends.count;
+}
 
 @end

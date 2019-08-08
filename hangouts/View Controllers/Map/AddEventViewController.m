@@ -305,7 +305,7 @@
 
 #pragma mark - Event photo methods
 
-- (IBAction)clickedAddPhoto:(id)sender {
+- (IBAction)didTapPhoto:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
@@ -358,11 +358,14 @@
 }
 
 - (void)setEventPhoto {
-    PFFileObject *const imageFile = _event.eventPhoto;
-    NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
-    _eventPhoto.image = nil;
-    [_eventPhoto setImageWithURL:profilePhotoURL];
-    
+    if(_event.eventPhoto) {
+        PFFileObject *const imageFile = _event.eventPhoto;
+        NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+        _eventPhoto.image = nil;
+        [_eventPhoto setImageWithURL:profilePhotoURL];
+    } else {
+        _eventPhoto.image = [UIImage imageNamed:@"img-placeholder"];
+    }
 }
 
 - (void)setEventLabels {
@@ -466,7 +469,7 @@
     if(_eventPhoto.image != nil) {
         imageData = UIImageJPEGRepresentation(_eventPhoto.image, 1.0);
     } else {
-        UIImage *pic = [UIImage imageNamed:@"party"];
+        UIImage *pic = [UIImage imageNamed:@"img-placeholder"];
         imageData = UIImageJPEGRepresentation(pic, 1.0);
     }
     PFFileObject *img = [PFFileObject fileObjectWithName:@"eventPic.png" data:imageData];
@@ -507,6 +510,26 @@
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _invitedFriends.count;
+}
+
+- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView layout:(nonnull UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)collectionViewLayout;
+    
+    float cellCount =_invitedFriends.count;
+    float cellSpacing = flowLayout.minimumLineSpacing;
+    float cellWidth = flowLayout.itemSize.width;
+    
+    float totalCellWidth = cellWidth * cellCount;
+    float totalSpacingWidth = cellSpacing * (cellCount - 1);
+    
+    UIEdgeInsets inset = flowLayout.sectionInset;
+    if(collectionView.frame.size.width > (totalCellWidth + totalSpacingWidth)) {
+        inset.left = (collectionView.frame.size.width - (totalCellWidth + totalSpacingWidth)) / 2;
+        inset.right = inset.left;
+    }
+    [flowLayout setSectionInset:inset];
+    
+    return (UICollectionViewTransitionLayout *)flowLayout;
 }
 
 @end
