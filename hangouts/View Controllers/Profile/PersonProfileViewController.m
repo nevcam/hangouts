@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 @property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+@property (weak, nonatomic) IBOutlet UIButton *declineFriendButton;
+
 
 @end
 
@@ -42,20 +44,27 @@
     NSMutableArray *_userSchedule;
     NSPointerArray *_currentUserIncomingRequests;
     NSPointerArray *_currentUserOutgoingRequests;
+    Friendship *_userFriendship;
+    bool friendsListChanged;
 }
 
 #pragma mark - Set Profile Basic Features
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self executeMainFunctions];
+}
+
+- (void)executeMainFunctions
+{
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     
     [self getCurrentUserFriends];
-    _filteredUsers = [[NSMutableArray alloc] init];
-    [self getCurrentUserFriendships];
+    _filteredUsers = [NSMutableArray new];
+    [self getCurrentUserFriendship];
     
     [self setProfileFeatures];
     
@@ -63,6 +72,7 @@
     
     [self fetchFriends];
     [self setButtonColors:YES];
+    
 }
 
 - (void)setProfileFeatures
@@ -71,6 +81,10 @@
     _fullnameLabel.text = _user[@"fullname"];
     _bioLabel.text = _user[@"bio"];
     _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
+    
+    _declineFriendButton.hidden = YES;
+    _addFriendButton.hidden = YES;
+    
     [self setProfileImageLayout];
 }
 
@@ -113,14 +127,12 @@
                 if (friends) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if(strongSelf) {
-                        if (!strongSelf->_friendUsers) {
-                            strongSelf->_friendUsers = [NSMutableArray new];
-                            [strongSelf->_friendUsers addObjectsFromArray:friends];
-                            [strongSelf->_filteredUsers addObjectsFromArray:friends];
-                            [strongSelf.collectionView reloadData];
-                        } else {
-                            NSLog(@"Error");
-                        }
+                        strongSelf->_friendUsers = [NSMutableArray new];
+                        [strongSelf->_friendUsers addObjectsFromArray:friends];
+                        strongSelf->_filteredUsers = [NSMutableArray new];
+
+                        [strongSelf->_filteredUsers addObjectsFromArray:friends];
+                        [strongSelf.collectionView reloadData];
                     }
                 } else {
                     NSLog(@"Error: %@", error.localizedDescription);
@@ -130,7 +142,6 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-    
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -179,17 +190,13 @@
 
 - (void)tapProfile:(ProfileFriendsCollectionViewCell *)friendCell didTap:(PFUser *)user
 {
-//    PersonProfileViewController *newProfile = [[ PersonProfileViewController alloc] init];
-//    newProfile = self;
-//    newProfile.user = user;
-//    [self presentViewController:newProfile animated:YES completion:nil];
-    
     if (![user.objectId isEqualToString:[PFUser currentUser].objectId]) {
         _user = user;
         _friendUsers = nil;
         _filteredUsers = nil;
         _userSchedule = nil;
-        [self viewDidLoad];
+        _userFriendship = nil;
+        [self executeMainFunctions];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -223,7 +230,7 @@
 
 - (void)getCurrentUserFriends
 {
-    if ([_delegate saveFriendsList]) {
+    if ([_delegate saveFriendsList] && !friendsListChanged) {
         _currentUserFriends = [[NSMutableArray alloc] initWithArray:[_delegate saveFriendsList]];
     }
     // If currentUserFriends has not been provided by a delegate method, query is carried out to get them.
@@ -258,6 +265,7 @@
                     
                     __strong typeof(self) strongSelf = weakSelf;
                     if (strongSelf) {
+                        
                         strongSelf->_currentUserFriends = [[NSMutableArray alloc] init];
                         [strongSelf->_currentUserFriends addObjectsFromArray:friends];
                         
@@ -406,7 +414,7 @@
 
 #pragma mark - Check If Friends
 
-- (void)getCurrentUserFriendships {
+- (void)getCurrentUserFriendship {
     
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
@@ -420,6 +428,9 @@
             
             if (strongSelf) {
                 Friendship *friendship = friendships[0];
+                
+                strongSelf->_userFriendship = [[Friendship alloc] init];
+                strongSelf->_userFriendship = friendship;
                 
                 strongSelf->_currentUserIncomingRequests = [[NSPointerArray alloc] init];
                 strongSelf->_currentUserOutgoingRequests = [[NSPointerArray alloc] init];
@@ -462,6 +473,7 @@
 {
     for (PFUser *requestedFriend in _currentUserIncomingRequests) {
         if ([requestedFriend.objectId isEqualToString:_user.objectId]) {
+            _declineFriendButton.hidden = NO;
             return YES;
         }
     }
@@ -470,13 +482,15 @@
 
 - (void)changeFriendButtonLayout {
     
+    _addFriendButton.hidden = NO;
+    
     UIColor *alreadyFriends = [UIColor colorWithRed:0.96 green:0.61 blue:0.58 alpha:1.0];
     UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
      UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
     UIColor *acceptFriends = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
     
     if ([self checkIfFriend]) {
-        [self changeFriendButtonHelperWithTitle:@"Remove" buttonColor:alreadyFriends];
+        [self changeFriendButtonHelperWithTitle:@"Unfriend" buttonColor:alreadyFriends];
     }
     else if ([self checkIfRequestedFriend]) {
          [self changeFriendButtonHelperWithTitle:@"Requested" buttonColor:requestedFriends];
@@ -493,4 +507,192 @@
     _addFriendButton.backgroundColor = color;
     [_addFriendButton setTitle:title forState:UIControlStateNormal];
 }
+
+// Functionality for friendship status button
+- (IBAction)didTapFriendStatus:(id)sender {
+    // We hide the button, while dealing with latency
+    _addFriendButton.hidden = YES;
+    _declineFriendButton.hidden = YES;
+    
+    if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Add"]) {
+        
+        [_userFriendship addObject:_user forKey:@"outgoingRequests"];
+        [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error) {
+            } else {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        
+        [self updateFriendFriendshipObject:@"Add"];
+    }
+    else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Requested"]) {
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Friend Request" message:@"Friend request is on its way!" preferredStyle:(UIAlertControllerStyleAlert)];
+        UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
+        }];
+        [alert addAction:tryAgainAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Accept"]) {
+        
+        // Deletes request from user incoming requests
+        NSMutableArray *friendRequests = (NSMutableArray *)_userFriendship.incomingRequests;
+        for (PFUser *requestFriend in friendRequests) {
+            if ([requestFriend.objectId isEqualToString:_user.objectId]) {
+                [friendRequests removeObject:requestFriend];
+                break;
+            }
+        }
+        _userFriendship.incomingRequests = (NSPointerArray *)friendRequests;
+        
+        // Adds friend to user friends list
+        NSMutableArray *currentUserFriends = (NSMutableArray *)_userFriendship.friends;
+        [currentUserFriends addObject:_user];
+        _userFriendship.friends = currentUserFriends;
+        
+        // Saves data for user
+        [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error) {
+            } else {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        
+        // Deletes request from friend outgoing requests
+        [self updateFriendFriendshipObject:@"Accept"];
+    }
+    else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Unfriend"])
+    {
+        NSMutableArray *friends = (NSMutableArray *)_userFriendship.friends;
+        for (PFUser *friend in friends) {
+            if ([friend.objectId isEqualToString:_user.objectId]) {
+                [friends removeObject:friend];
+                break;
+            }
+        }
+        _userFriendship.friends = friends;
+        
+        // Saves data for user
+        [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error) {
+            } else {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        
+        // Deletes request from friend outgoing requests
+        [self updateFriendFriendshipObject:@"Unfriend"];
+    }
+}
+
+- (IBAction)didDeclineFriend:(id)sender
+{
+    // We hide the button, while dealing with latency
+    _declineFriendButton.hidden = YES;
+    
+    // Deletes request from user incoming requests
+    NSMutableArray *friendRequests = (NSMutableArray *)_userFriendship.incomingRequests;
+    for (PFUser *requestFriend in friendRequests) {
+        if ([requestFriend.objectId isEqualToString:_user.objectId]) {
+            [friendRequests removeObject:requestFriend];
+            break;
+        }
+    }
+    _userFriendship.incomingRequests = (NSPointerArray *)friendRequests;
+    
+    // Saves data for user
+    [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (!error) {
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    
+    // Deletes request from friend outgoing requests
+    [self updateFriendFriendshipObject:@"Decline"];
+}
+
+
+- (void)updateFriendFriendshipObject:(NSString *)change
+{
+    PFQuery *query = [Friendship query];
+    [query orderByDescending:@"createdAt"];
+    [query whereKey:@"user" equalTo:_user];
+    query.limit = 1;
+    
+    __weak typeof(self) weakSelf = self;
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Friendship *> * _Nullable friendships, NSError * _Nullable error) {
+        if (friendships) {
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if (strongSelf) {
+                Friendship *friendship = friendships[0];
+                
+                if ([change isEqualToString:@"Add"]) {
+                    NSMutableArray *userRequests = (NSMutableArray *)friendship.incomingRequests;
+                    [userRequests addObject:[PFUser currentUser]];
+                    friendship.incomingRequests = (NSPointerArray *)userRequests;
+                    strongSelf->friendsListChanged = YES;
+                }
+                else if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
+                {
+                    NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
+                    for (PFUser *requestFriend in friendRequests) {
+                        if ([requestFriend.objectId isEqualToString:[PFUser currentUser].objectId]) {
+                            [friendRequests removeObject:requestFriend];
+                            break;
+                        }
+                    }
+                    friendship.outgoingRequests = (NSPointerArray *)friendRequests;
+                    
+                    if ([change isEqualToString:@"Accept"]) {
+                        NSMutableArray *currentUserFriends = (NSMutableArray *)friendship.friends;
+                        [currentUserFriends addObject:[PFUser currentUser]];
+                        friendship.friends = currentUserFriends;
+                    }
+                }
+                else if ([change isEqualToString:@"Unfriend"]) {
+                    NSMutableArray *friends = (NSMutableArray *)friendship.friends;
+                    for (PFUser *friend in friends) {
+                        if ([friend.objectId isEqualToString:[PFUser currentUser].objectId]) {
+                            [friends removeObject:friend];
+                            strongSelf->friendsListChanged = YES;
+                            break;
+                        }
+                    }
+                    
+                    friendship.friends = friends;
+                }
+                
+                // Saves changes in database
+                [friendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    if (!error) {
+                        
+                        // Set friends nil in case user only had one friend
+                        strongSelf->_friendUsers = nil;
+                        strongSelf->_filteredUsers = nil;
+                        strongSelf->_userFriendship = nil;
+                        strongSelf->_currentUserFriends = nil;
+                        strongSelf->_currentUserIncomingRequests = nil;
+                        strongSelf->_currentUserOutgoingRequests = nil;
+                        
+                        // Updates layout of friendship status
+                        [strongSelf executeMainFunctions];
+                    }
+                    else {
+                        NSLog(@"Error: View Controller has been exited");
+                    }
+                }];
+            }
+            else {
+                NSLog(@"Error: View Controller has been exited");
+            }
+        } else {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+
 @end

@@ -16,7 +16,7 @@
 
 @interface PersonProfileViewController : UIViewController
 
-@property (nonatomic, weak) PFUser *user;
+@property (nonatomic, strong) PFUser *user;
 @property (nonatomic, weak) id <SaveCurrentUserFriendsProtocol> delegate;
 
 @end

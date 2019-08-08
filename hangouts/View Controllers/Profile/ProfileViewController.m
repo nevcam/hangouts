@@ -323,7 +323,6 @@
             }
             [userTodayEventsArray addObject:event];
         }
-        
     }
     
     _pastEventsCount.text = [NSString stringWithFormat:@"%d",pastEvents];
@@ -371,24 +370,23 @@
     return _todayEvents.count;
 }
 
-// Helper function that gets time for an event
--(NSString *)getEventTime:(NSDate *)date
-{
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
-    
-    NSString *hour = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.hour]];
-    NSString *minute = [self addZeroToTime:[NSString stringWithFormat:@"%ld", (long)components.minute]];
-    NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
-    return eventTime;
-    
-}
-
--(NSString *)addZeroToTime:(NSString *)time
+static NSString *addZeroToTime(NSString *time)
 {
     if (time.length == 1) {
         return [NSString stringWithFormat:@"0%@", time];
     }
     return time;
+}
+
+// Helper function that gets time for an event
+-(NSString *)getEventTime:(NSDate *)date
+{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
+    
+    NSString *hour = addZeroToTime([@(components.hour) stringValue]);
+    NSString *minute = addZeroToTime([@(components.minute) stringValue]);
+    NSString *eventTime = [NSString stringWithFormat:@"%@:%@", hour, minute];
+    return eventTime;
 }
 
 #pragma mark - Calendar
