@@ -35,7 +35,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *friendsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *availabilityLabel;
 @property (weak, nonatomic) IBOutlet UITextView *availabilityLineView;
-
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet UIView *segmentedContainerView;
+@property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -47,6 +49,7 @@
     NSMutableArray *_userSchedule;
     NSPointerArray *_currentUserIncomingRequests;
     NSPointerArray *_currentUserOutgoingRequests;
+    UIView *_buttonBar;
     Friendship *_userFriendship;
     bool friendsListChanged;
 }
@@ -54,7 +57,7 @@
 #pragma mark - Set Profile Basic Features
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self designSegmentedControl];
     [self executeMainFunctions];
 }
 
@@ -64,6 +67,8 @@
     _collectionView.delegate = self;
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [self getCurrentUserFriends];
     _filteredUsers = [NSMutableArray new];
@@ -76,6 +81,59 @@
     [self fetchFriends];
     [self setButtonColors:YES];
     
+}
+
+#pragma mark - Segmented Control Methods
+
+- (void)designSegmentedControl {
+    _segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
+    _segmentedControl.backgroundColor = [UIColor clearColor];
+    _segmentedControl.tintColor = [UIColor clearColor];
+    NSMutableDictionary *attributesDictionaryNormal = [NSMutableDictionary dictionary];
+    [attributesDictionaryNormal setObject:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0f] forKey:NSFontAttributeName];
+    [attributesDictionaryNormal setObject:[UIColor lightGrayColor] forKey:NSForegroundColorAttributeName];
+    [_segmentedControl setTitleTextAttributes:attributesDictionaryNormal forState:UIControlStateNormal];
+    NSMutableDictionary *attributesDictionarySelected = [NSMutableDictionary dictionary];
+    [attributesDictionarySelected setObject:[UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0f] forKey:NSFontAttributeName];
+    [attributesDictionarySelected setObject:[UIColor colorWithRed:0.40 green:0.11 blue:0.75 alpha:1.0] forKey:NSForegroundColorAttributeName];
+    [_segmentedControl setTitleTextAttributes:attributesDictionarySelected forState:UIControlStateSelected];
+    
+    _buttonBar = [UIView new];
+    _buttonBar.translatesAutoresizingMaskIntoConstraints = NO;
+    _buttonBar.backgroundColor = [UIColor colorWithRed:0.40 green:0.11 blue:0.75 alpha:1.0];
+    [_segmentedContainerView addSubview:_buttonBar];
+    [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeTop  relatedBy:NSLayoutRelationEqual toItem:_segmentedControl attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:2]];
+    [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeLeft  relatedBy:NSLayoutRelationEqual toItem:_segmentedControl attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    _bottomConstraint = [NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:_segmentedControl attribute:NSLayoutAttributeWidth multiplier:1/2 constant:_segmentedControl.frame.size.width/2];
+    [_segmentedContainerView addConstraint:_bottomConstraint];
+}
+
+- (IBAction)didChangeSegment:(id)sender {
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.3 animations:^{self->_buttonBar.alpha = 1;} completion:^(BOOL finished) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf) {
+            CGRect myFrame = strongSelf->_buttonBar.frame;
+            myFrame.origin.x = (strongSelf->_segmentedControl.frame.size.width / self->_segmentedControl.numberOfSegments) * strongSelf->_segmentedControl.selectedSegmentIndex;
+            strongSelf->_buttonBar.frame = myFrame;
+            if (strongSelf->_segmentedControl.selectedSegmentIndex==0) {
+                strongSelf->_filteredUsers = [NSMutableArray new];
+                for (PFUser *friendUser in strongSelf->_friendUsers) {
+                    for (PFUser *currentUserFriend in strongSelf->_currentUserFriends) {
+                        if ([friendUser.objectId isEqualToString:currentUserFriend.objectId]) {
+                            [strongSelf->_filteredUsers addObject:friendUser];
+                            break;
+                        }
+                    }
+                }
+                [strongSelf->_collectionView reloadData];
+            } else {
+                strongSelf->_filteredUsers = strongSelf->_friendUsers;
+                [strongSelf->_collectionView reloadData];
+            }
+        }
+    }];
 }
 
 - (void)setProfileFeatures
@@ -391,7 +449,8 @@
     Event *event = _userSchedule[indexPath.row];
     cell.timeLabel.text = [self getEventTime:event.date];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    cell.cellView.layer.cornerRadius = 5;
+    cell.cellView.layer.masksToBounds = true;
     return cell;
 }
 
@@ -491,7 +550,7 @@
     
     _addFriendButton.hidden = NO;
     
-    UIColor *alreadyFriends = [UIColor colorWithRed:0.96 green:0.61 blue:0.58 alpha:1.0];
+    UIColor *alreadyFriends = [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1.0];
     UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
     UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
     UIColor *acceptFriends = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
@@ -723,8 +782,14 @@
         [_collectionView reloadData];
         
         _friendsLabel.text = @"Friends in common";
+        // change
+        [_segmentedControl setTitle:@"" forSegmentAtIndex:1];
+        [_segmentedControl setEnabled:NO forSegmentAtIndex:1];
     }
     else {
+        // change
+        [_segmentedControl setTitle:@"Friends" forSegmentAtIndex:1];
+        [_segmentedControl setEnabled:YES forSegmentAtIndex:1];
         _friendsLabel.text = @"Friends";
         
         _filteredUsers = _friendUsers;

@@ -175,8 +175,10 @@
 }
 
 -(void)keyboardDidShow:(NSNotification *)notification {
-    NSIndexPath* indexPath = [NSIndexPath indexPathForRow: _messages.count-1 inSection: 0];
-    [_tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+    if (_messages.count > 0) {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow: _messages.count-1 inSection: 0];
+        [_tableView scrollToRowAtIndexPath: indexPath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+    }
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification {
