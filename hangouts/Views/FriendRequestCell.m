@@ -14,6 +14,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+    _acceptButton.backgroundColor = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
+
     // Sets gesture for tapping on freind's profile image, which will then redirect users to the respecrive friend's profile page
     UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
     [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
