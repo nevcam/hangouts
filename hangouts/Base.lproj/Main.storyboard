@@ -1669,12 +1669,17 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="requests" translatesAutoresizingMaskIntoConstraints="NO" id="bvQ-0L-Uxl">
+                                <rect key="frame" x="110" y="256" width="155" height="134"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="ZdY-GT-zBH"/>
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="gPD-ZP-uWl"/>
                     <connections>
+                        <outlet property="friendsImageView" destination="bvQ-0L-Uxl" id="0XK-kq-vV7"/>
                         <outlet property="requestCount" destination="q0P-xN-p6M" id="o2b-kL-CzN"/>
                         <outlet property="requestView" destination="6nl-Mn-z05" id="Odm-8D-pqo"/>
                         <outlet property="searchBar" destination="yEm-lp-Ndx" id="P9l-92-FjX"/>
@@ -2790,6 +2795,7 @@
         <image name="pin" width="235.5" height="358.5"/>
         <image name="profile" width="248" height="248"/>
         <image name="profile-icon2" width="26.666666030883789" height="26.666666030883789"/>
+        <image name="requests" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
