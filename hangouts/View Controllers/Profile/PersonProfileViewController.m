@@ -32,6 +32,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 @property (weak, nonatomic) IBOutlet UIButton *declineFriendButton;
+@property (weak, nonatomic) IBOutlet UILabel *friendsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *availabilityLabel;
+@property (weak, nonatomic) IBOutlet UITextView *availabilityLineView;
 
 
 @end
@@ -45,6 +48,7 @@
     NSPointerArray *_currentUserIncomingRequests;
     NSPointerArray *_currentUserOutgoingRequests;
     Friendship *_userFriendship;
+    bool friendsListChanged;
 }
 
 #pragma mark - Set Profile Basic Features
@@ -52,17 +56,6 @@
     [super viewDidLoad];
     
     [self executeMainFunctions];
-}
-
-- (void)setProfileFeatures
-{
-    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
-    _fullnameLabel.text = _user[@"fullname"];
-    _bioLabel.text = _user[@"bio"];
-    _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
-    _declineFriendButton.hidden = YES;
-    _addFriendButton.hidden = YES;
-    [self setProfileImageLayout];
 }
 
 - (void)executeMainFunctions
@@ -82,7 +75,22 @@
     
     [self fetchFriends];
     [self setButtonColors:YES];
+    
+}
 
+- (void)setProfileFeatures
+{
+   [self areFriendsWithStatus:YES];
+    
+    _usernameLabel.text = [NSString stringWithFormat:@"@%@", _user[@"username"]];
+    _fullnameLabel.text = _user[@"fullname"];
+    _bioLabel.text = _user[@"bio"];
+    _noDataLabel.text = [NSString stringWithFormat:@"%@ has no plans today! Organize a hangout now!", _user[@"fullname"]];
+    
+    _declineFriendButton.hidden = YES;
+    _addFriendButton.hidden = YES;
+    
+    [self setProfileImageLayout];
 }
 
 - (void)setProfileImageLayout
@@ -139,7 +147,6 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-    
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -193,7 +200,8 @@
         _friendUsers = nil;
         _filteredUsers = nil;
         _userSchedule = nil;
-        [self viewDidLoad];
+        _userFriendship = nil;
+        [self executeMainFunctions];
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -227,7 +235,7 @@
 
 - (void)getCurrentUserFriends
 {
-    if ([_delegate saveFriendsList]) {
+    if ([_delegate saveFriendsList] && !friendsListChanged) {
         _currentUserFriends = [[NSMutableArray alloc] initWithArray:[_delegate saveFriendsList]];
     }
     // If currentUserFriends has not been provided by a delegate method, query is carried out to get them.
@@ -358,7 +366,9 @@
         NSArray *sortedArray = [userTodayEventsArray sortedArrayUsingDescriptors:descriptors];
         _userSchedule = [[NSMutableArray alloc] initWithArray:sortedArray];
     }
-    [self getTodayEvents];
+    if ([self checkIfFriend]) {
+         [self getTodayEvents];
+    }
 }
 
 -(void)getTodayEvents
@@ -483,11 +493,12 @@
     
     UIColor *alreadyFriends = [UIColor colorWithRed:0.96 green:0.61 blue:0.58 alpha:1.0];
     UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
-     UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
+    UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
     UIColor *acceptFriends = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
     
     if ([self checkIfFriend]) {
         [self changeFriendButtonHelperWithTitle:@"Unfriend" buttonColor:alreadyFriends];
+        [self areFriendsWithStatus:NO];
     }
     else if ([self checkIfRequestedFriend]) {
          [self changeFriendButtonHelperWithTitle:@"Requested" buttonColor:requestedFriends];
@@ -534,6 +545,8 @@
     }
     else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Accept"]) {
         
+        [self areFriendsWithStatus:NO];
+        
         // Deletes request from user incoming requests
         NSMutableArray *friendRequests = (NSMutableArray *)_userFriendship.incomingRequests;
         for (PFUser *requestFriend in friendRequests) {
@@ -559,7 +572,28 @@
         
         // Deletes request from friend outgoing requests
         [self updateFriendFriendshipObject:@"Accept"];
+    }
+    else if ([[sender titleForState:UIControlStateNormal] isEqualToString:@"Unfriend"])
+    {
+        NSMutableArray *friends = (NSMutableArray *)_userFriendship.friends;
+        for (PFUser *friend in friends) {
+            if ([friend.objectId isEqualToString:_user.objectId]) {
+                [friends removeObject:friend];
+                break;
+            }
+        }
+        _userFriendship.friends = friends;
         
+        // Saves data for user
+        [_userFriendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error) {
+            } else {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        
+        // Deletes request from friend outgoing requests
+        [self updateFriendFriendshipObject:@"Unfriend"];
     }
 }
 
@@ -610,8 +644,9 @@
                     NSMutableArray *userRequests = (NSMutableArray *)friendship.incomingRequests;
                     [userRequests addObject:[PFUser currentUser]];
                     friendship.incomingRequests = (NSPointerArray *)userRequests;
+                    strongSelf->friendsListChanged = YES;
                 }
-                if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
+                else if ([change isEqualToString:@"Accept"] || [change isEqualToString:@"Decline"])
                 {
                     NSMutableArray *friendRequests = (NSMutableArray *)friendship.outgoingRequests;
                     for (PFUser *requestFriend in friendRequests) {
@@ -628,10 +663,32 @@
                         friendship.friends = currentUserFriends;
                     }
                 }
+                else if ([change isEqualToString:@"Unfriend"]) {
+                    NSMutableArray *friends = (NSMutableArray *)friendship.friends;
+                    for (PFUser *friend in friends) {
+                        if ([friend.objectId isEqualToString:[PFUser currentUser].objectId]) {
+                            [friends removeObject:friend];
+                            strongSelf->friendsListChanged = YES;
+                            break;
+                        }
+                    }
+                    
+                    friendship.friends = friends;
+                }
+                
+                // Saves changes in database
                 [friendship saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (!error) {
-                        // Updates layout of friendship status
                         
+                        // Set friends nil in case user only had one friend
+                        strongSelf->_friendUsers = nil;
+                        strongSelf->_filteredUsers = nil;
+                        strongSelf->_userFriendship = nil;
+                        strongSelf->_currentUserFriends = nil;
+                        strongSelf->_currentUserIncomingRequests = nil;
+                        strongSelf->_currentUserOutgoingRequests = nil;
+                        
+                        // Updates layout of friendship status
                         [strongSelf executeMainFunctions];
                     }
                     else {
@@ -646,6 +703,57 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
+}
+
+#pragma mark - Hide Information
+
+- (void)areFriendsWithStatus:(bool)status {
+    
+    if (status) {
+        // Only shows friends in common
+        _filteredUsers = [NSMutableArray new];
+        for (PFUser *friendUser in _friendUsers) {
+            for (PFUser *currentUserFriend in _currentUserFriends) {
+                if ([friendUser.objectId isEqualToString:currentUserFriend.objectId]) {
+                    [_filteredUsers addObject:friendUser];
+                    break;
+                }
+            }
+        }
+        [_collectionView reloadData];
+        
+        _friendsLabel.text = @"Friends in common";
+    }
+    else {
+        _friendsLabel.text = @"Friends";
+        
+        _filteredUsers = _friendUsers;
+        [_collectionView reloadData];
+        [self setButtonColors:YES];
+    }
+    
+    // Does not show today's availability
+    _tableView.hidden = status;
+    _commonFriendsButton.hidden = status;
+    _friendsButton.hidden = status;
+    _noDataImage.hidden = status;
+    _noDataLabel.hidden = status;
+    _availabilityLabel.hidden = status;
+    _availabilityLineView.hidden = status;
+    
+    if (!status) {
+        if (_userSchedule) {
+            _noDataLabel.hidden = YES;
+            _noDataImage.hidden = YES;
+            _tableView.hidden = NO;
+        } else {
+            _tableView.hidden = YES;
+            _noDataLabel.hidden = NO;
+            _noDataImage.hidden = NO;
+        }
+    }
+    
+    [_friendsLabel sizeToFit];
 }
 
 @end

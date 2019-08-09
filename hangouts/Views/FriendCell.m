@@ -27,6 +27,9 @@
 }
 - (IBAction)didTapAddFriend:(id)sender {
     // requesting frienship object that contains user's friendship and friend request information
+    _addFriendButton.backgroundColor = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
+    _addFriendButton.enabled = NO;
+    
     PFQuery *query = [Friendship query];
     [query orderByDescending:@"createdAt"];
     [query includeKey:@"user"];
