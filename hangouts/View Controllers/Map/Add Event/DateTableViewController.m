@@ -26,12 +26,13 @@
     [super viewDidLoad];
     _startDateVisible = NO;
     _endDateVisible = NO;
-    if(_date) {
-        _startDatePicker.date = _date;
+    if(_startDate) {
+        _startDatePicker.date = _startDate;
         _startDateLabel.text = [NSDateFormatter localizedStringFromDate:_startDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];
-        
-        /*_endDatePicker.date = _endDate;
-        _endDateLabel.text = [NSDateFormatter localizedStringFromDate:_endDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];*/
+    }
+    if(_endDate) {
+        _endDatePicker.date = _endDate;
+        _endDateLabel.text = [NSDateFormatter localizedStringFromDate:_endDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];
     }
 }
 
@@ -50,7 +51,7 @@
 
 - (void)endDateChanged {
     _endDateLabel.text = [NSDateFormatter localizedStringFromDate:_endDatePicker.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle];
-    //[_delegate changedEndDateTo:_endDatePicker.date];
+    [_delegate changedEndDateTo:_endDatePicker.date];
 }
 
 - (void)toggleStartDateDatepicker {

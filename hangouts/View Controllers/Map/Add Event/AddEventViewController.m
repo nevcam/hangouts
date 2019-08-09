@@ -41,6 +41,7 @@
     NSString *_location_name;
     NSString *_location_address;
     NSDate *_startDate;
+    NSDate *_endDate;
 }
 
 #pragma mark - Loading and Popping Controller
@@ -52,6 +53,7 @@
     _invitedCollectionView.delegate = self;
     _invitedCollectionView.dataSource = self;
     _startDate = [NSDate date];
+    _endDate = [_startDate dateByAddingTimeInterval:(60*60)];
     
     if (!_event) {
         _invitedFriends = [[NSMutableArray alloc] initWithArray:_friendsToInvite];
@@ -93,6 +95,7 @@
             // Calls function that adds objects to class
             [Event createEvent:newEventName
                           date:_startDate
+                       endDate:_endDate
                    description:description
                            lat:_location_lat
                            lng:_location_lng
@@ -196,7 +199,8 @@
     } else if ([segue.identifier isEqualToString:@"DatepickerEmbeddedSegue"]) {
         DateTableViewController *dateTableViewController = [segue destinationViewController];
         if(_event) {
-            dateTableViewController.date = _event.date;
+            dateTableViewController.startDate = _event.date;
+            dateTableViewController.endDate = _event.endDate;
         }
         dateTableViewController.delegate = self;
     }
@@ -442,6 +446,7 @@
     event.name = _eventNameField.text;
     event.eventDescription = _eventDescriptionField.text;
     event.date = _startDate;
+    event.endDate = _endDate;
     event.location_name = _eventLocationNameField.text;
     event.location_address = _eventLocationField.text;
     event.location_lat = _location_lat;
@@ -487,6 +492,10 @@
 
 - (void)changedStartDateTo:(NSDate *)startDate {
     _startDate = startDate;
+}
+
+- (void)changedEndDateTo:(NSDate *)endDate {
+    _endDate = endDate;
 }
 
 #pragma mark - Collection View Protocol Methods

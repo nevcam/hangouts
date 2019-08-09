@@ -16,6 +16,7 @@ typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSDate *endDate;
 @property (nonatomic, strong) NSString *ownerUsername;
 @property (nonatomic, strong) NSString *eventDescription;
 @property (nonatomic, strong) NSNumber *location_lat;
@@ -27,6 +28,7 @@ typedef void (^EventCreationCompletionBlock)(Event *event, NSError *error);
 
 + (void)createEvent:(NSString *)name
                date:(NSDate *)date
+            endDate:(NSDate *)endDate
         description:(NSString *)description
                 lat:(NSNumber *)lat
                 lng:(NSNumber *)lng
