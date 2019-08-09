@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSMutableArray *currentUserFriends;
 @property (nonatomic, strong) Friendship *currentUserFriendship;
 @property (nonatomic, strong) NSMutableDictionary *friendshipMap;
+@property (weak, nonatomic) IBOutlet UIImageView *friendsImageView;
 
 
 @end
@@ -112,11 +113,14 @@
     // For FriendCellDelegate
     cell.delegate = self;
     
+    cell.addFriendButton.backgroundColor = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
+    
     // checks whether current user is friends with this user
     for (PFUser *friend in self.currentUserFriends){
         if ([friend.objectId isEqualToString:user.objectId]) {
             [cell.addFriendButton setTitle:@"" forState:UIControlStateNormal];
             cell.addFriendButton.enabled = NO;
+            cell.addFriendButton.hidden = YES;
             return cell;
         }
     }
@@ -124,6 +128,7 @@
     for (PFUser *requestedFriend in self.currentUserOutgoingRequests) {
         if ([requestedFriend.objectId isEqual:user.objectId]) {
             [cell.addFriendButton setTitle:@"Requested" forState:UIControlStateNormal];
+            cell.addFriendButton.backgroundColor = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
             cell.addFriendButton.enabled = NO;
             return cell;
         }
@@ -145,14 +150,19 @@
     }
     else
     {
-        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
-        noDataLabel.text             = @"Search for new friends!";
-        noDataLabel.textColor        = [UIColor blackColor];
-        noDataLabel.textAlignment    = NSTextAlignmentCenter;
-        self.tableView.backgroundView = noDataLabel;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        [self showSearchFriendsLabel];
     }
     return numOfSections;
+}
+
+- (void)showSearchFriendsLabel {
+    UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+    noDataLabel.text             = @"Search for new friends!";
+    noDataLabel.textColor        = [UIColor blackColor];
+    noDataLabel.textAlignment    = NSTextAlignmentCenter;
+    self.tableView.backgroundView = noDataLabel;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _friendsImageView.hidden = NO;
 }
 
 - (void)fetchFilteredUsers:(NSString *)prefix {
@@ -175,10 +185,13 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (searchText.length != 0) {
         [self fetchFilteredUsers:searchText];
+        _friendsImageView.hidden = YES;
     }
     else {
         self.filteredUsers = [NSMutableArray new];
         [self.tableView reloadData];
+        _friendsImageView.hidden = NO;
+        [self showSearchFriendsLabel];
     }
 }
 

@@ -12,6 +12,7 @@
 
 @dynamic name;
 @dynamic date;
+@dynamic endDate;
 @dynamic ownerUsername;
 @dynamic eventDescription;
 @dynamic location_lat;
@@ -28,6 +29,7 @@
 // Method to create events from Add Events view controller
 + (void)createEvent:(NSString *)name
                date:(NSDate *)date
+            endDate:(NSDate *)endDate
         description:(NSString *)description
                 lat:(NSNumber *)lat
                 lng:(NSNumber *)lng
@@ -42,6 +44,7 @@
     Event *newEvent = [Event new];
     newEvent.name = name;
     newEvent.date = date;
+    newEvent.endDate = endDate;
     newEvent.ownerUsername = [PFUser currentUser].username;
     newEvent.eventDescription = description;
     newEvent.location_address = locAddress;
