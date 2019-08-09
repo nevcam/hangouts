@@ -28,10 +28,8 @@
     NSMutableArray *_invitedUserXEvents;
     NSMutableArray *_acceptedUserXEvents;
     NSMutableArray *_ownedUserXEvents;
-    
     UIRefreshControl *_invitedRefreshControl;
     UIRefreshControl *_acceptedRefreshControl;
-    
     UIView *_buttonBar;
 }
 
@@ -77,7 +75,6 @@
     [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeHeight  relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:5]];
     [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeLeft  relatedBy:NSLayoutRelationEqual toItem:_segmentedControl attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [_segmentedContainerView addConstraint:[NSLayoutConstraint constraintWithItem:_buttonBar attribute:NSLayoutAttributeWidth  relatedBy:NSLayoutRelationEqual toItem:_segmentedControl attribute:NSLayoutAttributeWidth multiplier:1/3 constant:_segmentedControl.frame.size.width/3]];
-//    _segmentedControl.buttonBar = buttonBar;
 }
 
 - (IBAction)didChangeSegment {

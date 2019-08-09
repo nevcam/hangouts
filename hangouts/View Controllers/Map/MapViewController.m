@@ -25,6 +25,7 @@
 #import "CustomTapGestureRecognizer.h"
 #import "PersonProfileViewController.h"
 #import "UserCell.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface MapViewController () <MKMapViewDelegate, CreateEventControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *hangoutButton;
@@ -44,6 +45,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [SVProgressHUD show];
     _mapView.delegate = self;
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
@@ -205,6 +207,7 @@
         [_mapView addAnnotation:myAnnotation];
     }
     [_mapView showAnnotations:self.mapView.annotations animated:YES];
+    [SVProgressHUD dismiss];
 }
 
 - (void) annotationEvents:(NSArray *)events {
@@ -261,7 +264,10 @@
         // add custom view to callout
         annotationView.detailCalloutAccessoryView = [self addCustomFriendCallout:customAnnotation];
         // right button to add friend
-        CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeContactAdd];
+        CustomAnnotationButton *rightButton = [CustomAnnotationButton buttonWithType:UIButtonTypeCustom];
+        rightButton.frame = CGRectMake(0.0, 0.0, 30.0, 30.0);
+        [rightButton setBackgroundImage:[UIImage imageNamed:@"plus-256.png"] forState:UIControlStateNormal];
+        [rightButton setBackgroundImage:[UIImage imageNamed:@"checkmark-256.png"] forState:UIControlStateSelected];
         if (customAnnotation.checkBoxSelected) {
             rightButton.tag = 1;
         } else {
@@ -362,19 +368,19 @@
 - (void)didClickDetailDisclosure: (id) sender {
     CustomAnnotationButton *button = (CustomAnnotationButton *)sender;
     if ([button isSelected]) {
-        [button setSelected:NO];
         button.tag = 0;
         if ([_selectedFriends containsObject:button.friendUser]) {
             [_selectedFriends removeObject:button.friendUser];
             [_collectionView reloadData];
         }
+        [button setSelected:NO];
     } else {
-        [button setSelected:YES];
         button.tag = 1;
         if (![_selectedFriends containsObject:button.friendUser]) {
             [_selectedFriends addObject:button.friendUser];
             [_collectionView reloadData];
         }
+        [button setSelected:YES];
     }
     if (_selectedFriends.count > 0) {
          __weak typeof(self) weakSelf = self;
