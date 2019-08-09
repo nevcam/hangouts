@@ -79,12 +79,22 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     return true;
 }
 
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = YES;
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self fetchLocationsWithQuery:searchBar.text];
 }
 
-// Cancel button has been implemented through view controller
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    self.searchBar.showsCancelButton = NO;
+    self.searchBar.text = @"";
+    [self.searchBar resignFirstResponder];
+    _results = [NSMutableArray new];
+    [self.tableView reloadData];
+}
 
 #pragma mark - Fetch Locations From API
 

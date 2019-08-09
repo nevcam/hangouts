@@ -406,7 +406,7 @@
                                         <rect key="frame" x="0.0" y="155" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fMu-w1-HxO" id="Bjd-8a-TjG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3f-0H-4Hv">
@@ -655,10 +655,10 @@
             </objects>
             <point key="canvasLocation" x="-1151.2" y="3890.1049475262371"/>
         </scene>
-        <!--Friends Invite View Controller-->
+        <!--Friends-->
         <scene sceneID="rWe-mA-2WB">
             <objects>
-                <viewController id="cH3-Za-d6o" customClass="FriendsInviteViewController" sceneMemberID="viewController">
+                <viewController title="Friends" id="cH3-Za-d6o" customClass="FriendsInviteViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eer-GH-3fX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -667,7 +667,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="614"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" text="" id="rh6-gu-BVH">
+                                <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="Amo-Vj-hxK">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -738,7 +738,7 @@
                         <viewLayoutGuide key="safeArea" id="Ty7-19-4r2"/>
                     </view>
                     <connections>
-                        <outlet property="searchBar" destination="rh6-gu-BVH" id="8qe-v3-K8J"/>
+                        <outlet property="searchBar" destination="Amo-Vj-hxK" id="S7s-v9-e5k"/>
                         <outlet property="tableView" destination="RVH-Zq-KqS" id="p8c-LY-jsL"/>
                         <segue destination="4ta-Ah-gRE" kind="show" identifier="eventFriendsListToProfileSegue" id="MnL-qw-Gyu"/>
                     </connections>
@@ -2701,10 +2701,10 @@
             </objects>
             <point key="canvasLocation" x="-1151" y="3133"/>
         </scene>
-        <!--Locations View Controller-->
+        <!--Locations-->
         <scene sceneID="n6O-C3-FQh">
             <objects>
-                <viewController id="yQA-RW-acZ" customClass="LocationsViewController" sceneMemberID="viewController">
+                <viewController title="Locations" id="yQA-RW-acZ" customClass="LocationsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dta-QX-60s">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2712,7 +2712,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="57" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IM6-cy-8ub">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" text="" id="0pK-hX-BoD">
+                                <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" id="4Do-Kv-kUk">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -2776,7 +2776,7 @@
                         <viewLayoutGuide key="safeArea" id="VMm-Q6-aDf"/>
                     </view>
                     <connections>
-                        <outlet property="searchBar" destination="0pK-hX-BoD" id="jX6-Sf-8zi"/>
+                        <outlet property="searchBar" destination="4Do-Kv-kUk" id="V5N-Nh-4Mf"/>
                         <outlet property="tableView" destination="IM6-cy-8ub" id="lkP-2t-6YI"/>
                     </connections>
                 </viewController>
@@ -2863,7 +2863,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="w2F-AF-ITO"/>
+        <segue reference="MnL-qw-Gyu"/>
         <segue reference="oTR-i4-50P"/>
     </inferredMetricsTieBreakers>
 </document>
