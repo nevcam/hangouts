@@ -1088,18 +1088,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lu3-oD-A2g">
-                                <rect key="frame" x="317" y="76" width="37" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90349068259999998" green="0.90349068259999998" blue="0.90349068259999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
-                                <state key="normal" title="+">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="clickedAddPhoto:" destination="q3X-Ki-4NZ" eventType="touchUpInside" id="qAV-cy-4VV"/>
-                                </connections>
-                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0pg-ef-WPF">
                                 <rect key="frame" x="0.0" y="122" width="375" height="545"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1130,6 +1118,16 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lu3-oD-A2g">
+                                <rect key="frame" x="314" y="71" width="50" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="add-icon2">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedAddPhoto:" destination="q3X-Ki-4NZ" eventType="touchUpInside" id="qAV-cy-4VV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="vC7-d0-rgH"/>
@@ -1148,7 +1146,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dJB-pG-NoL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2954" y="3133"/>
+            <point key="canvasLocation" x="-2954.4000000000001" y="3132.6836581709149"/>
         </scene>
         <!--Photo Details View Controller-->
         <scene sceneID="R9H-bx-aus">
@@ -1552,6 +1550,10 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.30000001192092896" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="noData" translatesAutoresizingMaskIntoConstraints="NO" id="1Zw-tk-5jk">
+                                <rect key="frame" x="124" y="200" width="126" height="135"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -1570,6 +1572,7 @@
                     <navigationItem key="navigationItem" title="My Events" id="Dry-Um-mEG"/>
                     <connections>
                         <outlet property="invitedTableView" destination="ZwB-l4-jWc" id="gu9-NC-SW2"/>
+                        <outlet property="noDataImage" destination="1Zw-tk-5jk" id="5u6-vm-gV2"/>
                         <outlet property="segmentedContainerView" destination="Hjp-Ax-rkB" id="Ls3-s2-KTR"/>
                         <outlet property="segmentedControl" destination="pum-21-ek9" id="qGR-I6-q0E"/>
                     </connections>
@@ -1719,29 +1722,37 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Full name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dd0-if-gu8">
                                                     <rect key="frame" x="91" y="11" width="134" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5DR-gF-uf9">
                                                     <rect key="frame" x="91" y="40" width="134" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mms-Cw-Op5">
-                                                    <rect key="frame" x="294" y="11" width="49" height="30"/>
+                                                    <rect key="frame" x="292" y="27" width="62" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Accept"/>
+                                                    <color key="backgroundColor" red="0.80903814360000004" green="1" blue="0.99326949460000002" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <state key="normal" title="Accept">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="didTapAccept:" destination="8Hn-IR-9qa" eventType="touchUpInside" id="qCn-tK-fB7"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pg-fU-0aR">
-                                                    <rect key="frame" x="300" y="36" width="36" height="30"/>
+                                                    <rect key="frame" x="222" y="28" width="62" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Deny"/>
+                                                    <color key="backgroundColor" red="0.9333303007" green="0.79162854890000001" blue="0.8223025316" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                    <state key="normal" title="Decline">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="didTapDeny:" destination="8Hn-IR-9qa" eventType="touchUpInside" id="cqE-Zx-bak"/>
                                                     </connections>
@@ -1769,7 +1780,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wE5-cC-RjU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="57" y="3133"/>
+            <point key="canvasLocation" x="56.799999999999997" y="3132.6836581709149"/>
         </scene>
         <!--Person Profile View Controller-->
         <scene sceneID="j6T-6l-aEO">
@@ -2799,7 +2810,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="w2F-AF-ITO"/>
-        <segue reference="oTR-i4-50P"/>
+        <segue reference="gyE-XP-bW1"/>
+        <segue reference="M1v-7o-WK4"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *invitedTableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *segmentedContainerView;
+@property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
 
 
 @end
@@ -36,6 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _noDataImage.hidden = YES;
     
     _invitedTableView.dataSource = self;
     _invitedTableView.delegate = self;
@@ -247,27 +249,31 @@
     NSInteger numOfSections = 1;
     if ([_invitedUserXEvents count] == 0 && _segmentedControl.selectedSegmentIndex==0)
     {
-        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
-        noDataLabel.text             = @"No invites!";
-        noDataLabel.textColor        = [UIColor blackColor];
-        noDataLabel.textAlignment    = NSTextAlignmentCenter;
-        self.invitedTableView.backgroundView = noDataLabel;
+//        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
+//        noDataLabel.text             = @"No invites!";
+//        noDataLabel.textColor        = [UIColor blackColor];
+//        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+//        self.invitedTableView.backgroundView = noDataLabel;
+        // _noDataImage.hidden = NO;
     } else if ([_acceptedUserXEvents count] == 0 && _segmentedControl.selectedSegmentIndex==1)
     {
-        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
-        noDataLabel.text             = @"No hangouts!";
-        noDataLabel.textColor        = [UIColor blackColor];
-        noDataLabel.textAlignment    = NSTextAlignmentCenter;
-        self.invitedTableView.backgroundView = noDataLabel;
+//        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
+//        noDataLabel.text             = @"No hangouts!";
+//        noDataLabel.textColor        = [UIColor blackColor];
+//        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+//        self.invitedTableView.backgroundView = noDataLabel;
+        // _noDataImage.hidden = NO;
     } else if ([_ownedUserXEvents count] == 0 && _segmentedControl.selectedSegmentIndex==2)
     {
-        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
-        noDataLabel.text             = @"You have not created any hangouts yet!";
-        noDataLabel.textColor        = [UIColor blackColor];
-        noDataLabel.textAlignment    = NSTextAlignmentCenter;
-        self.invitedTableView.backgroundView = noDataLabel;
+//        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.invitedTableView.bounds.size.width, self.invitedTableView.bounds.size.height)];
+//        noDataLabel.text             = @"You have not created any hangouts yet!";
+//        noDataLabel.textColor        = [UIColor blackColor];
+//        noDataLabel.textAlignment    = NSTextAlignmentCenter;
+//        self.invitedTableView.backgroundView = noDataLabel;
+        // _noDataImage.hidden = NO;
     } else {
         self.invitedTableView.backgroundView = nil;
+        _noDataImage.hidden = YES;
     }
     return numOfSections;
 }
