@@ -9,6 +9,7 @@
 #import "EventDetailsViewController.h"
 #import "AddEventViewController.h"
 #import "DateFormatterManager.h"
+#import "UIImageView+AFNetworking.h"
 #import "UserXEvent.h"
 #import "UserCell.h"
 #import <MapKit/MapKit.h>
@@ -18,10 +19,12 @@
 
 @interface EventDetailsViewController () <UICollectionViewDelegate, UICollectionViewDataSource, EditEventControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *eventImageView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ownerUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationAddressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
@@ -50,6 +53,7 @@
     
     [self setLabels];
     [self setMap];
+    [self setEventPhoto];
     [self fetchGoingUsers];
     [self fetchInvitedUsers];
     [self configEditButton];
@@ -72,13 +76,28 @@
 
 - (void)setLabels {
     _nameLabel.text = _event.name;
-    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@", _event.ownerUsername];
+    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@'s event", _event.ownerUsername];
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
-    [manager.formatter setDateFormat:@"EEE MMM dd, Y | HH:mm"];
-    _dateLabel.text = [[manager.formatter stringFromDate:_event.date] stringByAppendingString:@" hrs"];
+    [manager.formatter setDateFormat:@"EEEE MMMM dd"];
+    _dateLabel.text = [manager.formatter stringFromDate:_event.date];
+    [manager.formatter setDateFormat:@"hh:mm a"];
+    NSString *startDate = [manager.formatter stringFromDate:_event.date];
+    NSString *endDate = [manager.formatter stringFromDate:_event.endDate];
+    _timeLabel.text = [NSString stringWithFormat:@"From %@ to %@", startDate, endDate];
     _locationNameLabel.text = _event.location_name;
     _locationAddressLabel.text = _event.location_address;
     _descriptionLabel.text = _event.eventDescription;
+}
+
+- (void)setEventPhoto {
+    if(_event.eventPhoto) {
+        PFFileObject *const imageFile = _event.eventPhoto;
+        NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
+        _eventImageView.image = nil;
+        [_eventImageView setImageWithURL:profilePhotoURL];
+    } else {
+        _eventImageView.image = [UIImage imageNamed:@"img-placeholder"];
+    }
 }
 
 #pragma mark - Map Methods
@@ -165,9 +184,9 @@
                 UserXEvent *userxevent = [objects objectAtIndex:0];
                 NSString *currentUserId = [[PFUser currentUser] objectId];
                 if([userxevent.user.objectId isEqualToString:currentUserId]) {
-                    [strongSelf.editButton setEnabled:(YES)];
+                    [strongSelf.editButton setEnabled:YES];
                 } else {
-                    [strongSelf.editButton setEnabled:(NO)];
+                    [strongSelf.editButton setEnabled:NO];
                 }
             }
         } else {
