@@ -18,6 +18,8 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UIImageView *noDataImage;
+@property (weak, nonatomic) IBOutlet UILabel *noDataLabel;
 
 @end
 
@@ -35,6 +37,7 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [super viewDidLoad];
     
     _tableView.dataSource = self;
+    _tableView.hidden = YES;
     _tableView.delegate = self;
     _searchBar.delegate = self;
 }
@@ -81,6 +84,9 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     self.searchBar.showsCancelButton = YES;
+    _tableView.hidden = NO;
+    _noDataLabel.hidden = YES;
+    _noDataImage.hidden = YES;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -94,6 +100,9 @@ static NSString * const clientSecret = @"W2AOE1TYC4MHK5SZYOUGX0J3LVRALMPB4CXT3ZH
     [self.searchBar resignFirstResponder];
     _results = [NSMutableArray new];
     [self.tableView reloadData];
+    _tableView.hidden = YES;
+    _noDataLabel.hidden = NO;
+    _noDataImage.hidden = NO;
 }
 
 #pragma mark - Fetch Locations From API

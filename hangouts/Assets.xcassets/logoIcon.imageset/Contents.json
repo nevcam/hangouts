@@ -2,6 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "8420ba03-ae1c-4eb5-8def-dfab137d816e_200x200.png",
       "scale" : "1x"
     },
     {
@@ -10,7 +11,6 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "going-icon.png",
       "scale" : "3x"
     }
   ],
