@@ -195,6 +195,7 @@
                         strongSelf->_filteredUsers = [NSMutableArray new];
 
                         [strongSelf->_filteredUsers addObjectsFromArray:friends];
+                        [strongSelf showFriendsInCommon];
                         [strongSelf.collectionView reloadData];
                     }
                 } else {
@@ -766,20 +767,25 @@
 
 #pragma mark - Hide Information
 
+- (void)showFriendsInCommon
+{
+    // Only shows friends in common
+    _filteredUsers = [NSMutableArray new];
+    for (PFUser *friendUser in _friendUsers) {
+        for (PFUser *currentUserFriend in _currentUserFriends) {
+            if ([friendUser.objectId isEqualToString:currentUserFriend.objectId]) {
+                [_filteredUsers addObject:friendUser];
+                break;
+            }
+        }
+    }
+    [_collectionView reloadData];
+}
+
 - (void)areFriendsWithStatus:(bool)status {
     
     if (status) {
-        // Only shows friends in common
-        _filteredUsers = [NSMutableArray new];
-        for (PFUser *friendUser in _friendUsers) {
-            for (PFUser *currentUserFriend in _currentUserFriends) {
-                if ([friendUser.objectId isEqualToString:currentUserFriend.objectId]) {
-                    [_filteredUsers addObject:friendUser];
-                    break;
-                }
-            }
-        }
-        [_collectionView reloadData];
+        [self showFriendsInCommon];
         
         _friendsLabel.text = @"Friends in common";
         // change
