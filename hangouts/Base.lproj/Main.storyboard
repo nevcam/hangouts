@@ -2917,10 +2917,8 @@
         <image name="requests" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UU9-zt-eRZ"/>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="5ke-0h-Tl9"/>
-        <segue reference="w2F-AF-ITO"/>
-        <segue reference="oTR-i4-50P"/>
+        <segue reference="Q1M-LH-oX9"/>
+        <segue reference="ofK-qi-QIO"/>
     </inferredMetricsTieBreakers>
 </document>
