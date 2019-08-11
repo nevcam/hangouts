@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *mapPlaceholderButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
@@ -298,6 +299,10 @@
     }
     [self.mapView addAnnotation:annotation];
 }
+- (IBAction)didTapMapPlaceholder:(id)sender {
+    [_mapPlaceholderButton setHidden:YES];
+    [self performSegueWithIdentifier:@"locationsViewSegue" sender:self];
+}
 
 #pragma mark - Event photo methods
 
@@ -360,6 +365,7 @@
 #pragma mark - Edit Event Setup Methods
 
 - (void)setEventMap {
+    [_mapPlaceholderButton setHidden:YES];
     double lat = [_event.location_lat doubleValue];
     double lng = [_event.location_lng doubleValue];
     MKPointAnnotation *myAnnotation = [[MKPointAnnotation alloc] init];

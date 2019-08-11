@@ -582,8 +582,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWh-UC-mQ3">
-                                <rect key="frame" x="16" y="363" width="134" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWh-UC-mQ3">
+                                <rect key="frame" x="16" y="363" width="75" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                 <nil key="textColor"/>
@@ -606,6 +606,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R7F-va-Ney">
+                                <rect key="frame" x="16" y="408" width="110" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                <state key="normal" title="Tap to add">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapMapPlaceholder:" destination="qRP-5W-y9A" eventType="touchUpInside" id="dwF-mJ-OeR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="jqC-fm-fdE"/>
@@ -632,6 +644,7 @@
                         <outlet property="eventPhoto" destination="Fo6-i6-xtS" id="iun-1H-Ihb"/>
                         <outlet property="inviteFriendsButton" destination="P6k-Es-DE5" id="1Yu-Pz-w0j"/>
                         <outlet property="invitedCollectionView" destination="88h-Br-R3N" id="AEp-fy-vrx"/>
+                        <outlet property="mapPlaceholderButton" destination="R7F-va-Ney" id="OZV-tr-KFe"/>
                         <outlet property="mapView" destination="aae-Lp-C4u" id="qhz-Fb-Lua"/>
                     </connections>
                 </viewController>
