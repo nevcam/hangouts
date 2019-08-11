@@ -601,6 +601,11 @@
                                     <segue destination="WfE-11-zLR" kind="embed" identifier="DatepickerEmbeddedSegue" id="dze-xa-CeM"/>
                                 </connections>
                             </containerView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GN4-mB-oQ2">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="jqC-fm-fdE"/>
@@ -618,6 +623,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="GN4-mB-oQ2" id="oe4-wE-4m2"/>
                         <outlet property="createButton" destination="srX-HI-3pQ" id="U9o-PN-4Yy"/>
                         <outlet property="eventDescriptionField" destination="Npr-W1-HOe" id="S8S-0v-Trt"/>
                         <outlet property="eventLocationField" destination="QgO-ZU-Fum" id="CsQ-P1-3uR"/>

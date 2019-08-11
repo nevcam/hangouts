@@ -14,6 +14,7 @@
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
 #include "DateTableViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "UserCell.h"
 
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, LocationsViewControllerDelegate, SaveFriendsListDelegate, DateTableViewControllerDelegate>
@@ -32,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -77,7 +80,8 @@
 // Adds an event to database
 - (IBAction)clickedCreateEvent:(id)sender
 {
-    // Uses class function to check that all fields are not empty
+    [SVProgressHUD show];
+    
     if (![self validateFields]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Event Creation Error" message:@"Please fill all the fields" preferredStyle:(UIAlertControllerStyleAlert)];
         UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again!" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
@@ -105,6 +109,7 @@
                       duration:nil
                 withCompletion:^(Event *event, NSError *error)
              {
+                 [SVProgressHUD dismiss];
                  if (error) {
                      NSLog(@"Unable to create an event");
                  } else {
@@ -396,6 +401,7 @@
     [self updateInfoOfEvent:event];
     __weak typeof(self) weakSelf = self;
     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if(strongSelf) {
             if (error) {
