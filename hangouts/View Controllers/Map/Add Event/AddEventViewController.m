@@ -14,6 +14,7 @@
 #import "UserXEvent.h"
 #import "UIImageView+AFNetworking.h"
 #include "DateTableViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "UserCell.h"
 
 @interface AddEventViewController () <UINavigationControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, LocationsViewControllerDelegate, SaveFriendsListDelegate, DateTableViewControllerDelegate>
@@ -27,11 +28,14 @@
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhoto;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *mapPlaceholderButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteFriendsButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createButton;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *invitedCollectionView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -77,7 +81,8 @@
 // Adds an event to database
 - (IBAction)clickedCreateEvent:(id)sender
 {
-    // Uses class function to check that all fields are not empty
+    [SVProgressHUD show];
+    
     if (![self validateFields]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Event Creation Error" message:@"Please fill all the fields" preferredStyle:(UIAlertControllerStyleAlert)];
         UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again!" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action){
@@ -105,6 +110,7 @@
                       duration:nil
                 withCompletion:^(Event *event, NSError *error)
              {
+                 [SVProgressHUD dismiss];
                  if (error) {
                      NSLog(@"Unable to create an event");
                  } else {
@@ -293,22 +299,47 @@
     }
     [self.mapView addAnnotation:annotation];
 }
+- (IBAction)didTapMapPlaceholder:(id)sender {
+    [_mapPlaceholderButton setHidden:YES];
+    [self performSegueWithIdentifier:@"locationsViewSegue" sender:self];
+}
 
 #pragma mark - Event photo methods
 
 - (IBAction)didTapPhoto:(id)sender {
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
-    imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [actionSheet dismissViewControllerAnimated:YES completion:nil];
+    }]];
     
-    [self presentViewController:imagePickerVC animated:YES completion:nil];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Select Photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self selectPhoto];
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Take Photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self takePhoto];
+    }]];
+
+    [self presentViewController:actionSheet animated:YES completion:nil];
+}
+
+- (void) selectPhoto {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)takePhoto {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    
+    [self presentViewController:picker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
@@ -334,6 +365,7 @@
 #pragma mark - Edit Event Setup Methods
 
 - (void)setEventMap {
+    [_mapPlaceholderButton setHidden:YES];
     double lat = [_event.location_lat doubleValue];
     double lng = [_event.location_lng doubleValue];
     MKPointAnnotation *myAnnotation = [[MKPointAnnotation alloc] init];
@@ -396,6 +428,7 @@
     [self updateInfoOfEvent:event];
     __weak typeof(self) weakSelf = self;
     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if(strongSelf) {
             if (error) {
