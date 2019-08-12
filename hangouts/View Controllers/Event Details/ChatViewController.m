@@ -119,7 +119,7 @@
     cell.profilePhotoView.layer.borderWidth = 0;
     if ([user[@"username"] isEqual:[PFUser currentUser][@"username"]]){
         cell.usernameLabel.text = @"";
-        [cell.messageBubbleView setBackgroundColor:[UIColor colorWithRed:0.6 green:0.8 blue:1.0 alpha:1.0]];
+        [cell.messageBubbleView setBackgroundColor:[UIColor colorWithRed:0.77 green:0.6 blue:0.91 alpha:1.0]];
         cell.chatMessageLabel.textColor = [UIColor whiteColor];
         cell.usernameLabel.textColor = [UIColor whiteColor];
         cell.rightBubbleConstraint = [NSLayoutConstraint constraintWithItem:cell.messageBubbleView attribute:NSLayoutAttributeRight  relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:-10];
