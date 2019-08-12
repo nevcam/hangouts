@@ -127,7 +127,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    UIImage *resizedImage = [self resizeImage:editedImage withSize:CGSizeMake(350, 350)];
+    UIImage *resizedImage = [self resizeImage:editedImage withSize:CGSizeMake(200, 200)];
     _profileImageView.image = resizedImage;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
