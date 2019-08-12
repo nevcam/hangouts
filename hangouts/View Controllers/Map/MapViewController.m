@@ -52,6 +52,9 @@
     _selectedFriends = [NSMutableArray new];
     UIColor *buttonColor = _buttonBackgroundView.backgroundColor;
     _buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.0f];
+    _buttonBackgroundView.layer.cornerRadius = 30;
+    _buttonBackgroundView.clipsToBounds = YES;
+    
     [_collectionView setHidden:YES];
     _hangoutButton.layer.masksToBounds = YES;
     _hangoutButton.layer.cornerRadius = _hangoutButton.frame.size.width/2;
@@ -389,14 +392,22 @@
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if(strongSelf) {
                     UIColor *buttonColor = strongSelf->_buttonBackgroundView.backgroundColor;
-                    strongSelf->_buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.65f];
+                    strongSelf->_buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.75f];
                     [strongSelf->_collectionView setHidden:NO];
+                    strongSelf->_buttonBackgroundView.layer.masksToBounds = NO;
+                    strongSelf->_buttonBackgroundView.layer.cornerRadius = 30; // if you like rounded corners
+                    strongSelf->_buttonBackgroundView.layer.shadowOffset = CGSizeMake(-5, 5);
+                    strongSelf->_buttonBackgroundView.layer.shadowRadius = 10;
+                    strongSelf->_buttonBackgroundView.layer.shadowOpacity = 0.6;
+                    
+                    strongSelf->_buttonBackgroundView.layer.shadowPath = [UIBezierPath bezierPathWithRect:strongSelf->_buttonBackgroundView.bounds].CGPath;
                 }
             
         } completion:NULL];
     } else {
         UIColor *buttonColor = _buttonBackgroundView.backgroundColor;
         _buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.0f];
+        _buttonBackgroundView.layer.shadowOpacity = 0;
         [_collectionView setHidden:YES];
     }
 }
