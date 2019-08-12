@@ -99,7 +99,7 @@
     FriendCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FriendCell"];
     PFUser *user = self.filteredUsers[indexPath.row];
     cell.user = user;
-    cell.usernameLabel.text = user[@"username"];
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", user[@"username"]];
     cell.fullnameLabel.text = user[@"fullname"];
     PFFileObject *const imageFile = user[@"profilePhoto"];
     NSURL *const profilePhotoURL = [NSURL URLWithString:imageFile.url];
