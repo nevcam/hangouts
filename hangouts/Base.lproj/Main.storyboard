@@ -2914,6 +2914,7 @@
         <image name="event-icon" width="33.333332061767578" height="33.333332061767578"/>
         <image name="friends-icon2" width="33.333332061767578" height="33.333332061767578"/>
         <image name="hangLogin" width="2099" height="654"/>
+        <image name="hangout" width="104" height="82"/>
         <image name="home-icon2" width="26.666666030883789" height="26.666666030883789"/>
         <image name="img-placeholder" width="200" height="200"/>
         <image name="noData" width="512" height="512"/>
@@ -2926,8 +2927,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-        <segue reference="w2F-AF-ITO"/>
-        <segue reference="oTR-i4-50P"/>
         <segue reference="Q1M-LH-oX9"/>
         <segue reference="ofK-qi-QIO"/>
     </inferredMetricsTieBreakers>
