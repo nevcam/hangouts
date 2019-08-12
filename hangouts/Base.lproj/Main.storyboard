@@ -2926,12 +2926,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
-<<<<<<< HEAD
         <segue reference="w2F-AF-ITO"/>
         <segue reference="oTR-i4-50P"/>
-=======
         <segue reference="Q1M-LH-oX9"/>
         <segue reference="ofK-qi-QIO"/>
->>>>>>> d7a84db4c478e883827e6af2abea5f0181d47ed2
     </inferredMetricsTieBreakers>
 </document>
