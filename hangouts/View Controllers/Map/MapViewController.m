@@ -466,6 +466,7 @@
 - (void)didCreateEvent:(Event * _Nullable)event {
     _selectedFriends = [NSMutableArray new];
     [self fetchEventPointers];
+    _selectedFriends = [NSMutableArray new];
 }
 
 #pragma mark - Collection View Methods
