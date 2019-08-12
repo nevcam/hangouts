@@ -17,6 +17,7 @@
     UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
     [self.profilePhotoView addGestureRecognizer:profileTapGestureRecognizer];
     [self.profilePhotoView setUserInteractionEnabled:YES];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

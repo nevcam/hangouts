@@ -147,6 +147,7 @@
     
     _declineFriendButton.hidden = YES;
     _addFriendButton.hidden = YES;
+    _declineFriendButton.backgroundColor = [UIColor colorWithRed:0.85 green:0.84 blue:0.84 alpha:1.0];
     
     [self setProfileImageLayout];
 }
@@ -554,8 +555,8 @@
     UIColor *alreadyFriends = [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1.0];
     UIColor *notFriends = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
     UIColor *requestedFriends = [UIColor colorWithRed:0.89 green:0.87 blue:0.87 alpha:1.0];
-    UIColor *acceptFriends = [UIColor colorWithRed:0.65 green:0.88 blue:0.97 alpha:1.0];
-    
+    UIColor *acceptFriends = [UIColor colorWithRed:0.77 green:0.60 blue:0.91 alpha:1.0];
+
     if ([self checkIfFriend]) {
         [self changeFriendButtonHelperWithTitle:@"Unfriend" buttonColor:alreadyFriends];
         [self areFriendsWithStatus:NO];
