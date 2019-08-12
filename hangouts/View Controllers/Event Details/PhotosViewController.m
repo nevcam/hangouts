@@ -95,7 +95,7 @@
     }
     [_photosCollection addObject:info[UIImagePickerControllerOriginalImage]];
     
-    UIImage *const imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(400, 400)];
+    UIImage *const imageToPost = [self resizeImage:originalImage withSize:CGSizeMake(200, 200)];
     
     [Photo addPhoto:imageToPost event:_currentEvent withCompletion:^(BOOL succeeded, NSError *error) {
         if (error) {

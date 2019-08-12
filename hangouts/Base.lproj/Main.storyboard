@@ -226,10 +226,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xtg-vI-YWu">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="57" width="375" height="610"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ma6-DW-BK9">
-                                <rect key="frame" x="0.0" y="64" width="375" height="75"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="75"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qpn-cV-6u8">
                                         <rect key="frame" x="308" y="9" width="59" height="57"/>
@@ -246,7 +246,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.91803461310000001" green="0.90861839060000005" blue="0.9686358571" alpha="0.65000000000000002" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" red="0.97440642118453979" green="0.96403199434280396" blue="0.98597580194473267" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Qpn-cV-6u8" secondAttribute="bottom" constant="9" id="5Gn-rd-j6h"/>
                                     <constraint firstItem="Qpn-cV-6u8" firstAttribute="leading" secondItem="Ma6-DW-BK9" secondAttribute="leading" constant="308" id="Pg3-oX-wYx"/>
@@ -255,7 +255,7 @@
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2wq-im-GLl">
-                                <rect key="frame" x="7" y="64" width="290" height="75"/>
+                                <rect key="frame" x="7" y="72" width="290" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="75" id="fwL-8y-wQf"/>
                                 </constraints>
@@ -296,12 +296,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="xtg-vI-YWu" firstAttribute="leading" secondItem="9AU-ns-v7r" secondAttribute="leading" id="DSY-aZ-jus"/>
-                            <constraint firstItem="xtg-vI-YWu" firstAttribute="top" secondItem="2wq-im-GLl" secondAttribute="bottom" constant="-75" id="JX3-fB-MnJ"/>
+                            <constraint firstItem="xtg-vI-YWu" firstAttribute="top" secondItem="2wq-im-GLl" secondAttribute="bottom" constant="-90" id="JX3-fB-MnJ"/>
                             <constraint firstAttribute="trailing" secondItem="xtg-vI-YWu" secondAttribute="trailing" id="Wi3-j2-Jup"/>
                             <constraint firstItem="IP4-Uu-8ZW" firstAttribute="trailing" secondItem="2wq-im-GLl" secondAttribute="trailing" constant="78" id="Xdx-S1-isA"/>
                             <constraint firstAttribute="trailing" secondItem="Ma6-DW-BK9" secondAttribute="trailing" id="ZZK-LO-6RV"/>
                             <constraint firstAttribute="bottom" secondItem="xtg-vI-YWu" secondAttribute="bottom" id="lpj-bX-Rhp"/>
-                            <constraint firstItem="2wq-im-GLl" firstAttribute="top" secondItem="9AU-ns-v7r" secondAttribute="top" constant="64" id="lvw-uo-cQ5"/>
+                            <constraint firstItem="2wq-im-GLl" firstAttribute="top" secondItem="9AU-ns-v7r" secondAttribute="top" constant="72" id="lvw-uo-cQ5"/>
                             <constraint firstItem="Ma6-DW-BK9" firstAttribute="top" secondItem="2wq-im-GLl" secondAttribute="top" id="nHh-ja-MFK"/>
                             <constraint firstItem="2wq-im-GLl" firstAttribute="leading" secondItem="9AU-ns-v7r" secondAttribute="leading" constant="7" id="nn1-9g-ycu"/>
                             <constraint firstItem="Ma6-DW-BK9" firstAttribute="bottom" secondItem="2wq-im-GLl" secondAttribute="bottom" id="wWn-Mv-Aoq"/>
@@ -2929,6 +2929,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="bna-kp-jZo"/>
         <segue reference="gyE-XP-bW1"/>
+        <segue reference="Q1M-LH-oX9"/>
         <segue reference="ofK-qi-QIO"/>
     </inferredMetricsTieBreakers>
 </document>
