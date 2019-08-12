@@ -69,6 +69,7 @@
     [self fetchEventPointers];
     [self fetchFriendsLocations];
     [_collectionView reloadData];
+    [_collectionView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0]];
 }
 
 #pragma mark - Updating current user location
