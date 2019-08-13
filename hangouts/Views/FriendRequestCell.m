@@ -39,7 +39,7 @@
 
 - (IBAction)didTapDeny:(id)sender {
     [self removeFromFriendRequests];
-//    [self.delegate deleteCellForIndexPath: self.indexPath];
+    [self.delegate deleteCellForIndexPath: self.indexPath];
 }
 
 
