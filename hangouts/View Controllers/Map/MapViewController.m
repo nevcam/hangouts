@@ -466,7 +466,8 @@
 - (void)didCreateEvent:(Event * _Nullable)event {
     _selectedFriends = [NSMutableArray new];
     [self fetchEventPointers];
-    _selectedFriends = [NSMutableArray new];
+    _buttonBackgroundView.hidden = YES;
+    
 }
 
 #pragma mark - Collection View Methods
