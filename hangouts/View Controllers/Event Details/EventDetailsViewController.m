@@ -76,7 +76,7 @@
 
 - (void)setLabels {
     _nameLabel.text = _event.name;
-    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@'s event", _event.ownerUsername];
+    _ownerUsernameLabel.text = [NSString stringWithFormat:@"@%@'s hangout", _event.ownerUsername];
     DateFormatterManager *manager = [DateFormatterManager sharedDateFormatter];
     [manager.formatter setDateFormat:@"EEEE MMMM dd"];
     _dateLabel.text = [manager.formatter stringFromDate:_event.date];
