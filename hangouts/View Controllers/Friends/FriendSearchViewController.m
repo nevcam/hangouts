@@ -113,7 +113,7 @@
     // For FriendCellDelegate
     cell.delegate = self;
     
-    cell.addFriendButton.backgroundColor = [UIColor colorWithRed:0.81 green:0.95 blue:0.78 alpha:1.0];
+    cell.addFriendButton.backgroundColor = [UIColor colorWithRed:0.77 green:0.60 blue:0.91 alpha:1.0];
     
     // checks whether current user is friends with this user
     for (PFUser *friend in self.currentUserFriends){
