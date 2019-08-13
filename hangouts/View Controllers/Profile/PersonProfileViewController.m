@@ -335,6 +335,7 @@
                         [strongSelf->_currentUserFriends addObjectsFromArray:friends];
                         
                         // Updates features of view controller
+                        [strongSelf eventsUserInfo];
                         [strongSelf.collectionView reloadData];
                         [strongSelf changeFriendButtonLayout];
                     }
