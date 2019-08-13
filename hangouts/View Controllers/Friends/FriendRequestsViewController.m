@@ -71,7 +71,7 @@
     cell.profilePhotoView.layer.cornerRadius = cell.profilePhotoView.frame.size.height /2;
     cell.profilePhotoView.layer.masksToBounds = YES;
     cell.profilePhotoView.layer.borderWidth = 0;
-    cell.usernameLabel.text = user[@"username"];
+    cell.usernameLabel.text = [NSString stringWithFormat:@"@%@", user[@"username"]];
     cell.fullnameLabel.text = user[@"fullname"];
     cell.currentUserFriendship = self.currentUserFriendship;
     return cell;
