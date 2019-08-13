@@ -116,6 +116,7 @@
                  } else {
                      [self handleSuccessCreatingEventWithEvent:event];
                      [self dismissViewControllerAnimated:YES completion:nil];
+                     [self.eventDelegate didCreateEvent:event];
                  }
              }];
         } else {

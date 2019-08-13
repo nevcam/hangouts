@@ -466,7 +466,11 @@
 - (void)didCreateEvent:(Event * _Nullable)event {
     _selectedFriends = [NSMutableArray new];
     [self fetchEventPointers];
-    _buttonBackgroundView.hidden = YES;
+    UIColor *buttonColor = _buttonBackgroundView.backgroundColor;
+    _buttonBackgroundView.backgroundColor = [buttonColor colorWithAlphaComponent:0.0f];
+    _buttonBackgroundView.layer.shadowOpacity = 0;
+    _collectionView.hidden = YES;
+    _selectedFriends = [NSMutableArray new];
     
 }
 
